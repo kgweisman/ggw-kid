@@ -1,0 +1,8 @@
+auth.json
+mturk-and-gmail.txt
+my-own-auth.json
+*_raw.*
+turk/*/production-results/
+turk/*/sandbox-results/
+.RData
+.Rhistory
