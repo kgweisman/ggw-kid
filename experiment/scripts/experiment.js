@@ -102,7 +102,7 @@ var experiment = {
 			// display progress bar
 			var percentComplete = (data.trialNum-1)/79 * 100;
 			var percentCompleteRounded = Math.round(percentComplete);
-			$('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
+			// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
 			$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
 			$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
@@ -111,8 +111,6 @@ var experiment = {
 			$(".slide#stage #options").text("The "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle+", or are they both the same?");
 			$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 			$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
-			// $("#stage #text-left").text(data.leftCharacter.charTitle);
-			// $("#stage #text-right").text(data.rightCharacter.charTitle);
 			
 			// show trial
 			showSlide("stage");

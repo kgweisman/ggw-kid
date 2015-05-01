@@ -93,6 +93,15 @@ h2 {
 	margin-left: auto;
 }
 
+/*style beginning slide*/
+div.beginning {
+	padding: 200px;
+}
+
+.beginning button {
+	margin: 50px;
+}
+
 /*style table*/
 table {
 	text-align: justify;
