@@ -107,7 +107,7 @@ var experiment = {
 			$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
 			// set text and images for this trial
-			$(".slide#stage #question").text("Which character do you think is more capable of "+this.newData.wording+"?");
+			$(".slide#stage #question").text("Which one is more likely to "+this.newData.wording+"?");
 			$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 			$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
 			$("#stage #text-left").text(data.leftCharacter.charTitle);
