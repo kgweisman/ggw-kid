@@ -93,13 +93,15 @@ h2 {
 	margin-left: auto;
 }
 
-/*style beginning slide*/
-div.beginning {
-	padding: 200px;
+/*style beginning slides*/
+div.beginning img {
+	margin: auto;
+	width: 70%;
+	height: 70%;
 }
 
 .beginning button {
-	margin: 50px;
+	margin: 20px;
 }
 
 /*style table*/
