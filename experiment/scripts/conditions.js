@@ -1,12 +1,38 @@
-/* set up list of conditions with wordings */ 
+/* set up list of sequences with blocks */ 
+
+function addSequence(seqNum, predicateOrder, subsetOrder) {
+	function Sequence(seqNum, predicateOrder, subsetOrder) {
+		this.sequence = seqNum;
+		this.predicateOrder = predicateOrder;
+		this.subsetOrder = subsetOrder;
+	};
+	var newSequence = new Sequence(seqNum, predicateOrder, subsetOrder);
+	sequences[seqNum] = newSequence;
+}
+
+sequences = {};
+addSequence("sequence1", ["thinking", "feelings", "hunger"], 
+	["pairsSubsetA", "pairsSubsetE", "pairsSubsetB"]);
+addSequence("sequence2", ["thinking", "hunger", "feelings"], 
+	["pairsSubsetB", "pairsSubsetC", "pairsSubsetA"]);
+addSequence("sequence3", ["feelings", "thinking", "hunger"], 
+	["pairsSubsetC", "pairsSubsetF", "pairsSubsetD"]);
+addSequence("sequence4", ["feelings", "hunger", "thinking"], 
+	["pairsSubsetD", "pairsSubsetA", "pairsSubsetC"]);
+addSequence("sequence5", ["hunger", "thinking", "feelings"], 
+	["pairsSubsetE", "pairsSubsetD", "pairsSubsetF"]);
+addSequence("sequence6", ["hunger", "feelings", "thinking"], 
+	["pairsSubsetF", "pairsSubsetB", "pairsSubsetE"]);
+
+// set up list of conditions for blocks
 
 function addCondition(condName, wording) {
 	function Condition(condName, wording) {
 		this.condName = condName;
 		this.wording = wording;
 	};
-	newCondition = new Condition(condName, wording);
-	conditions[newCondition.condName] = newCondition;
+	var newCondition = new Condition(condName, wording);
+	conditions[condName] = newCondition;
 };
 
 conditions = {};
@@ -26,12 +52,15 @@ $('.slide#surveys button').click(function() { // select condition
 // set up how to display surveys slide
 
 var surveysSlide = {
-	list: Object.keys(conditions).map(function (key) {return conditions[key]}),
+	condList: Object.keys(conditions).map(function (key) {return conditions[key]}),
+	seqList: Object.keys(sequences).map(function (key) {return sequences[key]}),
 	order: [],
 	condition: ""
 }
 
-surveysSlide.condition = randomElementNR(surveysSlide.list);
+surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
+
+surveysSlide.condition = randomElementNR(surveysSlide.condList);
 
 $('.slide#surveys span#survey-descrip1').text(surveysSlide.condition.condName)
 $('.slide#surveys span#survey-descrip2').text(surveysSlide.condition.wording);
