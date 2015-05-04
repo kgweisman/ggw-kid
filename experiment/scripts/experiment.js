@@ -133,7 +133,7 @@ var experiment = {
 
 			// set text and images for this trial
 			$(".slide#stage #question").text("Which one is more likely to "+this.newData.wording+"?");
-			$(".slide#stage #options").text("The "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle+", or are they both the same?");
+			$(".slide#stage #options").text("The "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle+", or both?");
 			$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 			$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
 			
