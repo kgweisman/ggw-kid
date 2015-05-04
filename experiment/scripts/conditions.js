@@ -1,13 +1,13 @@
 /* set up list of sequences with blocks */ 
 
-function addSequence(seqNum, predicateOrder, subsetOrder) {
-	function Sequence(seqNum, predicateOrder, subsetOrder) {
-		this.sequence = seqNum;
+function addSequence(seqName, predicateOrder, subsetOrder) {
+	function Sequence(seqName, predicateOrder, subsetOrder) {
+		this.seqName = seqName;
 		this.predicateOrder = predicateOrder;
 		this.subsetOrder = subsetOrder;
 	};
-	var newSequence = new Sequence(seqNum, predicateOrder, subsetOrder);
-	sequences[seqNum] = newSequence;
+	var newSequence = new Sequence(seqName, predicateOrder, subsetOrder);
+	sequences[seqName] = newSequence;
 }
 
 sequences = {};
@@ -43,6 +43,7 @@ addCondition("hunger", "get hungry");
 // set up button behaviors for surveys slide
 
 $('.slide#surveys button').click(function() { // select condition
+	experiment.newData.sequence = surveysSlide.sequence.seqName;
 	experiment.newData.condition = surveysSlide.condition.condName;
 	experiment.newData.wording = surveysSlide.condition.wording;
 	experiment.next();
