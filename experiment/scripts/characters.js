@@ -13,29 +13,29 @@ function addCharacter(charName, charTitle, charDescrip) {
 
 characters = {};
 
-// closer to original...
+// make characters
+addCharacter("grownup", "grown-up", "...");
+// addCharacter("kid", "kid", "...");
 addCharacter("baby", "baby", "...");
 addCharacter("bear", "bear", "...");
+// addCharacter("dog", "dog", "...");
 addCharacter("bug", "bug", "...");
-addCharacter("car", "car", "...");
-addCharacter("computer", "computer", "...");
-addCharacter("dog", "dog", "...");
-addCharacter("grownup", "grown-up", "...");
-addCharacter("kid", "kid", "...");
-addCharacter("moon", "moon", "...");
-addCharacter("mountain", "mountain", "...");
 addCharacter("robot", "robot", "...");
-addCharacter("stapler", "stapler", "...");
-addCharacter("teddybear", "teddy bear", "...");
+// addCharacter("car", "car", "...");
+addCharacter("computer", "computer", "...");
 addCharacter("tree", "tree", "...");
+// addCharacter("moon", "moon", "...");
+addCharacter("mountain", "mountain", "...");
+addCharacter("teddybear", "teddy bear", "...");
+addCharacter("stapler", "stapler", "...");
 
 // create the list of all possible pairs (78)
 
 var pairs = []; 
 function makePairs() {
 	var list = Object.keys(characters).map(function (key) {return characters[key]});
-	for (j = 0; j < 13; j++) {
-		for (k = j+1; k < 13; k++) {
+	for (j = 0; j < 10; j++) {
+		for (k = j+1; k < 10; k++) {
 			pairs.push([list[j], list[k]]);
 		}
 	};
@@ -49,7 +49,7 @@ var charactersSlide = {
 	trials: [],
 	makeOrder: function() {
 		// create random order
-		for (i = 0; i < 13; i++) {
+		for (i = 0; i < 10; i++) {
 			this.trials.push(randomElementNR(this.list));
 		};
 	},
@@ -78,7 +78,7 @@ var charactersSlide = {
 			var clickHandler = function(event) {
 				var endTime = (new Date()).getTime();
 				var data = {
-					trialNum: 13 - charactersSlide.trials.length,
+					trialNum: 10 - charactersSlide.trials.length,
 					character: currentChar.charName,
 					rt: NaN
 				}
