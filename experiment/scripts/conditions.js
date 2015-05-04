@@ -59,7 +59,6 @@ var surveysSlide = {
 }
 
 surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
-
 surveysSlide.condition = randomElementNR(surveysSlide.condList);
 
 $('.slide#surveys span#survey-descrip1').text(surveysSlide.condition.condName)
