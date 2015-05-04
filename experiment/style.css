@@ -176,9 +176,13 @@ img {
 	/*border: solid black 3px;*/
 }
 
+img#buttons {
+	height: 150px!important; 
+}
+
 /*display images during experiment stage slides*/
 #stage img {
-	height: 270px;
+	height: 300px;
 	/*display: block;*/
 }
 
@@ -191,6 +195,7 @@ img {
 /*display response buttons during experiment stage slides*/
 #stage button {
 	margin: 10px;
+	margin-top: 70px;
 	width: 110px;
 	padding: 5px!important;
 }
