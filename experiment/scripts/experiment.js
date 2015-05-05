@@ -2,6 +2,8 @@
 
 var experiment = {
 	// array for making each new trial
+	predicates: "",
+	subsets: "",
 	trials: pairs,
 
 	// where to store all the data
