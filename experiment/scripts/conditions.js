@@ -38,9 +38,9 @@ function addCondition(condName, introLabel, introDescription, wording) {
 };
 
 conditions = {};
-addCondition("thinking", "thinking", "has thoughts or ideas", "think");
-addCondition("feelings", "having feelings", "feels happy, or sad, or scared, or mad", "have feelings");
-addCondition("hunger", "getting hungry", "really needs to eat some food", "get hungry");
+addCondition("thinking", "thinking", "have thoughts or ideas", "think");
+addCondition("feelings", "feelings", "feel happy, or sad, or scared, or mad", "have feelings");
+addCondition("hunger", "getting hungry", "really need to eat some food", "get hungry");
 
 // set up button behaviors for surveys slide
 

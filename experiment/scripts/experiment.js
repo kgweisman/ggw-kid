@@ -44,26 +44,34 @@ var experiment = {
 		// summary data for use in results slide
 		charScores: {
 			grownup: [],
+			kid: [],
 			baby: [],
+			dog: [],
 			bear: [],
 			bug: [],
 			robot: [],
 			computer: [],
-			tree: [],
-			mountain: [],
-			teddybear: [],
+			car: [],
+			// tree: [],
+			// moon: [],
+			// mountain: [],
+			// teddybear: [],
 			stapler: []
 		},
 		charMeans: {
 			grownup: NaN,
+			kid: NaN,
 			baby: NaN,
+			dog: NaN,
 			bear: NaN,
 			bug: NaN,
 			robot: NaN,
 			computer: NaN,
-			tree: NaN,
-			mountain: NaN,
-			teddybear: NaN,
+			car: NaN,
+			// tree: NaN,
+			// moon: NaN,
+			// mountain: NaN,
+			// teddybear: NaN,
 			stapler: NaN
 		}
 	},
@@ -132,8 +140,8 @@ var experiment = {
 			$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
 			// set text and images for this trial
-			$(".slide#stage #question").text("Which one is more likely to "+this.newData.wording+"?");
-			$(".slide#stage #options").text("The "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle+", or both?");
+			$(".slide#stage #question").text(this.newData.wording);
+			$(".slide#stage #options").text("the "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle);
 			$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 			$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
 			
