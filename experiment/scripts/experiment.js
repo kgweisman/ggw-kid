@@ -16,27 +16,15 @@ var experiment = {
 		wording: "",
 
 		// demographic information about participant
-		age: "",
+		subid: "",
 		gender: "",
-		job: "",
-		education: "",
-		ethnicity: [],
-		religionChild: [],
-		religionNow: [],
-		country: "",
-		englishNative: "",
-		maritalStatus: "",
-		children: "",
-		vegetarian: "",
-		dog: "",
-		studyMoralPhil: "",
-		politicalIdeology: "",
-		beliefGod: "",
-		beliefTradition: "",
-		beliefAfterlife: "",
-		beliefLeader: "",
-		beliefRules: "",
-		comments: "",
+		ethnicity: "",
+		dateOfBirth: "",
+		dateOfTest: "",
+		testingSite: "",
+		experimenter: "",
+		trialComments: "",
+		sessionComments: "",
 
 		// trial by trial data
 		trialData: [],
@@ -78,7 +66,7 @@ var experiment = {
 
 	// what to do when the participant has seen all trials
 	end: function() {
-		showSlide("demographics");
+		showSlide("end");
 	},
 
 	// what happens when participant sees a new trial
