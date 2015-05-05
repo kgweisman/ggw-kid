@@ -43,18 +43,6 @@ addSequence("sequence5", [conditions.hunger, conditions.thinking, conditions.fee
 addSequence("sequence6", [conditions.hunger, conditions.feelings, conditions.thinking], 
 	[pairsSubsetF, pairsSubsetB, pairsSubsetE]);
 
-// set up button behaviors for surveys slide
-
-$('.slide#surveys button').click(function() { // select condition
-	experiment.newData.sequence = surveysSlide.sequence.seqName;
-	experiment.predicates = surveysSlide.sequence.predicateOrder;
-	experiment.subsets = surveysSlide.sequence.subsetOrder;
-	experiment.newData.condition = surveysSlide.condition.condName;
-	experiment.newData.wording = surveysSlide.condition.wording;
-	experiment.next();
-	window.scrollTo(0, 0);
-});
-
 // set up how to display surveys slide
 
 var surveysSlide = {
@@ -67,7 +55,13 @@ var surveysSlide = {
 surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
 surveysSlide.condition = randomElementNR(surveysSlide.condList);
 
-$('.slide#surveys span#survey-descrip1').text(surveysSlide.condition.condName)
-$('.slide#surveys span#survey-descrip2').text(surveysSlide.condition.introLabel);
-$('.slide#surveys span#survey-descrip3').text(surveysSlide.condition.introDescription);
-$('.slide#surveys span#survey-descrip4').text(surveysSlide.condition.wording);
+// experiment.newData.sequence = surveysSlide.sequence.seqName;
+// experiment.predicates = surveysSlide.sequence.predicateOrder;
+// experiment.subsets = surveysSlide.sequence.subsetOrder;
+
+// set up button behaviors
+
+$('.slide#surveys button').click(function() { // select condition
+	experiment.next();
+	window.scrollTo(0, 0);
+});

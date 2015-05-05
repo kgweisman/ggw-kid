@@ -2,8 +2,8 @@
 
 var experiment = {
 	// array for making each new trial
-	predicates: "",
-	subsets: "",
+	predicates: surveysSlide.sequence.predicateOrder,
+	subsets: surveysSlide.sequence.subsetOrder,
 	trials: pairs,
 
 	// where to store all the data
@@ -14,7 +14,7 @@ var experiment = {
 		// condition and session information
 		charIntroData: [],
 		condIntroOrder: [],
-		sequence: "",
+		sequence: surveysSlide.sequence.seqName,
 		// condition: "",
 		// wording: "",
 
@@ -74,26 +74,48 @@ var experiment = {
 
 	// what happens when participant sees a new trial
 	next: function() {
-		if (this.subsets[0].length === 0) {
-			experiment.end();
+		if (experiment.subsets[0].length === 0) {
+
+			if (experiment.predicates[0].length === 0) {
+
+				experiment.end();
+
+			} else {
+
+				// set up the instructions slide
+				var currentPredicate = experiment.predicates.shift();
+				$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
+				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
+				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
+				$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
+				showSlide("surveys");
+
+				// set up the stage slide
+				$(".slide#stage #question").text(currentPredicate.wording);
+				
+			}
+
 		} else {
 
 			// create place to store data for this trial
 			var data = {
-				trialNum: 8 - this.subsets[0].length,
+				trialNum: 8 - experiment.subsets[0].length,
 				leftCharacter: {},
 				rightCharacter: {},
 				response: "",
 				rt: NaN
 			};
 
-			console.log(data);
-
 			// assign left and right characters
 			var chosenPair;
+
 			if (experiment.newData.trialData.length < 1) {
+
+				// on trial 1, choose randomly from the current subset
 				chosenPair = randomElementNR(experiment.subsets[0]);
+			
 			} else {
+
 				// log previous trial's pair
 				var lastLeft = experiment.newData.trialData[experiment.newData.trialData.length - 1].leftCharacter;
 				var lastRight = experiment.newData.trialData[experiment.newData.trialData.length - 1].rightCharacter;
@@ -119,16 +141,17 @@ var experiment = {
 				if (tempIndex > -1) {
 					experiment.subsets[0].splice(tempIndex, 1);
 				}
+
 			}
 
 			// var chosenPair = randomElementNR(this.trials);
 			var sideBucket = [0,1];
 
 			data.leftCharacter = chosenPair[randomElementNR(sideBucket)];
-			data.rightCharacter = chosenPair[sideBucket]
+			data.rightCharacter = chosenPair[sideBucket];
 
 			// display progress bar
-			var percentComplete = (data.trialNum-1)/45 * 100;
+			var percentComplete = (data.trialNum-1)/8 * 100;
 			var percentCompleteRounded = Math.round(percentComplete);
 			// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
 			$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
@@ -152,12 +175,13 @@ var experiment = {
 				experiment.newData.trialData.push(data);
 			};
 
-			$(".slide#stage button").click(function() { 
+			$(".slide#stage button").click(function() {
+
 				// record response
 				data.response = $(this).attr('id');
 
 				// recode response as number
-				switch (data.response) { 
+				switch (data.response) {
 					case "much more left":
 						characterMore = data.leftCharacter.charName;
 						characterLess = data.rightCharacter.charName;
@@ -186,7 +210,7 @@ var experiment = {
 						experiment.newData.charScores[characterMore].push(2);
 						experiment.newData.charScores[characterLess].push(-2);
 						break;
-					default: 
+					default:
 						console.log("whoops");
 				}
 
@@ -199,10 +223,9 @@ var experiment = {
 				$(".slide#stage button").unbind().blur();
 				window.scrollTo(0, 0);
 				experiment.next();
-			})
+
+			});
+
 		}
 	}
 }
-
-
-

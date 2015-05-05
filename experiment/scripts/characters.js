@@ -105,7 +105,15 @@ var charactersSlide = {
 		};
 	},
 	end: function() {
+
+		var currentPredicate = experiment.predicates.shift();
+
+		$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
+		$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
+		$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
+		$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
 		showSlide("surveys");
+
 	},
 	next: function() {
 		if (this.trials.length === 0) {
