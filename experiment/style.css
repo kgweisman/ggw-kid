@@ -12,6 +12,7 @@ body {
 .slide {
 	/*pad the inside of the slide*/
 	padding: 30px;
+	padding-top: 100px;
 
     /*center slide within the window*/
 	margin: auto auto;
@@ -28,6 +29,10 @@ body {
     /*could explicitly set the following, but these are the defaults for me (chrome, linux)*/
     font-size: 14px;
     /*background-color: rgb(255,255,255);*/
+}
+
+.slide#stage {
+	padding-top: 30px;
 }
 
 /*style headings and other kinds of text*/
@@ -98,6 +103,7 @@ div.beginning img {
 	margin: auto;
 	width: 70%;
 	height: 70%;
+	padding: 500px;
 }
 
 .beginning button {

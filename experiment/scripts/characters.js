@@ -15,18 +15,18 @@ characters = {};
 
 // make characters
 addCharacter("grownup", "grown-up", "...");
-// addCharacter("kid", "kid", "...");
+addCharacter("kid", "kid", "...");
 addCharacter("baby", "baby", "...");
 addCharacter("bear", "bear", "...");
-// addCharacter("dog", "dog", "...");
+addCharacter("dog", "dog", "...");
 addCharacter("bug", "bug", "...");
 addCharacter("robot", "robot", "...");
-// addCharacter("car", "car", "...");
+addCharacter("car", "car", "...");
 addCharacter("computer", "computer", "...");
-addCharacter("tree", "tree", "...");
+// addCharacter("tree", "tree", "...");
 // addCharacter("moon", "moon", "...");
-addCharacter("mountain", "mountain", "...");
-addCharacter("teddybear", "teddy bear", "...");
+// addCharacter("mountain", "mountain", "...");
+// addCharacter("teddybear", "teddy bear", "...");
 addCharacter("stapler", "stapler", "...");
 
 // create the list of all possible pairs (45)
