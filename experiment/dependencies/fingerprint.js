@@ -24,13 +24,13 @@ function setGeo(data) {
   var isLocal = /file/.test(location.protocol);
   
   // inject a call to a json service that will give us geolocation information 
-  var protocol = isLocal ? "http://" : "//";
-  var src = protocol + "freegeoip.net/json/?callback=setGeo";
+  // var protocol = isLocal ? "http://" : "//";
+  // var src = protocol + "freegeoip.net/json/?callback=setGeo";
 
-  var scriptEl = document.createElement('script');
-  scriptEl.src = protocol + "freegeoip.net/json/?callback=setGeo";
+  // var scriptEl = document.createElement('script');
+  // scriptEl.src = protocol + "freegeoip.net/json/?callback=setGeo";
   
-  document.body.appendChild(scriptEl);
+  // document.body.appendChild(scriptEl);
 
 })()
 
