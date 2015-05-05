@@ -58,9 +58,8 @@
 
   <div class="slide" id="surveys">
     <h1 id="title-text">Instructions</h1>
-    <p class="fun-text" id="survey-descrip">Now that you've met the characters, you're ready to start the survey. This survey asks you to think about these characters' capacity for <span id="survey-descrip1">{{}}</span>.</p>
-    <p class="fun-text" id="survey-descrip">On each trial, you will see two characters. Please think about how these two characters compare in terms of which character is more likely to <span id="survey-descrip2">{{}}</span>.</p>
-    <p class="fun-text" id="survey-descrip">.</p>
+    <p class="fun-text" id="survey-descrip">Now we're going to play a game about <span id="survey-descrip1">{{}}</span>. Do you know what <span id="survey-descrip2">{{}}</span> is? It's when somebody <span id="survey-descrip3">{{}}</span>.</p>
+    <p class="fun-text" id="survey-descrip">So now I'm going to show you pictures of two things, and I want to know: Which one is more likely to <span id="survey-descrip4">{{}}</span>?</p>
     <div class="button" id = "form">
       <button type="submit" class="btn btn-default"id="17">Start Survey</button>
     </div>          
@@ -68,7 +67,7 @@
 
 <!-- study ("stage" slide) -->
 
-    <div class="slide" id="stage">
+    <div class="slide" id="stage" name="block1">
 
       <!-- <p class="progress-text" id="trial-num" align="center">{{}}</p> -->
 
@@ -89,23 +88,25 @@
           <tr>
             <td>
               <img id="image-left"/>
+              <img id="buttons" src="images_characters/_buttons2.jpg"/>
             </td>
             <td>
-              <!-- spacer -->
+              <!-- <img id="buttons" src="images_characters/_buttons1.jpg" style="margin-top: 320px;"/> -->
             </td>
             <td>
               <img id="image-right"/>
+              <img id="buttons" src="images_characters/_buttons2.jpg"/>
             </td>
           </tr>
         </tbody>
       </table>
 
       <p align="center">
-        <button type="submit" class="btn btn-default" id="much more left">&#8592;<br>A lot more<br>this one</button>
-        <button type="submit" class="btn btn-default" id="slightly more left">&#8592;<br>A little more<br>this one</button>
+        <button type="submit" class="btn btn-default" id="much more left">&#8592;<br>A lot more</button>
+        <button type="submit" class="btn btn-default" id="slightly more left">&#8592;<br>A little more</button>
         <button type="submit" class="btn btn-default" id="both equally">&#8596;<br>Both</button>
-        <button type="submit" class="btn btn-default" id="slightly more right">&#8594;<br>A little more<br>this one</button>
-        <button type="submit" class="btn btn-default" id="much more right">&#8594;<br>A lot more<br>this one</button>
+        <button type="submit" class="btn btn-default" id="slightly more right">&#8594;<br>A little more</button>
+        <button type="submit" class="btn btn-default" id="much more right">&#8594;<br>A lot more</button>
       </p>
     </div>
 

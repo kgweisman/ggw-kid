@@ -26,19 +26,21 @@ addSequence("sequence6", ["hunger", "feelings", "thinking"],
 
 // set up list of conditions for blocks
 
-function addCondition(condName, wording) {
-	function Condition(condName, wording) {
+function addCondition(condName, introLabel, introDescription, wording) {
+	function Condition(condName, introLabel, introDescription, wording) {
 		this.condName = condName;
+		this.introLabel = introLabel;
+		this.introDescription = introDescription;
 		this.wording = wording;
 	};
-	var newCondition = new Condition(condName, wording);
+	var newCondition = new Condition(condName, introLabel, introDescription, wording);
 	conditions[condName] = newCondition;
 };
 
 conditions = {};
-addCondition("thinking", "think");
-addCondition("feelings", "have feelings");
-addCondition("hunger", "get hungry");
+addCondition("thinking", "thinking", "has thoughts or ideas", "think");
+addCondition("feelings", "having feelings", "feels happy, or sad, or scared, or mad", "have feelings");
+addCondition("hunger", "getting hungry", "really needs to eat some food", "get hungry");
 
 // set up button behaviors for surveys slide
 
@@ -63,4 +65,6 @@ surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
 surveysSlide.condition = randomElementNR(surveysSlide.condList);
 
 $('.slide#surveys span#survey-descrip1').text(surveysSlide.condition.condName)
-$('.slide#surveys span#survey-descrip2').text(surveysSlide.condition.wording);
+$('.slide#surveys span#survey-descrip2').text(surveysSlide.condition.introLabel);
+$('.slide#surveys span#survey-descrip3').text(surveysSlide.condition.introDescription);
+$('.slide#surveys span#survey-descrip4').text(surveysSlide.condition.wording);
