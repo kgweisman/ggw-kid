@@ -14,8 +14,9 @@ var experiment = {
 		// condition and session information
 		charIntroData: [],
 		condIntroOrder: [],
-		condition: "",
-		wording: "",
+		sequence: "",
+		// condition: "",
+		// wording: "",
 
 		// demographic information about participant
 		subid: "",
@@ -34,34 +35,34 @@ var experiment = {
 		// summary data for use in results slide
 		charScores: {
 			grownup: [],
-			kid: [],
+			// kid: [],
 			baby: [],
-			dog: [],
+			// dog: [],
 			bear: [],
 			bug: [],
 			robot: [],
 			computer: [],
-			car: [],
-			// tree: [],
+			// car: [],
+			tree: [],
 			// moon: [],
-			// mountain: [],
-			// teddybear: [],
+			mountain: [],
+			teddybear: [],
 			stapler: []
 		},
 		charMeans: {
 			grownup: NaN,
-			kid: NaN,
+			// kid: NaN,
 			baby: NaN,
-			dog: NaN,
+			// dog: NaN,
 			bear: NaN,
 			bug: NaN,
 			robot: NaN,
 			computer: NaN,
-			car: NaN,
-			// tree: NaN,
+			// car: NaN,
+			tree: NaN,
 			// moon: NaN,
-			// mountain: NaN,
-			// teddybear: NaN,
+			mountain: NaN,
+			teddybear: NaN,
 			stapler: NaN
 		}
 	},
@@ -73,46 +74,50 @@ var experiment = {
 
 	// what happens when participant sees a new trial
 	next: function() {
-		if (this.trials.length === 0) {
+		if (this.subsets[0].length === 0) {
 			experiment.end();
 		} else {
+
 			// create place to store data for this trial
 			var data = {
-				trialNum: 46 - this.trials.length,
+				trialNum: 8 - this.subsets[0].length,
 				leftCharacter: {},
 				rightCharacter: {},
 				response: "",
 				rt: NaN
 			};
 
+			console.log(data);
+
 			// assign left and right characters
 			var chosenPair;
 			if (experiment.newData.trialData.length < 1) {
-				chosenPair = randomElementNR(experiment.trials);
+				chosenPair = randomElementNR(experiment.subsets[0]);
 			} else {
 				// log previous trial's pair
 				var lastLeft = experiment.newData.trialData[experiment.newData.trialData.length - 1].leftCharacter;
 				var lastRight = experiment.newData.trialData[experiment.newData.trialData.length - 1].rightCharacter;
 
 				// choose randomly from remaining pairs
-				var randomPair = pairs[randomInteger(experiment.trials.length)];
+				var randomPair = experiment.subsets[0][randomInteger(experiment.subsets[0].length)];
 				console.log(randomPair);
+				console.log(experiment.subsets[0].length);
 
 				// continue to choose randomly until there are no repeats from last trial
 				while (randomPair[0].charName === lastLeft ||
 					randomPair[0].charName === lastRight ||
 					randomPair[1].charName === lastLeft ||
 					randomPair[1].charName === lastRight) {
-					randomPair = pairs[randomInteger(experiment.trials.length)];
+					randomPair = experiment.subsets[0][randomInteger(experiment.subsets[0].length)];
 				} 
 
 				// select this pair for the trial
 				chosenPair = randomPair;
 
 				// remove chosen pair from the full pair set for the experiment
-				var tempIndex = pairs.indexOf(chosenPair);
+				var tempIndex = experiment.subsets[0].indexOf(chosenPair);
 				if (tempIndex > -1) {
-					pairs.splice(tempIndex, 1);
+					experiment.subsets[0].splice(tempIndex, 1);
 				}
 			}
 
@@ -123,7 +128,7 @@ var experiment = {
 			data.rightCharacter = chosenPair[sideBucket]
 
 			// display progress bar
-			var percentComplete = (data.trialNum-1)/46 * 100;
+			var percentComplete = (data.trialNum-1)/45 * 100;
 			var percentCompleteRounded = Math.round(percentComplete);
 			// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
 			$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
