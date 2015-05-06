@@ -63,6 +63,17 @@ var practiceSlide = {
 			$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
 			// set text and images for this practice trial
+			switch (data.trialNum) {
+				case 1: 
+					$(".slide#practice span#explanation").text("So here's how the game works. I'm going to show you pictures of two things: Do you know what this is? What about this? Then, I'm going to ask you a question about them. So this time, I want to know...");
+					break;
+				case 2:
+					$(".slide#practice span#explanation").text("Here's the next one. This time, is want to know...");
+					break;
+				default: 
+					$(".slide#practice span#explanation").text("");
+			}
+
 			$(".slide#practice span#question").text(currentPredicate); 
 			$(".slide#practice #options").text(data.leftCharacter.charTitle+", "+data.rightCharacter.charTitle);
 			$("#practice #image-left").attr("src", data.leftCharacter.imageSource);
