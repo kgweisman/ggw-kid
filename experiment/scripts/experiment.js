@@ -68,9 +68,82 @@ var experiment = {
 		}
 	},
 
-	// what to do when the participant has seen all trials
+	// what happens after completing all trials
 	end: function() {
+
+		// show ending slide	
 		showSlide("end");
+		
+		$('.slide#end button').click(function() { 
+			// reload html to return to start slide
+			location.reload();
+		});
+
+		// export data to csv
+		var data = experiment.newData.trialData;
+ 
+		function DownloadJSON2CSV(objArray) { // code source: http://www.zachhunter.com/2010/11/download-json-to-csv-using-javascript/
+		    // get trial-level info
+		    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+		    // add subject-level info
+		    for (trial in objArray) {
+		    	objArray[trial].subid = experiment.newData.subid;
+		    	objArray[trial].gender = experiment.newData.gender;
+		    	objArray[trial].ethnicity = experiment.newData.ethnicity;
+		    	objArray[trial].dateOfBirth = experiment.newData.dateOfBirth;
+		    	objArray[trial].dateOfTest = experiment.newData.dateOfTest;
+		    	// objArray[trial].charIntroData = experiment.newData.charIntroData;
+		    	objArray[trial].sequence = experiment.newData.sequence;
+		    	objArray[trial].experimenter = experiment.newData.experimenter;
+		    	objArray[trial].trialComments = experiment.newData.trialComments;
+		    	objArray[trial].sessionComments = experiment.newData.sessionComments;
+		    };
+
+		    // add headers in a hacky way
+		    objArray.unshift({
+		    	phase: "phase",
+		    	trialNum: "trialNum",
+		    	predicate: "predicate",
+		    	leftCharacter: "leftCharacter",
+		    	rightCharacter: "rightCharacter",
+		    	response: "response",
+		    	rt: "rt",
+		    	subid: "subid",
+		    	gender: "gender",
+		    	ethnicity: "ethnicity",
+		    	dateOfBirth: "dateOfBirth",
+		    	dateOfTest: "dateOfTest",
+		    	// charIntroData: "charIntroData",
+		    	sequence: "sequence",
+		    	experimenter: "experimenter",
+		    	trialComments: "trialComments",
+		    	sessionComments: "sessionComments"
+		    });
+
+		    // convert to csv
+		    var str = '';
+		     
+		    for (var i = 0; i < array.length; i++) {
+		        var line = '';
+		        for (var index in array[i]) {
+		            if(line != '') line += ','
+		         
+		            line += array[i][index];
+		        }
+		 
+		        str += line + '\r\n';
+		    }
+		 
+		    if (navigator.appName != 'Microsoft Internet Explorer') {
+		        window.open('data:text/csv;charset=utf-8,' + escape(str));
+		    } else {
+		        var popup = window.open('','csv','');
+		        popup.document.body.innerHTML = '<pre>' + str + '</pre>';
+		    }          
+		}
+
+		DownloadJSON2CSV(data);
 	},
 
 	// what happens when participant sees a new trial
