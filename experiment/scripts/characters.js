@@ -14,18 +14,18 @@ characters = {};
 
 // make characters
 addCharacter("grownup", "grown-up");
-// addCharacter("kid", "kid");
+addCharacter("kid", "kid");
 addCharacter("baby", "baby");
 addCharacter("bear", "bear");
-// addCharacter("dog", "dog");
+addCharacter("dog", "dog");
 addCharacter("bug", "bug");
 addCharacter("robot", "robot");
-// addCharacter("car", "car");
+addCharacter("car", "car");
 addCharacter("computer", "computer");
-addCharacter("tree", "tree");
+// addCharacter("tree", "tree");
 // addCharacter("moon", "moon");
-addCharacter("mountain", "mountain");
-addCharacter("teddybear", "teddy bear");
+// addCharacter("mountain", "mountain");
+// addCharacter("teddybear", "teddy bear");
 addCharacter("stapler", "stapler");
 
 // create the list of all possible pairs (45)
@@ -43,56 +43,56 @@ addCharacter("stapler", "stapler");
 
 // make counterbalanced subsets of pairs
 
-var pairsSubsetA = [[characters.baby, characters.computer], 
-					[characters.bear, characters.stapler], 
-					[characters.bug, characters.computer], 
-					[characters.bug, characters.tree], 
-					[characters.grownup, characters.bear], 
-					[characters.grownup, characters.teddybear], 
-					[characters.robot, characters.mountain], 
-					[characters.tree, characters.teddybear]]; 
-
-var pairsSubsetB = [[characters.baby, characters.robot], 
-					[characters.bear, characters.teddybear], 
-					[characters.bear, characters.tree], 
-					[characters.computer, characters.mountain], 
-					[characters.grownup, characters.bug], 
-					[characters.grownup, characters.stapler], 
-					[characters.robot, characters.stapler]]; 
-
-var pairsSubsetC = [[characters.baby, characters.bug], 
-					[characters.baby, characters.stapler], 
-					[characters.bear, characters.bug], 
-					[characters.bear, characters.mountain], 
-					[characters.grownup, characters.tree], 
-					[characters.mountain, characters.teddybear], 
-					[characters.robot, characters.computer], 
-					[characters.robot, characters.teddybear]]; 
-
-var pairsSubsetD = [[characters.baby, characters.bear], 
-					[characters.baby, characters.teddybear], 
-					[characters.bug, characters.robot], 
-					[characters.bug, characters.stapler], 
-					[characters.computer, characters.tree], 
-					[characters.grownup, characters.mountain], 
-					[characters.mountain, characters.stapler]]; 
-
-var pairsSubsetE = [[characters.baby, characters.mountain], 
+var pairsSubsetA = [[characters.grownup, characters.dog], 
+					[characters.kid, characters.baby], 
+					[characters.kid, characters.bug], 
+					[characters.baby, characters.car], 
+					[characters.dog, characters.stapler], 
 					[characters.bear, characters.computer], 
-					[characters.bug, characters.teddybear], 
-					[characters.computer, characters.teddybear], 
-					[characters.grownup, characters.baby], 
-					[characters.grownup, characters.robot], 
-					[characters.tree, characters.mountain], 
-					[characters.tree, characters.stapler]]; 
+					[characters.bug, characters.robot], 
+					[characters.robot, characters.stapler]];
 
-var pairsSubsetF = [[characters.baby, characters.tree], 
-					[characters.bear, characters.robot], 
-					[characters.bug, characters.mountain], 
-					[characters.computer, characters.stapler], 
+var pairsSubsetB = [[characters.grownup, characters.bear], 
+					[characters.kid, characters.robot], 
+					[characters.baby, characters.bug], 
+					[characters.dog, characters.car], 
+					[characters.bear, characters.stapler], 
+					[characters.robot, characters.computer], 
+					[characters.car, characters.stapler]];
+
+var pairsSubsetC = [[characters.grownup, characters.bug], 
+					[characters.grownup, characters.stapler], 
+					[characters.kid, characters.computer], 
+					[characters.baby, characters.robot], 
+					[characters.dog, characters.bear], 
+					[characters.bug, characters.car], 
+					[characters.robot, characters.car], 
+					[characters.computer, characters.stapler]];
+
+var pairsSubsetD = [[characters.grownup, characters.robot], 
+					[characters.kid, characters.dog], 
+					[characters.kid, characters.stapler], 
+					[characters.baby, characters.bear], 
+					[characters.dog, characters.bug], 
+					[characters.bear, characters.car], 
+					[characters.bug, characters.computer], 
+					[characters.computer, characters.car]];
+
+var pairsSubsetE = [[characters.grownup, characters.kid], 
 					[characters.grownup, characters.computer], 
-					[characters.robot, characters.tree], 
-					[characters.teddybear, characters.stapler]]; 
+					[characters.kid, characters.car], 
+					[characters.baby, characters.dog], 
+					[characters.baby, characters.stapler], 
+					[characters.dog, characters.robot], 
+					[characters.bear, characters.bug]];
+
+var pairsSubsetF = [[characters.grownup, characters.baby], 
+					[characters.grownup, characters.car], 
+					[characters.kid, characters.bear], 
+					[characters.baby, characters.computer], 
+					[characters.dog, characters.computer], 
+					[characters.bear, characters.robot], 
+					[characters.bug, characters.stapler]];
 
 // set up how to display characters slide
 
