@@ -99,33 +99,30 @@ var charactersSlide = {
 	list: Object.keys(characters).map(function (key) {return characters[key]}),
 	trials: [],
 	makeOrder: function() {
+
 		// create random order
 		for (i = 0; i < 10; i++) {
 			this.trials.push(randomElementNR(this.list));
 		};
+
 	},
 	end: function() {
 
-		var currentPredicate = experiment.predicates.shift();
-
-		$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
-		$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
-		$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
-		$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
-		showSlide("surveys");
+		experiment.next();
 
 	},
 	next: function() {
+
 		if (this.trials.length === 0) {
+
 			charactersSlide.end();
+
 		} else {
+
 			var currentChar = this.trials.shift();
 
 			// set text and images for this trial
 			$("#characters h2#character").text(currentChar.charTitle);
-			// $("#characters h2#character").text(currentChar.charTitle.split(",")[0]);
-			// $("#characters .block-text#character").text(currentChar.charTitle.split(",")[1]);
-			// $("#characters .block-text#character").text(currentChar.charTitle);
 			$("#characters img#character").attr("src", currentChar.imageSource);
 			
 			// show trial
