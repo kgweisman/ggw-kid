@@ -1,7 +1,12 @@
 /* set up how to display stage slide (experiment trials) */
 
+// get date
+var date = new Date();
+
+// set up predicate variable
 var currentPredicate;
 
+// create experiment object
 var experiment = {
 	// array for making each new trial
 	predicates: surveysSlide.sequence.predicateOrder,
@@ -24,7 +29,8 @@ var experiment = {
 		gender: "",
 		ethnicity: "",
 		dateOfBirth: "",
-		dateOfTest: "",
+		dateOfTest: date.getMonth()+1+"/"+date.getDate()+"/"+date.getFullYear(),
+		timeOfTest: date.getHours()+":"+date.getMinutes(),
 		testingSite: "",
 		experimenter: "",
 		trialComments: "",
@@ -88,14 +94,16 @@ var experiment = {
 
 		    // add subject-level info
 		    for (trial in objArray) {
+		    	objArray[trial].sequence = experiment.newData.sequence;
+		    	objArray[trial].experimenter = experiment.newData.experimenter;
+		    	objArray[trial].testingSite = experiment.newData.testingSite;
 		    	objArray[trial].subid = experiment.newData.subid;
 		    	objArray[trial].gender = experiment.newData.gender;
 		    	objArray[trial].ethnicity = experiment.newData.ethnicity;
 		    	objArray[trial].dateOfBirth = experiment.newData.dateOfBirth;
 		    	objArray[trial].dateOfTest = experiment.newData.dateOfTest;
+		    	objArray[trial].timeOfTest = experiment.newData.timeOfTest;
 		    	// objArray[trial].charIntroData = experiment.newData.charIntroData;
-		    	objArray[trial].sequence = experiment.newData.sequence;
-		    	objArray[trial].experimenter = experiment.newData.experimenter;
 		    	objArray[trial].trialComments = experiment.newData.trialComments;
 		    	objArray[trial].sessionComments = experiment.newData.sessionComments;
 		    };
@@ -109,14 +117,16 @@ var experiment = {
 		    	rightCharacter: "rightCharacter",
 		    	response: "response",
 		    	rt: "rt",
+		    	sequence: "sequence",
+		    	experimenter: "experimenter",
+		    	testingSite: "testingSite",
 		    	subid: "subid",
 		    	gender: "gender",
 		    	ethnicity: "ethnicity",
 		    	dateOfBirth: "dateOfBirth",
 		    	dateOfTest: "dateOfTest",
+		    	timeOfTest: "timeOfTest",
 		    	// charIntroData: "charIntroData",
-		    	sequence: "sequence",
-		    	experimenter: "experimenter",
 		    	trialComments: "trialComments",
 		    	sessionComments: "sessionComments"
 		    });
