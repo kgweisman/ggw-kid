@@ -76,7 +76,7 @@ var experiment = {
 	next: function() {
 		if (experiment.subsets[0].length === 0) {
 
-			if (experiment.predicates[0].length === 0) {
+			if (experiment.predicates.length === 0) {
 
 				experiment.end();
 
@@ -84,6 +84,8 @@ var experiment = {
 
 				// set up the instructions slide
 				var currentPredicate = experiment.predicates.shift();
+				var currentSubset = experiment.subsets.shift();
+
 				$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
 				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
 				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
