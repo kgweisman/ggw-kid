@@ -6,7 +6,6 @@ var experiment = {
 	// array for making each new trial
 	predicates: surveysSlide.sequence.predicateOrder,
 	subsets: surveysSlide.sequence.subsetOrder,
-	trials: pairs,
 
 	// where to store all the data
 	newData: {

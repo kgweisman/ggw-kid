@@ -31,16 +31,18 @@ addCharacter("stapler", "stapler", "...");
 
 // create the list of all possible pairs (45)
 
-var pairs = []; 
-function makePairs() {
-	var list = Object.keys(characters).map(function (key) {return characters[key]});
-	for (j = 0; j < 10; j++) {
-		for (k = j+1; k < 10; k++) {
-			pairs.push([list[j], list[k]]);
-		}
-	};
-};
-makePairs();
+// var pairs = []; 
+// function makePairs() {
+// 	var list = Object.keys(characters).map(function (key) {return characters[key]});
+// 	for (j = 0; j < 10; j++) {
+// 		for (k = j+1; k < 10; k++) {
+// 			pairs.push([list[j], list[k]]);
+// 		}
+// 	};
+// };
+// makePairs();
+
+// make counterbalanced subsets of pairs
 
 var pairsSubsetA = [[characters.baby, characters.computer], 
 					[characters.bear, characters.stapler], 
