@@ -1,33 +1,32 @@
 /* set up list of characters with titles, descriptions, and image sources */ 
 
-function addCharacter(charName, charTitle, charDescrip) {
-	function Character(charName, charTitle, charDescrip) {
+function addCharacter(charName, charTitle) {
+	function Character(charName, charTitle) {
 		this.charName = charName;
 		this.charTitle = charTitle;
 		this.imageSource = "images_characters/"+charName+".jpg";
-		this.charDescrip = charDescrip;
 	};
-	newCharacter = new Character(charName, charTitle, charDescrip);
+	newCharacter = new Character(charName, charTitle);
 	characters[newCharacter.charName] = newCharacter;
 };
 
 characters = {};
 
 // make characters
-addCharacter("grownup", "grown-up", "...");
-// addCharacter("kid", "kid", "...");
-addCharacter("baby", "baby", "...");
-addCharacter("bear", "bear", "...");
-// addCharacter("dog", "dog", "...");
-addCharacter("bug", "bug", "...");
-addCharacter("robot", "robot", "...");
-// addCharacter("car", "car", "...");
-addCharacter("computer", "computer", "...");
-addCharacter("tree", "tree", "...");
-// addCharacter("moon", "moon", "...");
-addCharacter("mountain", "mountain", "...");
-addCharacter("teddybear", "teddy bear", "...");
-addCharacter("stapler", "stapler", "...");
+addCharacter("grownup", "grown-up");
+// addCharacter("kid", "kid");
+addCharacter("baby", "baby");
+addCharacter("bear", "bear");
+// addCharacter("dog", "dog");
+addCharacter("bug", "bug");
+addCharacter("robot", "robot");
+// addCharacter("car", "car");
+addCharacter("computer", "computer");
+addCharacter("tree", "tree");
+// addCharacter("moon", "moon");
+addCharacter("mountain", "mountain");
+addCharacter("teddybear", "teddy bear");
+addCharacter("stapler", "stapler");
 
 // create the list of all possible pairs (45)
 
@@ -110,7 +109,7 @@ var charactersSlide = {
 	},
 	end: function() {
 
-		experiment.next();
+		practiceSlide.next();
 
 	},
 	next: function() {

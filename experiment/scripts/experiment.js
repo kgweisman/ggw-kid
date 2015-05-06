@@ -114,6 +114,7 @@ var experiment = {
 
 				// create place to store data for this trial
 				var data = {
+					phase: "test",
 					trialNum: 8 - experiment.subsets[0].length,
 					predicate: currentPredicate.condName,
 					leftCharacter: {},

@@ -3,12 +3,12 @@
 <html lang="en">
 	
   <head>
-      <title>Mind Survey</title>
-      <script src="dependencies/jquery-2.1.3.min.js"></script>
-      <script src="scripts/helper.js"></script>
-      <script src="dependencies/mmturkey.js"></script>
-      <link href="dependencies/bootstrap.min.css" rel="stylesheet">
-      <link href="style.css" rel="stylesheet"/>
+        <title>Mind Survey</title>
+        <script src="dependencies/jquery-2.1.3.min.js"></script>
+        <script src="scripts/helper.js"></script>
+        <script src="dependencies/mmturkey.js"></script>
+        <link href="dependencies/bootstrap.min.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet"/>
 	</head>
 
   <body>
@@ -17,11 +17,11 @@
 
     <div class="slide" id="preload">
       
-      <p class="fun-text">Loading...</p>
+        <p class="fun-text">Loading...</p>
 
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
 
     </div>
 
@@ -29,32 +29,76 @@
 
     <div class="slide" id="consent">
 
-		<div class="beginning">
-			<!-- <img src="images_characters/_intro.jpg"/> -->
-      <h1 id="title-text" style="padding-top:200px;font-size:120px;">pictures game</p>
-			<div class="button" id="start">
-				<button type="submit" class="btn btn-default">Start</button>
-			</div>
-		</div>
+        <div class="beginning">
+            <!-- <img src="images_characters/_intro.jpg"/> -->
+            <h1 id="title-text" style="padding-top:200px;font-size:120px;">pictures game</h1>
+            <div class="button" id="start">
+                <button type="submit" class="btn btn-default">Start</button>
+            </div>
+        </div>
     
     </div>
 
 <!-- pre-study: present characters -->
 
-  <div class="slide" id="characters">
-    <h1 id="title-text">Here are all of my pictures...</h1>
-    <br />
+    <div class="slide" id="characters">
+        <h1 id="title-text">Here are all of my pictures...</h1>
+        <br />
 
-    <img id="character"/>
-    <br />
-    <h2 id="character" style="margin-bottom:50px;">{{}}</h2>
-    <!-- <p class="block-text" id="character">{{}}</p> -->
+        <img id="character"/>
+        <br />
+        <h2 id="character" style="margin-bottom:50px;">{{}}</h2>
+        <!-- <p class="block-text" id="character">{{}}</p> -->
 
-    <div class="button" id="form">        
-     <button type="submit" class="btn btn-default">Next</button>
+        <div class="button" id="form">        
+            <button type="submit" class="btn btn-default">Next</button>
+        </div>
+
     </div>
 
-  </div>
+<!-- pre-study: practice trials -->
+
+    <div class="slide" id="practice">
+
+    <!-- <p class="progress-text" id="trial-num" align="center">{{}}</p> -->
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <p class="fun-text">Which one is <span id="question" align="center">{{}}</span>: <span id="options">{{}}</span>, or are they both the same?</p>
+
+        <table id="stageTable">
+            <colgroup>
+                <col style="width:40%">
+                <col style="width:20%">
+                <col style="width:40%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <img id="image-left"/>
+                        <img id="buttons" src="images_characters/_buttons2.jpg"/>
+                    </td>
+                    <td>
+                        <!-- <img id="buttons" src="images_characters/_buttons1.jpg" style="margin-top: 320px;"/> -->
+                    </td>
+                    <td>
+                        <img id="image-right"/>
+                        <img id="buttons" src="images_characters/_buttons2.jpg"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p align="center">
+            <button type="submit" class="btn btn-default" id="much more left">&#8592;<br />A lot more</button>
+            <button type="submit" class="btn btn-default" id="slightly more left">&#8592;<br />A little more</button>
+            <button type="submit" class="btn btn-default" id="both equally">&#8596;<br />Both</button>
+            <button type="submit" class="btn btn-default" id="slightly more right">&#8594;<br />A little more</button>
+            <button type="submit" class="btn btn-default" id="much more right">&#8594;<br />A lot more</button>
+        </p>
+    </div>
 
 <!-- study: instructions -->
 
@@ -130,6 +174,7 @@
 
     <!-- my experiment -->
     <script src="scripts/characters.js"></script>
+    <script src="scripts/practice.js"></script>
     <script src="scripts/conditions.js"></script>
     <script src="scripts/consent-instructions.js"></script>
     <script src="scripts/experiment.js"></script>
