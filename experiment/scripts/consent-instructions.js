@@ -1,10 +1,10 @@
-/* set up buttons on consent and instructions slides */
+/* set up buttons on start and instructions slides */
 
-// $('.slide#consent button').click(function() {
+// $('.slide#start button').click(function() {
 // 	showSlide('instructions');
 // })
 
-$('.slide#consent button').click(function() {
+$('.slide#start button').click(function() {
 	if(turk.previewMode === false) {
 		charactersSlide.makeOrder();
 		charactersSlide.next();
