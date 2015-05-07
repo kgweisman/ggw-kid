@@ -31,7 +31,7 @@
 
         <div class="beginning">
             <h1 class="title-text">pictures game</h1>
-            <p class="fun-text" style="font-style:italic">press command + shift + f to go fullscreen</p>
+            <p class="fun-text" style="font-style:italic">press command + shift + f to toggle fullscreen</p>
 
             <div class="session-info">
                 <div class="control-group">
@@ -91,34 +91,47 @@
 
         <table id="stageTable">
             <colgroup>
-                <col style="width:40%">
-                <col style="width:20%">
-                <col style="width:40%">
+                <col style="width:45%">
+                <col style="width:10%">
+                <col style="width:45%">
             </colgroup>
             <tbody>
                 <tr>
                     <td>
                         <img id="image-left"/>
-                        <img id="buttons" src="images_characters/_buttons2.jpg"/>
                     </td>
                     <td>
-                        <!-- <img id="buttons" src="images_characters/_buttons1.jpg" style="margin-top: 320px;"/> -->
                     </td>
                     <td>
                         <img id="image-right"/>
-                        <img id="buttons" src="images_characters/_buttons2.jpg"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn-circle" id="much more left"><img id="lot-more" style="height:110px;" src="images_characters/_button.png"/></button>
+                    </td>
+                    <td style="vertical-align:bottom!important;">
+                        <button type="submit" class="btn btn-default" id="both" style="margin:0px;">Both<br />the same</button>
+                        <p></p>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-circle" id="much more right"><img id="lot-more" style="height:110px;" src="images_characters/_button.png"/></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn-circle" id="slightly more left"><img id="little-more" style="height:55px;" src="images_characters/_button.png"/></button>
+                    </td>
+                    <td style="vertical-align:top!important;">
+                        <!-- <p></p> -->
+                        <button type="submit" class="btn btn-default" id="skip" style="margin:0px;font-style:italic;">Skip</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-circle" id="slightly more right"><img id="little-more" style="height:55px;" src="images_characters/_button.png"/></button>
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <p align="center">
-            <button type="submit" class="btn btn-default" id="much more left">&#8592;<br />A lot more</button>
-            <button type="submit" class="btn btn-default" id="slightly more left">&#8592;<br />A little more</button>
-            <button type="submit" class="btn btn-default" id="both equally">&#8596;<br />Both</button>
-            <button type="submit" class="btn btn-default" id="slightly more right">&#8594;<br />A little more</button>
-            <button type="submit" class="btn btn-default" id="much more right">&#8594;<br />A lot more</button>
-        </p>
     </div>
 
 <!-- study: instructions -->
@@ -147,36 +160,50 @@
             <p class="fun-text">Which one is more likely to <span id="question" align="center">{{}}</span>: <span id="options">{{}}</span>, or are they both the same?</p>
         </div>
 
-      <table id="stageTable">
-        <colgroup>
-          <col style="width:40%">
-          <col style="width:20%">
-          <col style="width:40%">
-        </colgroup>
-        <tbody>
-          <tr>
-            <td>
-              <img id="image-left"/>
-              <img id="buttons" src="images_characters/_buttons2.jpg"/>
-            </td>
-            <td>
-              <!-- <img id="buttons" src="images_characters/_buttons1.jpg" style="margin-top: 320px;"/> -->
-            </td>
-            <td>
-              <img id="image-right"/>
-              <img id="buttons" src="images_characters/_buttons2.jpg"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table id="stageTable">
+            <colgroup>
+                <col style="width:45%">
+                <col style="width:10%">
+                <col style="width:45%">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <img id="image-left"/>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <img id="image-right"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn-circle" id="much more left"><img id="lot-more" style="height:110px;" src="images_characters/_button.png"/></button>
+                    </td>
+                    <td style="vertical-align:bottom!important;">
+                        <button type="submit" class="btn btn-default" id="both" style="margin:0px;">Both<br />the same</button>
+                        <p></p>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-circle" id="much more right"><img id="lot-more" style="height:110px;" src="images_characters/_button.png"/></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn-circle" id="slightly more left"><img id="little-more" style="height:55px;" src="images_characters/_button.png"/></button>
+                    </td>
+                    <td style="vertical-align:top!important;">
+                        <!-- <p></p> -->
+                        <button type="submit" class="btn btn-default" id="skip" style="margin:0px;font-style:italic;">Skip</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-circle" id="slightly more right"><img id="little-more" style="height:55px;" src="images_characters/_button.png"/></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-      <p align="center">
-        <button type="submit" class="btn btn-default" id="much more left">&#8592;<br />A lot more</button>
-        <button type="submit" class="btn btn-default" id="slightly more left">&#8592;<br />A little more</button>
-        <button type="submit" class="btn btn-default" id="both equally">&#8596;<br />Both</button>
-        <button type="submit" class="btn btn-default" id="slightly more right">&#8594;<br />A little more</button>
-        <button type="submit" class="btn btn-default" id="much more right">&#8594;<br />A lot more</button>
-      </p>
     </div>
 
 <!-- post-study: the end -->
@@ -184,7 +211,7 @@
     <div class="slide" id="end">
 
         <h1 class="title-text">the end!</h1>
-        <img src="images_characters/_ending.jpg"/>
+        <img style="margin-top:20px;margin-bottom:70px;" src="images_characters/_ending.jpg"/>
 
         <div class="button" id = "form">
             <button type="submit" class="btn btn-default">Start over</button>

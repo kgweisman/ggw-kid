@@ -152,6 +152,7 @@ table td, th {
 	padding-top: 0px;
 	padding-bottom: 0px;
 	vertical-align: top;
+	text-align: center;
 }
 
 table img {
@@ -229,8 +230,6 @@ img#buttons {
 /*display response buttons during experiment stage slides*/
 #stage button, #practice button {
 	margin: 10px;
-	margin-top: 30px;
-	width: 110px;
 	padding: 5px!important;
 }
 
@@ -239,3 +238,20 @@ img#buttons {
 	margin-bottom: 30px;
 }
 
+/*style circle buttons*/
+.btn-circle {
+	border: 0;
+	outline: 0;
+    background-color: rgb(255,255,255);
+    margin: 0 auto 0 auto;
+}
+
+.btn-circle:focus {
+	outline: 0;
+}
+
+#both.btn-default, #skip.btn-default {
+	width: 100px;
+	margin: auto!important;
+	/*margin-bottom: 20px!important;*/
+}
