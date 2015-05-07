@@ -30,8 +30,8 @@ function preload(images, onLoadedOne, onLoadedAll) {
 		}
 	};
 
-	// load images 6 at a time
-	var concurrent = 13;
+	// load images 21 at a time
+	var concurrent = 21;
 	for(var i = 0; i < concurrent; i++) {
 		setTimeout(worker, 20 - i);
 		};
@@ -45,7 +45,7 @@ function onLoadedOne() {
 	// $("#num-loaded").text(numLoadedImages); 
 
 	// display progress bar
-	var percentComplete = (numLoadedImages)/13 * 100;
+	var percentComplete = (numLoadedImages)/21 * 100;
 	var percentCompleteRounded = Math.round(percentComplete);
 	$('#preload .progress-bar').attr("aria-valuenow", percentComplete.toString());
 	$('#preload .progress-bar').css("width", percentComplete.toString()+"%");
@@ -53,7 +53,7 @@ function onLoadedOne() {
 
 // define a function that will get called once all images have been successfully loaded
 function onLoadedAll() {
-	showSlide("consent");
+	showSlide("start");
 }
 
 /* preload images */
@@ -66,4 +66,4 @@ for (i = 0; i < Object.keys(characters).length; i++) {
 // start!
 preload(images,
         onLoadedOne,
-        onLoadedAll); // shows consent slide
+        onLoadedAll); // shows start slide
