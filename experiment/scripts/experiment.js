@@ -3,8 +3,9 @@
 // get date
 var date = new Date();
 
-// set up predicate variable
-var currentPredicate;
+// set up "current" variables
+var currentPredicate, currentSubset, currentPermutation, allPermutations;
+var done = false;
 
 // create experiment object
 var experiment = {
@@ -159,46 +160,82 @@ var experiment = {
 	// what happens when participant sees a new trial
 	next: function() {
 
-		if (experiment.predicates.length === 3) {
+		// if this is the very first test trial, or there are no more trials left in this block...
+		if ((experiment.newData.trialData.length === 2 & done === false) ||
+			currentPermutation.length === 0) { console.log("boo")
 
-			currentPredicate = experiment.predicates.shift();
-			$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
-			$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
-			$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
-			$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
-			showSlide("surveys");
+			// ...and this is the last block...
+			if (experiment.predicates.length === 0) { console.log("yo")
 
-		} else {
+				// ...end the experiment!
+				experiment.end();
 
-			if (experiment.subsets[0].length === 0) {
+			// ...and this is NOT the last block...
+			} else { console.log("hey")
 
-				if (experiment.predicates.length === 0) {
+				// ...start a new block!
 
-					experiment.end();
+				// get the new predicate and new pairs subset
+				currentPredicate = experiment.predicates.shift();
+				currentSubset = experiment.subsets.shift();
 
-				} else {
+				// get all the possible permutations for the current subset
+				allPermutations = permute(currentSubset);
 
-					// set up the instructions slide for the next block
-					currentPredicate = experiment.predicates.shift();
-					var currentSubset = experiment.subsets.shift();
+				// find a permutation without overlaps
+				errorLog = [1];
+				var randomPermutation;
 
-					$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
-					$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
-					$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
-					$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
-					showSlide("surveys");
-					
+				while (errorLog.length > 0) {
+
+					// choose a random permutation from the list
+					randomPermutation = randomElementNR(allPermutations);
+					console.log(randomPermutation);
+
+					// check whether there are overlaps
+					for (i = 0; i < (randomPermutation.length-1); i++) {
+						errorLog = [];
+
+					    if (randomPermutation[i+1][0].charName === randomPermutation[i][0].charName ||
+					      randomPermutation[i+1][0].charName === randomPermutation[i][1].charName ||
+					      randomPermutation[i+1][1].charName === randomPermutation[i][0].charName ||
+					      randomPermutation[i+1][1].charName === randomPermutation[i][1].charName) {
+					      errorLog.push(1);
+						}
+					}
 				}
 
-			} else {
+				// select this permutation as the currentPermutation
+				currentPermutation = randomPermutation;
 
-				// set up the stage slide
-				$(".slide#stage span#question").text(currentPredicate.wording);
+				// set up and display the instructions slide for this block
+				$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
+				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
+				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
+				$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
+				showSlide("surveys");
+
+				// mark this as done
+				done = true;
+
+			}
+
+		// if there are more trials left in this block...
+		} else { console.log("bonjour")
+
+				// ...start a new trial!
+				
+				// // update progress bar
+				// var percentComplete = (data.trialNum-1)/8 * 100;
+				// var percentCompleteRounded = Math.round(percentComplete);
+				// // $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
+				// $('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
+				// $('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
 				// create place to store data for this trial
 				var data = {
 					phase: "test",
-					trialNum: 8 - experiment.subsets[0].length,
+					// trialNum: 8 - experiment.subsets[0].length,
 					predicate: currentPredicate.condName,
 					leftCharacter: {},
 					rightCharacter: {},
@@ -206,61 +243,17 @@ var experiment = {
 					rt: NaN
 				};
 
-				// assign left and right characters
-				var chosenPair;
-
-				if (experiment.newData.trialData.length < 1) {
-
-					// on trial 1, choose randomly from the current subset
-					chosenPair = randomElementNR(experiment.subsets[0]);
-				
-				} else {
-
-					// log previous trial's pair
-					var lastLeft = experiment.newData.trialData[experiment.newData.trialData.length - 1].leftCharacter;
-					var lastRight = experiment.newData.trialData[experiment.newData.trialData.length - 1].rightCharacter;
-
-					// choose randomly from remaining pairs
-					var randomPair = experiment.subsets[0][randomInteger(experiment.subsets[0].length)];
-
-					// continue to choose randomly until there are no repeats from last trial
-					while (randomPair[0].charName === lastLeft ||
-						randomPair[0].charName === lastRight ||
-						randomPair[1].charName === lastLeft ||
-						randomPair[1].charName === lastRight) {
-						randomPair = experiment.subsets[0][randomInteger(experiment.subsets[0].length)];
-					} 
-
-					// select this pair for the trial
-					chosenPair = randomPair;
-
-					// remove chosen pair from the full pair set for the experiment
-					var tempIndex = experiment.subsets[0].indexOf(chosenPair);
-					if (tempIndex > -1) {
-						experiment.subsets[0].splice(tempIndex, 1);
-					}
-
-				}
-
-				// var chosenPair = randomElementNR(this.trials);
-				var sideBucket = [0,1];
-
-				data.leftCharacter = chosenPair[randomElementNR(sideBucket)];
-				data.rightCharacter = chosenPair[sideBucket];
-
-				// display progress bar
-				var percentComplete = (data.trialNum-1)/8 * 100;
-				var percentCompleteRounded = Math.round(percentComplete);
-				// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
-				$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
-				$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
+				// set the left and right characters (random side assignment)
+				var currentPair = currentPermutation.shift();
+				data.leftCharacter = randomElementNR(currentPair);
+				data.rightCharacter = currentPair[0];
 
 				// set text and images for this trial
-				$(".slide#stage #question").text(this.newData.wording);
+				$(".slide#stage #question").text(currentPredicate.wording);
 				$(".slide#stage #options").text("the "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle);
 				$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 				$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
-				
+
 				// show trial
 				showSlide("stage");
 
@@ -325,8 +318,5 @@ var experiment = {
 				});
 
 			}
-
 		}
-
 	}
-}
