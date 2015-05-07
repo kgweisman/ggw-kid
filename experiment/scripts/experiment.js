@@ -10,9 +10,9 @@ var done = false;
 // create experiment object
 var experiment = {
 	// array for making each new trial
-	predicates: surveysSlide.sequence.predicateOrder,
-	subsets: surveysSlide.sequence.subsetOrder,
-	totalTrials: 2 + surveysSlide.sequence.subsetOrder[0].length + surveysSlide.sequence.subsetOrder[1].length + surveysSlide.sequence.subsetOrder[2].length,
+	predicates: [],
+	subsets: [],
+	totalTrials: NaN,
 
 	// where to store all the data
 	newData: {
@@ -22,7 +22,7 @@ var experiment = {
 		// condition and session information
 		charIntroData: [],
 		condIntroOrder: [],
-		sequence: surveysSlide.sequence.seqName,
+		sequence: surveysSlide.sequence,
 		// condition: "",
 		// wording: "",
 

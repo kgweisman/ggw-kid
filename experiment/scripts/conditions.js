@@ -46,18 +46,10 @@ addSequence("sequence6", [conditions.hunger, conditions.feelings, conditions.thi
 // set up how to display surveys slide
 
 var surveysSlide = {
-	// condList: Object.keys(conditions).map(function (key) {return conditions[key]}),
-	seqList: Object.keys(sequences).map(function (key) {return sequences[key]}),
-	order: [],
-	// condition: ""
+	seqList: Object.keys(sequences).map(function (key) {return sequences[key]})
 }
 
-surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
-// surveysSlide.condition = randomElementNR(surveysSlide.condList);
-
-// experiment.newData.sequence = surveysSlide.sequence.seqName;
-// experiment.predicates = surveysSlide.sequence.predicateOrder;
-// experiment.subsets = surveysSlide.sequence.subsetOrder;
+// surveysSlide.sequence = randomElementNR(surveysSlide.seqList);
 
 // set up button behaviors
 
