@@ -126,6 +126,13 @@ div.beginning img {
 	margin: 20px;
 }
 
+.session-info {
+	padding: 500px auto 500px auto;
+	width: 220px;
+	margin: auto;
+	margin-top: 50px;
+}
+
 /*style table*/
 table {
 	text-align: justify;
