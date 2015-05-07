@@ -55,12 +55,12 @@ var practiceSlide = {
 			data.leftCharacter = currentPair[randomElementNR(sideBucket)];
 			data.rightCharacter = currentPair[sideBucket];
 
-			// display progress bar
-			var percentComplete = (data.trialNum-1)/2 * 100;
-			var percentCompleteRounded = Math.round(percentComplete);
+			// update progress bar
+			var percentComplete = (data.trialNum-1)/experiment.totalTrials * 100;
+			// var percentCompleteRounded = Math.round(percentComplete);
 			// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
-			$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
-			$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
+			$('#practice .progress-bar').attr("aria-valuenow", percentComplete.toString());
+			$('#practice .progress-bar').css("width", percentComplete.toString()+"%");
 
 			// set text and images for this practice trial
 			switch (data.trialNum) {

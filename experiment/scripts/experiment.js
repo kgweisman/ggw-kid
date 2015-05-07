@@ -12,6 +12,7 @@ var experiment = {
 	// array for making each new trial
 	predicates: surveysSlide.sequence.predicateOrder,
 	subsets: surveysSlide.sequence.subsetOrder,
+	totalTrials: 2 + surveysSlide.sequence.subsetOrder[0].length + surveysSlide.sequence.subsetOrder[1].length + surveysSlide.sequence.subsetOrder[2].length,
 
 	// where to store all the data
 	newData: {
@@ -162,16 +163,16 @@ var experiment = {
 
 		// if this is the very first test trial, or there are no more trials left in this block...
 		if ((experiment.newData.trialData.length === 2 & done === false) ||
-			currentPermutation.length === 0) { console.log("boo")
+			currentPermutation.length === 0) { 
 
 			// ...and this is the last block...
-			if (experiment.predicates.length === 0) { console.log("yo")
+			if (experiment.predicates.length === 0) { 
 
 				// ...end the experiment!
 				experiment.end();
 
 			// ...and this is NOT the last block...
-			} else { console.log("hey")
+			} else { 
 
 				// ...start a new block!
 
@@ -221,27 +222,27 @@ var experiment = {
 			}
 
 		// if there are more trials left in this block...
-		} else { console.log("bonjour")
+		} else { 
 
 				// ...start a new trial!
 				
-				// // update progress bar
-				// var percentComplete = (data.trialNum-1)/8 * 100;
-				// var percentCompleteRounded = Math.round(percentComplete);
-				// // $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
-				// $('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
-				// $('#stage .progress-bar').css("width", percentComplete.toString()+"%");
-
 				// create place to store data for this trial
 				var data = {
 					phase: "test",
-					// trialNum: 8 - experiment.subsets[0].length,
+					trialNum: experiment.newData.trialData.length + 1,
 					predicate: currentPredicate.condName,
 					leftCharacter: {},
 					rightCharacter: {},
 					response: "",
 					rt: NaN
 				};
+
+				// update progress bar
+				var percentComplete = (data.trialNum-1)/experiment.totalTrials * 100;
+				// var percentCompleteRounded = Math.round(percentComplete);
+				// $('#trial-num').text("trial "+data.trialNum.toString()+" of 78: "+percentCompleteRounded+"% complete");
+				$('#stage .progress-bar').attr("aria-valuenow", percentComplete.toString());
+				$('#stage .progress-bar').css("width", percentComplete.toString()+"%");
 
 				// set the left and right characters (random side assignment)
 				var currentPair = currentPermutation.shift();
