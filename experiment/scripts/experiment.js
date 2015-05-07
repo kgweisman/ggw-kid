@@ -192,10 +192,10 @@ var experiment = {
 					// choose a random permutation from the list
 					randomPermutation = randomElementNR(allPermutations);
 					console.log(randomPermutation);
+					errorLog = [];
 
 					// check whether there are overlaps
 					for (i = 0; i < (randomPermutation.length-1); i++) {
-						errorLog = [];
 
 					    if (randomPermutation[i+1][0].charName === randomPermutation[i][0].charName ||
 					      randomPermutation[i+1][0].charName === randomPermutation[i][1].charName ||
