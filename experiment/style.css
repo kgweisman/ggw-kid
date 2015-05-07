@@ -97,6 +97,11 @@ span#question {
 	text-align: center;
 }
 
+.title-text {
+	padding-top: 60px;
+	font-size: 120px;
+}
+
 .legal {
 	text-align: justify;
 	font-style: italic;
