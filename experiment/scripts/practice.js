@@ -51,9 +51,33 @@ var practiceSlide = {
 			};
 
 			// choose left/right sides for characters
-			var sideBucket = [0,1];
-			data.leftCharacter = currentPair[randomElementNR(sideBucket)];
-			data.rightCharacter = currentPair[sideBucket];
+
+			// if this is the second practice trial...
+			if (experiment.newData.trialData.length === 1) {
+
+				// get the left/right side of ice cream on the last trial
+				// and set the strawberries to the other side
+				var icecreamSide;
+				switch (experiment.newData.trialData[0].leftCharacter) {
+					case "icecream": 
+						data.leftCharacter = currentPair[0]; 
+						data.rightCharacter = currentPair[1]; 
+						break;
+					case "pizza": 
+						data.leftCharacter = currentPair[1]; 
+						data.rightCharacter = currentPair[0]; 
+						break;
+					default: 
+						console.log("uh-oh");
+				}
+				
+			} else {
+				
+				var sideBucket = [0,1];
+				data.leftCharacter = currentPair[randomElementNR(sideBucket)];
+				data.rightCharacter = currentPair[sideBucket];				
+			
+			}
 
 			// update progress bar
 			var percentComplete = (data.trialNum-1)/experiment.totalTrials * 100;
