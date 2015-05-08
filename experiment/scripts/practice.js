@@ -92,7 +92,7 @@ var practiceSlide = {
 					$(".slide#practice span#explanation").text("So here's how the game works. I'm going to show you pictures of two things: Do you know what this is? What about this? Then, I'm going to ask you a question about them. So this time, I want to know...");
 					break;
 				case 2:
-					$(".slide#practice span#explanation").text("Here's the next one. This time, is want to know...");
+					$(".slide#practice span#explanation").text("Here's the next one. This time, I want to know...");
 					break;
 				default: 
 					$(".slide#practice span#explanation").text("");

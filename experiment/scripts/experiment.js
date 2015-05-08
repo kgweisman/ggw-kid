@@ -251,7 +251,7 @@ var experiment = {
 
 				// set text and images for this trial
 				$(".slide#stage #question").text(currentPredicate.wording);
-				$(".slide#stage #options").text("the "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle);
+				$(".slide#stage #options").text("The "+data.leftCharacter.charTitle+", the "+data.rightCharacter.charTitle);
 				$("#stage #image-left").attr("src", data.leftCharacter.imageSource);
 				$("#stage #image-right").attr("src", data.rightCharacter.imageSource);
 
