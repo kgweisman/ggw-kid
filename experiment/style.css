@@ -87,7 +87,7 @@ span#question {
 	margin-left: auto;
 	margin-right: auto;
 	width: 500px;
-	font-weight: bold;
+	/*font-weight: bold;*/
 	color: rgb(50,10,100);
 	/*font-size: 20px;*/
 }
