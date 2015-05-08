@@ -12,9 +12,9 @@ function addCondition(condName, introLabel, introDescription, wording) {
 };
 
 conditions = {};
-addCondition("thinking", "thinking", "have thoughts or ideas", "think");
-addCondition("feelings", "feelings", "feel happy, or sad, or scared, or mad", "have feelings");
-addCondition("hunger", "getting hungry", "really need to eat some food", "get hungry");
+addCondition("thinking", "thinking", "", "think");
+addCondition("feelings", "feelings", " - like when you feel happy, or sad, or scared, or mad", "have feelings");
+addCondition("hunger", "getting hungry", "", "get hungry");
 
 
 /* set up list of sequences with blocks */ 
