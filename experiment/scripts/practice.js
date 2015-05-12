@@ -18,6 +18,13 @@ addPracticeCharacter("pizza", "pizza");
 addPracticeCharacter("grapes", "grapes");
 addPracticeCharacter("strawberries", "strawberries");
 
+// set up button behavior on pre-practice slide
+$(".slide#pre-practice button").click(function() {
+	window.scrollTo(0, 0);
+	practiceSlide.next();
+});
+
+// create practice slide
 var practiceSlide = {
 	trials: [[practiceCharacters.icecream, practiceCharacters.pizza], 
 	[practiceCharacters.grapes, practiceCharacters.strawberries]],
@@ -89,7 +96,7 @@ var practiceSlide = {
 			// set text and images for this practice trial
 			switch (data.trialNum) {
 				case 1: 
-					$(".slide#practice span#explanation").text("So here's how the game works. I'm going to show you pictures of two things: Do you know what this is? What about this? Then, I'm going to ask you a question about them. So this time, I want to know...");
+					$(".slide#practice span#explanation").text("Do you know what this is? What about this? Then, I'm going to ask you a question about them. So this time, I want to know...");
 					break;
 				case 2:
 					$(".slide#practice span#explanation").text("Here's the next one. This time, I want to know...");

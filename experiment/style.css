@@ -63,6 +63,7 @@ h2 {
 	margin: 20px auto 20px auto;
 	text-align: justify;
 	padding-top: 40px;
+	font-style: italic;
 	/*padding-bottom: 80px;*/
 }
 
@@ -80,7 +81,7 @@ h2 {
 
 span#explanation {
 	font-style: italic;
-	font-size: 11px;
+	font-size: 18px;
 }
 
 span#question {

@@ -109,7 +109,7 @@ var charactersSlide = {
 	},
 	end: function() {
 
-		practiceSlide.next();
+		showSlide("pre-practice");
 
 	},
 	next: function() {
