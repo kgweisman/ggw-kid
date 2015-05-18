@@ -33,7 +33,7 @@ body {
 }
 
 .slide#stage, .slide#practice {
-	padding-top: 30px;
+	padding-top: 20px;
 }
 
 /*style headings and other kinds of text*/
@@ -67,7 +67,7 @@ h2 {
 	/*padding-bottom: 80px;*/
 }
 
-#survey-descrip1, #survey-descrip2, #survey-descrip3, #survey-descrip4 {
+#survey-descrip1, #survey-descrip2, #survey-descrip3, #survey-descrip4, #survey-descrip-number {
 	font-weight: bold;
 	color: rgb(50,10,100);
 }
@@ -186,6 +186,25 @@ table#resultsTable {
 	padding: 10px;
 }
 
+table#progress-and-bail tr {
+	padding: 0;
+	vertical-align: top;
+	margin: 0;
+	height: 20px;
+}
+
+table#progress-and-bail tbody {
+	padding: 0;
+	vertical-align: top;
+	margin: 0;
+	height: 20px;
+}
+
+table#progress-and-bail td > div {
+	height: 20px;
+}
+
+
 .progress {
 	height: 10px;
 }
@@ -246,6 +265,16 @@ img#buttons {
 /*spacing between parts of demographics form*/
 .control-group {
 	margin-bottom: 30px;
+}
+
+/*style bail button*/
+button#bail {
+	height: 15px;
+	width: 30px;
+	font-size: 5px;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
 }
 
 /*style circle buttons*/

@@ -4,12 +4,13 @@
 var date = new Date();
 
 // set up "current" variables
-var currentPredicate, currentSubset, currentPermutation, allPermutations;
+var currentBlockNum, currentPredicate, currentSubset, currentPermutation, allPermutations;
 var done = false;
 
 // create experiment object
 var experiment = {
 	// array for making each new trial
+	blocks: [],
 	predicates: [],
 	subsets: [],
 	totalTrials: NaN,
@@ -177,6 +178,7 @@ var experiment = {
 				// ...start a new block!
 
 				// get the new predicate and new pairs subset
+				currentBlockNum = experiment.blocks.shift();
 				currentPredicate = experiment.predicates.shift();
 				currentSubset = experiment.subsets.shift();
 
@@ -214,6 +216,7 @@ var experiment = {
 				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
 				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
 				$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
+				$('.slide#surveys span#survey-descrip-number').text(currentBlockNum)
 				showSlide("surveys");
 
 				// mark this as done
@@ -301,7 +304,7 @@ var experiment = {
 							characterLess = data.leftCharacter.charName;
 							experiment.newData.charScores[characterMore].push(2);
 							experiment.newData.charScores[characterLess].push(-2);
-							break;
+							break;							
 						default:
 							console.log("whoops");
 					}
@@ -311,11 +314,15 @@ var experiment = {
 					data.rightCharacter = data.rightCharacter.charName;
 
 					// end trial
-					clickHandler();
-					$(".slide#stage button").unbind().blur();
-					window.scrollTo(0, 0);
-					experiment.next();
-
+					if (data.response === "bail") {
+						experiment.end();
+					} else {
+						clickHandler();
+						$(".slide#stage button").unbind().blur();
+						window.scrollTo(0, 0);
+						experiment.next();						
+					}
+					
 				});
 
 			}

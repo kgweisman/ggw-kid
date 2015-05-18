@@ -37,7 +37,7 @@
                 <div class="control-group">
                     <div class="controls">
                         <label for="sequence">sequence:</label>
-                        <input type="text" class="form-control" id="sequence" name="sequence" placeholder="1-6 (leave blank for random)" size="24"> 
+                        <input type="text" class="form-control" id="sequence" name="sequence" placeholder="1-6" size="24"> 
                     </div>
                 </div>
                 <div class="control-group">
@@ -152,7 +152,7 @@
 
   <div class="slide" id="surveys">
     <h1>Instructions</h1>
-    <p class="fun-text" id="survey-descrip">Now we're going to play a game about <span id="survey-descrip2">{{}}</span><span id="survey-descrip3">{{}}</span>. So I'll show you pictures of two things, and I want to know...</p>
+    <p class="fun-text" id="survey-descrip">Now we're ready for the <span id="survey-descrip-number">{{}}</span> part of my game. This part is about <span id="survey-descrip2">{{}}</span><span id="survey-descrip3">{{}}</span>. So I'll show you pictures of two things, and I want to know...</p>
     <p class="fun-text" id="descrip-question">Which one is more likely to <span id="survey-descrip4">{{}}</span>?</p>
     <div class="button" id = "form">
       <button type="submit" class="btn btn-default"id="17">Start<br />the game!</button>
@@ -165,9 +165,25 @@
 
       <!-- <p class="progress-text" id="trial-num" align="center">{{}}</p> -->
 
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+
+		<table id="progres-and-bail">
+			<colgroup>
+				<col style="width:95%">
+				<col style="width:5%">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>			
+					</td>
+					<td>
+						<button type="end" class="btn btn-default" id="bail" align="right">END</button>		
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
         <div class="question-wrapper">
             <p></p>

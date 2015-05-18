@@ -21,6 +21,7 @@ addCondition("hunger", "getting hungry", "", "get hungry");
 
 function addSequence(seqName, predicateOrder, subsetOrder) {
 	function Sequence(seqName, predicateOrder, subsetOrder) {
+		this.blocks = ["first", "next", "last"];
 		this.seqName = seqName;
 		this.predicateOrder = predicateOrder;
 		this.subsetOrder = subsetOrder;
@@ -42,6 +43,7 @@ addSequence("sequence5", [conditions.hunger, conditions.thinking, conditions.fee
 	[pairsSubsetE, pairsSubsetD, pairsSubsetF]);
 addSequence("sequence6", [conditions.hunger, conditions.feelings, conditions.thinking], 
 	[pairsSubsetF, pairsSubsetB, pairsSubsetE]);
+
 
 // set up how to display surveys slide
 
