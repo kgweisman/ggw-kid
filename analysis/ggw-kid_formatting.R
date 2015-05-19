@@ -5,126 +5,42 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(lme4)
-library(jsonlite)
 library(stats)
 library(stringr)
+library(lubridate)
 
 # clear environment
 rm(list=ls())
 
-# set up function for reading in data from JSON objects
-jsonFormat = function(wd, runName) {
-  # NOTE: requires dplyr and jsonlite packages
-  # library(jsonlite)
-  # library(dplyr)
-  
-  # set working directory
-  setwd(wd)
-  
-  # gather files
-  files = dir("production-results/")
-  
-  # make dataframe
-  d.raw = data.frame()
-  
-  for(i in 1:length(files)) {
-    
-    # gather files
-    f = files[i]
-    jf <- paste0("production-results/", f)
-    
-    # parse JSON object
-    jd <- fromJSON(paste(readLines(jf), collapse=""))
-    
-    # store relevant variables in dataframe 
-    id <- data.frame(
-      # run
-      run = runName,
-      
-      # subject-level data: identity
-      subid = paste0(runName, "_", i),
-      sequence = jd$answers$data$newData$sequence,
-      
-      # subject-level data: demographics
-      country = ifelse(
-        is.null(jd$answers$data$newData$country) == TRUE, NA,
-        jd$answers$data$newData$country),    
-      age = ifelse(
-        is.null(jd$answers$data$newData$age) == TRUE, NA,
-        jd$answers$data$newData$age),
-      gender = ifelse(
-        is.null(jd$answers$data$newData$gender) == TRUE, NA,
-        jd$answers$data$newData$gender),
-      englishNative = ifelse(
-        is.null(jd$answers$data$newData$englishNative) == TRUE, NA,
-        jd$answers$data$newData$englishNative),
-      ethnicity = ifelse(
-        is.null(jd$answers$data$newData$ethnicity) == TRUE, NA,
-        paste(jd$answers$data$newData$ethnicity, collapse = ', ')),
-      education = ifelse(
-        is.null(jd$answers$data$newData$education) == TRUE, NA,
-        jd$answers$data$newData$education),
-      religionChild = ifelse(
-        is.null(jd$answers$data$newData$religionChild) == TRUE, NA,
-        paste(jd$answers$data$newData$religionChild, collapse = ', ')),
-      religionNow = ifelse(
-        is.null(jd$answers$data$newData$religionNow) == TRUE, NA,
-        paste(jd$answers$data$newData$religionNow, collapse = ', ')),
-      job = ifelse(
-        is.null(jd$answers$data$newData$job) == TRUE | 
-          jd$answers$data$newData$job == "", NA,
-        jd$answers$data$newData$job),
-            
-      # subject-level data: open-ended responses
-      comments = ifelse(
-        is.null(jd$answers$data$newData$comments) | 
-          jd$answers$data$newData$comments == "", NA,
-        jd$answers$data$newData$comments),
-      
-      # trial-level data:                    
-      phase = jd$answers$data$newData$trialData$phase,
-      predicate = jd$answers$data$newData$trialData$predicate,
-      trialNum = jd$answers$data$newData$trialData$trialNum,
-      leftCharacter = jd$answers$data$newData$trialData$leftCharacter,
-      rightCharacter = jd$answers$data$newData$trialData$rightCharacter,
-      response = jd$answers$data$newData$trialData$response,
-      rt = jd$answers$data$newData$trialData$rt)
-    
-    # bind into same dataframe
-    d.raw = bind_rows(d.raw, id)
-  }
-  
-  return(d.raw)
-}
-
 # --- READING IN DATA OBJECTS -------------------------------------------------
 
-# US run 01 (2015-05-09)
-d_us_run_01 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/turk/us_run-01/",
-  runName = "us_run_01")
+# kid run 01 (2015-05-09)
+files_run01 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/")
+
+d_kid_run_01_raw <- data.frame()
+
+for(i in 1:length(files_run01)) {
+  # gather files
+  f = files_run01[i]
+  d_temp = read.csv(paste0("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/", files_run01[i]))
+  d_kid_run_01_raw = bind_rows(d_kid_run_01_raw, d_temp)
+}
+
+glimpse(d_kid_run_01_raw)
 
 # --- TIDYING -----------------------------------------------------------------
 
 # clean up variables
-d_tidy = d_us_run_01 %>%
-#   full_join(d_us_run_02) %>% ...etc.
+d_tidy = d_kid_run_01_raw %>%
+#   full_join(d_kid_run_02_raw) %>% ...etc.
   mutate(
-    run = factor(run),
     subid = factor(subid),
-    country_selfrep = factor(country),
-    country = factor(ifelse(grepl("india", subid) == T, "india", 
-                            ifelse(grepl("us", subid) == T, "us",
-                                   NA))),
     sequence = factor(sequence),
-    age = as.numeric(age),
+    dateOfBirth = parse_date_time(dateOfBirth, orders = "mdy"),
+    dateOfTest = parse_date_time(dateOfTest, orders = "mdy"),
+    ageCalc = as.numeric((dateOfTest - dateOfBirth)/365),
     gender = factor(gender),
     ethnicity = factor(ethnicity),
-    education = factor(education),
-    religionChild = factor(religionChild),
-    religionNow = factor(religionNow),
-    englishNative = factor(englishNative),
-    job = factor(job),
     predicate = factor(predicate),
     leftCharacter = factor(leftCharacter),
     rightCharacter = factor(rightCharacter),
@@ -132,30 +48,26 @@ d_tidy = d_us_run_01 %>%
     responseNum =
       ifelse(response == "much more left", -2,
              ifelse(response == "slightly more left", -1,
-                    ifelse(response == "both equally", 0,
+                    ifelse(response == "both", 0,
                            ifelse(response == "slightly more right", 1,
-                                  ifelse(response == "much more right", 2, NA)))))
-    )
+                                  ifelse(response == "much more right", 2, NA))))),
+    experimenter = factor(experimenter),
+    testingSite = factor(testingSite)
+    ) %>%
+  select(-dateOfBirth, -dateOfTest)
 
 glimpse(d_tidy)
 
-# --- FILTERING BY REPORTED PROBLEMS AND BY PRACTICE TRIAL #1 (COLDER) --------
-
-# view comments
-comments = d_tidy %>%
-  #   filter(country == "india") %>%
-  select(sequence, subid, comments) %>%
-  distinct() %>%
-  filter(comments != "NA")
-# View(comments)
+# --- FILTERING BY PROBLEMS AND BY PRACTICE TRIAL #1 (COLDER) -----------------
 
 # exclude people who said they had problems loading pictures
 # NOTE: make sure to redo whenever new participants are added!!
-d_tidy = d_tidy %>%
-  filter(subid != "us_run_01_10",
-         subid != "us_run_01_34")
+# d_tidy = d_tidy %>%
+#   filter(subid != "XX",
+#          subid != "XX")
 
 subidsToKeep = d_tidy %>%
+  select(-ageCalc) %>%
   filter(predicate == "colder") %>%
   mutate(drop = ifelse(leftCharacter == "icecream",
                        ifelse(responseNum >= 0, 
@@ -174,27 +86,27 @@ d_tidy = d_tidy %>%
 
 # --- EVENING OUT CONDITION ASSIGNMENT ----------------------------------------
 
-# randomly choose N participants from each sequence
-n = 10 # set number to choose
-subidList = d_tidy %>%
-  select(sequence, subid) %>%
-  distinct() %>%
-  group_by(sequence) %>%
-  sample_n(n, replace = FALSE)
-
-d_tidy = d_tidy %>%
-  filter(is.element(subid, subidList$subid))
-  
-# check
-d_tidy %>% group_by(sequence) %>% select(subid) %>% unique() %>% summarise(count = length(subid))
+# # randomly choose N participants from each sequence
+# n = 10 # set number to choose
+# subidList = d_tidy %>%
+#   select(sequence, subid) %>%
+#   distinct() %>%
+#   group_by(sequence) %>%
+#   sample_n(n, replace = FALSE)
+# 
+# d_tidy = d_tidy %>%
+#   filter(is.element(subid, subidList$subid))
+#   
+# # check
+# d_tidy %>% group_by(sequence) %>% select(subid) %>% unique() %>% summarise(count = length(subid))
 
 # --- WRITING ANONYMIZED CSV --------------------------------------------------
 
-# write subidList to csv file
-write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/randomized_subidList.csv")
+# # write subidList to csv file
+# write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/randomized_subidList.csv")
 
 # write data to de-identified csv file
-write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_data_anonymized.csv")
+write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")
 
-d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
