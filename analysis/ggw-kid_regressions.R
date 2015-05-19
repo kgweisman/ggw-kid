@@ -22,7 +22,7 @@ dev.off()
 # --- IMPORTING DATA ----------------------------------------------------------
 
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
@@ -586,7 +586,7 @@ ggplot(aes(x = reorder(pair,
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
   labs(title = "MEAN COMPARISON SCORES\nby character pair\n(THINKING only)\n",
-       x = "\nCHARACTER PAIR",
+       x = "\nCHARACTER PAIR"
 #        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
 #        fill = "PAIR CATEGORY"
 )
