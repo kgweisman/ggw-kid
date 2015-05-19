@@ -22,31 +22,14 @@ dev.off()
 # --- IMPORTING DATA ----------------------------------------------------------
 
 # read in data: character means
-d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_charmeans.csv")[-1] # get rid of column of obs numbers
+# d = xx
 
-glimpse(d)
+# glimpse(d)
 
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
-
-# --- FILTERING BY COUNTRY ----------------------------------------------------
-
-# d_us = d %>% filter(country == "us")
-# dd_us = dd %>% filter(country == "us")
-# 
-# d_india = d %>% filter(country == "india")
-# dd_india = dd %>% filter(country == "india")
-
-# set group of interest
-# # ... to US:
-# d = d_us
-# dd = dd_us
-
-# # ... to India:
-# d = d_india
-# dd = dd_india
 
 # --- FILTERING BY ETHNICITY --------------------------------------------------
 
@@ -174,41 +157,11 @@ demo %>% count(gender)
 demo %>% count(ethnicity)
 
 # age
-demo %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
-qplot(demo$age)
+demo %>% summarise(mean_age = mean(ageCalc, na.rm = T), sd_age = sd(ageCalc, na.rm = T))
+qplot(demo$ageCalc)
 
 # demo %>% filter(age < 100) %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
 # qplot(demo$age[demo$age < 100])
-
-# education
-levels(demo$education) = c("hs_some", "hs_diploma", "college_some", 
-                     "college_assocDegree", "college_bachDegree",
-                     "grad_some", "grad_degree", "other_prefNo")
-demo %>% count(education)
-
-# englishNative
-demo %>% count(englishNative)
-
-# religionChild
-demo %>% count(religionChild)
-
-demo = demo %>%
-  filter(religionChild != "prefNo" & religionChild != "NA") %>%
-  mutate(religCat = ifelse(grepl("christ", religionChild) == T |
-                             religionChild == "judaism",
-                           "judeo-christian",
-                           ifelse(religionChild == "none",
-                                  "non-religious",
-                                  "other religious")))
-demo %>% count(religCat)
-
-# religionNow
-demo %>% count(religionNow)
-
-# job
-View(demo %>% 
-  mutate(job = factor(tolower(as.character(job)))) %>%
-  count(job))
 
 ################################################### analysis & plots pt 1 #####
 

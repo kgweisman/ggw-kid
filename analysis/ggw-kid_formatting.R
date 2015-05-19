@@ -14,7 +14,7 @@ rm(list=ls())
 
 # --- READING IN DATA OBJECTS -------------------------------------------------
 
-# kid run 01 (2015-05-09)
+# kid run 01 (2015-05-19)
 files_run01 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/")
 
 d_kid_run_01_raw <- data.frame()
