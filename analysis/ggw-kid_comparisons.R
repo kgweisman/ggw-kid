@@ -21,44 +21,15 @@ dev.off()
 
 # --- IMPORTING DATA ----------------------------------------------------------
 
-# read in data: character means
-d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_charmeans.csv")[-1] # get rid of column of obs numbers
-
-glimpse(d)
-
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/data/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
-# --- FILTERING BY COUNTRY ----------------------------------------------------
-
-# d_us = d %>% filter(country == "us")
-# dd_us = dd %>% filter(country == "us")
-# 
-# d_india = d %>% filter(country == "india")
-# dd_india = dd %>% filter(country == "india")
-
-# set group of interest
-# # ... to US:
-# d = d_us
-# dd = dd_us
-
-# # ... to India:
-# d = d_india
-# dd = dd_india
-
 # --- FILTERING BY ETHNICITY --------------------------------------------------
 
-d_white = d %>%
-  filter(ethnicity == "white")
 dd_white = dd %>%
   filter(ethnicity == "white")
-
-d_nonwhite = d %>%
-  filter(ethnicity != "white" & 
-           ethnicity != "NA" & 
-           ethnicity != "other_prefNo")
 
 dd_nonwhite = dd %>%
   filter(ethnicity != "white" & 
@@ -67,11 +38,9 @@ dd_nonwhite = dd %>%
 
 # set group of interest
 # ... to white:
-# d = d_white
 # dd = dd_white
 
 # # ... to nonwhite:
-# d = d_nonwhite
 # dd = dd_nonwhite
 
 # --- FORMATTING DATA ---------------------------------------------------------
@@ -619,3 +588,4 @@ coarse.summary = temp2 %>%
   summarise(avg.feelings = mean(feelings, na.rm = T),
             avg.hunger = mean(hunger, na.rm = T),
             avg.thinking = mean(thinking, na.rm = T))
+

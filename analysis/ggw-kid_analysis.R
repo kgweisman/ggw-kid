@@ -21,11 +21,6 @@ dev.off()
 
 # --- IMPORTING DATA ----------------------------------------------------------
 
-# read in data: character means
-# d = xx
-
-# glimpse(d)
-
 # read in data: individual scores
 dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
@@ -33,15 +28,8 @@ glimpse(dd)
 
 # --- FILTERING BY ETHNICITY --------------------------------------------------
 
-d_white = d %>%
-  filter(ethnicity == "white")
 dd_white = dd %>%
   filter(ethnicity == "white")
-
-d_nonwhite = d %>%
-  filter(ethnicity != "white" & 
-           ethnicity != "NA" & 
-           ethnicity != "other_prefNo")
 
 dd_nonwhite = dd %>%
   filter(ethnicity != "white" & 
@@ -50,11 +38,9 @@ dd_nonwhite = dd %>%
 
 # set group of interest
 # ... to white:
-# d = d_white
 # dd = dd_white
 
 # # ... to nonwhite:
-# d = d_nonwhite
 # dd = dd_nonwhite
 
 # --- FORMATTING DATA ---------------------------------------------------------
