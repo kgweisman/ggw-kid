@@ -11,6 +11,7 @@ var done = false;
 var experiment = {
 	// array for making each new trial
 	blocks: [],
+	anothers: ["the first thing", "another thing", "the last thing"],
 	predicates: [],
 	subsets: [],
 	totalTrials: NaN,
@@ -179,6 +180,7 @@ var experiment = {
 
 				// get the new predicate and new pairs subset
 				currentBlockNum = experiment.blocks.shift();
+				currentBlockAnother = experiment.anothers.shift();
 				currentPredicate = experiment.predicates.shift();
 				currentSubset = experiment.subsets.shift();
 
@@ -216,7 +218,8 @@ var experiment = {
 				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
 				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
 				$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
-				$('.slide#surveys span#survey-descrip-number').text(currentBlockNum)
+				$('.slide#surveys span#survey-descrip-number').text(currentBlockNum);
+				$('.slide#surveys span#survey-descrip-another').text(currentBlockAnother);
 				showSlide("surveys");
 
 				// mark this as done

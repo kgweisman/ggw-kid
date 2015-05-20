@@ -21,7 +21,7 @@ addCondition("hunger", "getting hungry", "", "get hungry");
 
 function addSequence(seqName, predicateOrder, subsetOrder) {
 	function Sequence(seqName, predicateOrder, subsetOrder) {
-		this.blocks = ["first", "next", "last"];
+		this.blocks = ["next", "next", "last"];
 		this.seqName = seqName;
 		this.predicateOrder = predicateOrder;
 		this.subsetOrder = subsetOrder;
