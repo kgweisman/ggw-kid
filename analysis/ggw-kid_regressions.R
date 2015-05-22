@@ -22,7 +22,7 @@ dev.off()
 # --- IMPORTING DATA ----------------------------------------------------------
 
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
