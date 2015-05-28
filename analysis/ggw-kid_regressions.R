@@ -595,7 +595,7 @@ ggplot(aes(x =
         legend.position = "none",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
-  labs(title = "MEAN COMPARISON SCORES\nby character pair\n",
+  labs(title = "MEAN COMPARISON SCORES\nby character pair category\n",
        x = "\nCHARACTER PAIR CATEGORY",
        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
 
