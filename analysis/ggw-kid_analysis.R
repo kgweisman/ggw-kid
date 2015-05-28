@@ -660,36 +660,69 @@ plot(mds_hunger_Aordinal,
 ################################################### analysis & plots pt 4 #####
 
 # --- HIERARCHICAL CLUSTER ANALYSIS A -----------------------------------------
-# Roughly equivalent to pca_A
-# Could also do the parallel version of pca_B
-
-# Construct dissimilarity matrix
-d2 = as.dist((1-cor(d1))/2) # NEED TO CHECK ON WHY WE DIVIDE CORRELATIONS BY 2
-
-# Conduct hierarchical cluster analysis
-hca = hclust(d2); hca
-
-# Plot dendogram
-par(mfrow=c(1,2))
-rs1=hclust(d2)
-rs1$merge
-plot(rs1$height)
-plot(rs1)
+# IS THIS RIGHT???
+# # Roughly equivalent to pca_A
+# # Could also do the parallel version of pca_B
+# 
+# # Construct dissimilarity matrix
+# d2 = as.dist((1-cor(d1))/2) # NEED TO CHECK ON WHY WE DIVIDE CORRELATIONS BY 2
+# 
+# # Conduct hierarchical cluster analysis
+# hca = hclust(d2); hca
+# 
+# # Plot dendogram
+# par(mfrow=c(1,2))
+# rs1=hclust(d2)
+# rs1$merge
+# plot(rs1$height)
+# plot(rs1)
 
 # --- HIERARCHICAL CLUSTER ANALYSIS B -----------------------------------------
 # Roughly equivalent to pca_B
 
-# Construct dissimilarity matrix
-d1b = t(d1)
-d2b = as.dist((1-cor(d1b))/2) # NEED TO CHECK ON WHY WE DIVIDE CORRELATIONS BY 2
+# ...for all conditions
 
 # Conduct hierarchical cluster analysis
-hcb = hclust(d2b); hcb
+hcb = hclust(dissim); hcb
 
 # Plot dendogram
 par(mfrow=c(1,2))
-rs2=hclust(d2b)
-rs2$merge
-plot(rs2$height)
-plot(rs2)
+hcb$merge
+plot(hcb$height)
+plot(hcb)
+
+# ...for thinking
+
+# Conduct hierarchical cluster analysis
+hcb_thinking = hclust(dissim_thinking); hcb_thinking
+
+# Plot dendogram
+par(mfrow=c(1,2))
+hcb_thinking$merge
+plot(hcb_thinking$height)
+plot(hcb_thinking)
+
+# ...for feelings
+
+# Conduct hierarchical cluster analysis
+hcb_feelings = hclust(dissim_feelings); hcb_feelings
+
+# Plot dendogram
+par(mfrow=c(1,2))
+hcb_feelings$merge
+plot(hcb_feelings$height)
+plot(hcb_feelings)
+
+# ...for hunger
+
+# Conduct hierarchical cluster analysis
+hcb_hunger = hclust(dissim_hunger); hcb_hunger
+
+# Plot dendogram
+par(mfrow=c(1,2))
+hcb_hunger$merge
+plot(hcb_hunger$height)
+plot(hcb_hunger)
+
+
 
