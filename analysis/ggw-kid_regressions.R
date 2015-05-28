@@ -22,7 +22,7 @@ dev.off()
 # --- IMPORTING DATA ----------------------------------------------------------
 
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-27_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
@@ -516,23 +516,24 @@ r2 = lmer(responseNumFlip ~ pair + predicate + (1 | subid), d1); summary(r2)
 r3 = lmer(responseNumFlip ~ pair * predicate + (1 | subid), d1); summary(r3)
 anova(r1, r2, r3)
   
-# plot
+# plot by pair ----
 plotTable = d1 %>% 
   group_by(predicate, pairCat, pair) %>% 
   summarise(mean = mean(responseNumFlip, na.rm = T),
             sd = sd(responseNumFlip, na.rm = T),
             n = length(responseNumFlip))
 
-ggplot(aes(x = reorder(pair, 
-                       as.numeric(
-                         factor(pairCat,
-                                levels = c("human.human",
-                                           "animal.animal",
-                                           "tech.tech",
-                                           "human.animal",
-                                           "human.tech",
-                                           "animal.tech",
-                                           "control")))), 
+ggplot(aes(x = 
+             reorder(pair,
+                     as.numeric(
+                       factor(pairCat,
+                              levels = c("human.human",
+                                         "animal.animal",
+                                         "tech.tech",
+                                         "human.animal",
+                                         "human.tech",
+                                         "animal.tech",
+                                         "control")))),
            y = mean, 
            fill = pairCat), 
        data = plotTable) +
@@ -544,32 +545,40 @@ ggplot(aes(x = reorder(pair,
   geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
                     ymax = mean + 2*sd/sqrt(n),
                     width = 0.1)) +
+  geom_hline(aes(yintercept = 0), lty = 2) +
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
   theme(text = element_text(size = 20),
-#         legend.position = "bottom",
+        legend.position = "top",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
   labs(title = "MEAN COMPARISON SCORES\nby character pair\n",
        x = "\nCHARACTER PAIR",
        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
-       fill = "PAIR CATEGORY")
+       fill = "PAIR CATEGORY: ")
 
-# looking only at thinking
-ggplot(aes(x = reorder(pair, 
-                       as.numeric(
-                         factor(pairCat,
-                                levels = c("human.human",
-                                           "animal.animal",
-                                           "tech.tech",
-                                           "human.animal",
-                                           "human.tech",
-                                           "animal.tech",
-                                           "control")))), 
+# plot by pair category ----
+plotTable2 = d1 %>% 
+  group_by(predicate, pairCat) %>% 
+  summarise(mean = mean(responseNumFlip, na.rm = T),
+            sd = sd(responseNumFlip, na.rm = T),
+            n = length(responseNumFlip))
+
+ggplot(aes(x = 
+             reorder(pairCat,
+                     as.numeric(
+                       factor(pairCat,
+                              levels = c("human.human",
+                                         "animal.animal",
+                                         "tech.tech",
+                                         "human.animal",
+                                         "human.tech",
+                                         "animal.tech",
+                                         "control")))),
            y = mean, 
            fill = pairCat), 
-       data = plotTable %>% filter(predicate == "thinking")) +
+       data = plotTable2) +
   facet_grid(predicate ~ .,
              labeller = labeller(predicate = c("hunger" = "...get hungry",
                                                "feelings" = "...have feelings",
@@ -578,6 +587,7 @@ ggplot(aes(x = reorder(pair,
   geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
                     ymax = mean + 2*sd/sqrt(n),
                     width = 0.1)) +
+  geom_hline(aes(yintercept = 0), lty = 2) +
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
@@ -585,12 +595,8 @@ ggplot(aes(x = reorder(pair,
         legend.position = "none",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
-  labs(title = "MEAN COMPARISON SCORES\nby character pair\n(THINKING only)\n",
-       x = "\nCHARACTER PAIR"
-#        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
-#        fill = "PAIR CATEGORY"
-)
+  labs(title = "MEAN COMPARISON SCORES\nby character pair\n",
+       x = "\nCHARACTER PAIR CATEGORY",
+       y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
 
 
-  
-  
