@@ -18,10 +18,15 @@ addPracticeCharacter("pizza", "pizza");
 addPracticeCharacter("grapes", "grapes");
 addPracticeCharacter("strawberries", "strawberries");
 
-// set up button behavior on pre-practice slide
+// set up button behavior on pre-practice slides
 $(".slide#pre-practice button").click(function() {
 	window.scrollTo(0, 0);
 	practiceSlide.next();
+});
+
+$(".slide#easy-hard button").click(function() {
+	window.scrollTo(0, 0);
+	experiment.next();
 });
 
 // create practice slide
@@ -31,7 +36,8 @@ var practiceSlide = {
 	predicates: ["colder", "sweeter"],
 	end: function() {
 
-		experiment.next();
+		window.scrollTo(0, 0);
+		showSlide("easy-hard");
 
 	},
 	next: function() {

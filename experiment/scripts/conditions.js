@@ -12,7 +12,7 @@ function addCondition(condName, introLabel, introDescription, wording) {
 };
 
 conditions = {};
-addCondition("thinking", "thinking", "", "think");
+addCondition("thinking", "thinking", " - like when you have an idea, or you're trying to figure something out", "think");
 addCondition("feelings", "feelings", " - like when you feel happy, or sad, or scared, or mad", "have feelings");
 addCondition("hunger", "getting hungry", "", "get hungry");
 
@@ -21,7 +21,7 @@ addCondition("hunger", "getting hungry", "", "get hungry");
 
 function addSequence(seqName, predicateOrder, subsetOrder) {
 	function Sequence(seqName, predicateOrder, subsetOrder) {
-		this.blocks = ["next", "next", "last"];
+		this.blocks = ["first", "next", "last"];
 		this.seqName = seqName;
 		this.predicateOrder = predicateOrder;
 		this.subsetOrder = subsetOrder;

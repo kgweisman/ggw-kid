@@ -59,10 +59,10 @@ h2 {
 }
 
 .fun-text#survey-descrip {
-	width: 400px;
+	width: 500px;
 	margin: 20px auto 20px auto;
 	text-align: justify;
-	padding-top: 40px;
+	padding-top: 20px;
 	font-style: italic;
 	/*padding-bottom: 80px;*/
 }
@@ -76,7 +76,7 @@ h2 {
 	font-size: 32px;
 	text-align: center;
 	padding-top: 10px;
-	padding-bottom: 40px;
+	padding-bottom: 60px;
 }
 
 span#explanation {
@@ -88,9 +88,13 @@ span#question {
 	margin-left: auto;
 	margin-right: auto;
 	width: 500px;
-	/*font-weight: bold;*/
+	font-weight: bold;
 	color: rgb(50,10,100);
 	/*font-size: 20px;*/
+}
+
+#practice span#question {
+	font-weight: normal;
 }
 
 .fun-text#ranking-intro {
@@ -131,10 +135,6 @@ div.beginning img {
 	width: 70%;
 	height: 70%;
 	padding: 500px;
-}
-
-.beginning button {
-	margin: 20px;
 }
 
 .session-info {
@@ -223,10 +223,11 @@ table#progress-and-bail td > div {
 /*center buttons*/
 .button {
 	text-align: center;
-}
-
-#characters .button {
-	margin-top: 120px;
+	/*margin-left: 50%;*/
+	/*margin-right: 0%;*/
+	position: absolute;
+	right: 4%;
+	bottom: 5%;
 }
 
 /*display images during character introduction and results slides*/

@@ -4,13 +4,14 @@
 var date = new Date();
 
 // set up "current" variables
-var currentBlockNum, currentPredicate, currentSubset, currentPermutation, allPermutations;
+var currentHelper, currentBlockNum, currentPredicate, currentSubset, currentPermutation, allPermutations;
 var done = false;
 
 // create experiment object
 var experiment = {
 	// array for making each new trial
 	blocks: [],
+	helpers: ["", "You're being such a great helper! ", "You are really being an awesome helper. "],
 	anothers: ["the first thing", "another thing", "the last thing"],
 	predicates: [],
 	subsets: [],
@@ -179,6 +180,7 @@ var experiment = {
 				// ...start a new block!
 
 				// get the new predicate and new pairs subset
+				currentHelper = experiment.helpers.shift();
 				currentBlockNum = experiment.blocks.shift();
 				currentBlockAnother = experiment.anothers.shift();
 				currentPredicate = experiment.predicates.shift();
@@ -214,12 +216,20 @@ var experiment = {
 				currentPermutation = randomPermutation;
 
 				// set up and display the instructions slide for this block
+				$('.slide#surveys span#helper').text(currentHelper)
 				$('.slide#surveys span#survey-descrip1').text(currentPredicate.condName)
 				$('.slide#surveys span#survey-descrip2').text(currentPredicate.introLabel);
 				$('.slide#surveys span#survey-descrip3').text(currentPredicate.introDescription);
 				$('.slide#surveys span#survey-descrip4').text(currentPredicate.wording);
-				$('.slide#surveys span#survey-descrip-number').text(currentBlockNum);
 				$('.slide#surveys span#survey-descrip-another').text(currentBlockAnother);
+
+				if (currentBlockNum === "first") {
+					$('.slide#surveys span#ready').hide();
+				} else {
+					$('.slide#surveys span#ready').show();
+					$('.slide#surveys span#survey-descrip-number').text(currentBlockNum);
+				}
+
 				showSlide("surveys");
 
 				// mark this as done
