@@ -14,7 +14,7 @@ rm(list=ls())
 
 # --- READING IN DATA OBJECTS -------------------------------------------------
 
-# kid run 01 (2015-05-28)
+# kid run 01 (2015-06-10)
 files_run01 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/")
 
 d_kid_run_01_raw <- data.frame()
@@ -106,7 +106,7 @@ d_tidy = d_tidy %>%
 # write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/randomized_subidList.csv")
 
 # write data to de-identified csv file
-write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-28_data_anonymized.csv")
+write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-10_data_anonymized.csv")
 
-d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-28_data_anonymized.csv")[-1] # get rid of column of obs numbers
+d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-10_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
