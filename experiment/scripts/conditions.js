@@ -12,7 +12,7 @@ function addCondition(condName, introLabel, introDescription, wording) {
 };
 
 conditions = {};
-addCondition("thinking", "thinking", " - like when you have an idea, or you're trying to figure something out", "think");
+addCondition("thinking", "thinking", "", "think");
 addCondition("feelings", "feelings", " - like when you feel happy, or sad, or scared, or mad", "have feelings");
 addCondition("hunger", "getting hungry", "", "get hungry");
 
