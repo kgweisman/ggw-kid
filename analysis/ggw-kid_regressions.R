@@ -22,16 +22,23 @@ dev.off()
 # --- IMPORTING DATA ----------------------------------------------------------
 
 # read in data: individual scores
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-05-27_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# # ... FULL DATASET
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-07-15_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# 
+# # ... RUN01
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
+
+# ... RUN02
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-07-15_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
 # --- FILTERING BY ETHNICITY --------------------------------------------------
 
-d_white = d %>%
+dd_white = dd %>%
   filter(ethnicity == "white")
 
-d_nonwhite = d %>%
+dd_nonwhite = dd %>%
   filter(ethnicity != "white" & 
            ethnicity != "NA" & 
            ethnicity != "other_prefNo")
