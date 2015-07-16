@@ -44,6 +44,10 @@ for(i in 1:length(files_run02)) {
 
 d_kid_run_02_raw = d_kid_run_02_raw %>% mutate(run = factor("run02"))
 
+# exclude kids by hand (for now)
+d_kid_run_02_raw = d_kid_run_02_raw %>% filter(leftCharacter != "CHECK VIDEO" &
+                                                 rightCharacter != "CHECK VIDEO")
+
 glimpse(d_kid_run_02_raw)
 
 # --- TIDYING -----------------------------------------------------------------
