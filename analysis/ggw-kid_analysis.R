@@ -730,6 +730,3 @@ par(mfrow=c(1,2))
 hcb_hunger$merge
 plot(hcb_hunger$height)
 plot(hcb_hunger)
-
-
-
