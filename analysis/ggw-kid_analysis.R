@@ -50,6 +50,15 @@ dd_nonwhite = dd %>%
 # # ... to nonwhite:
 # dd = dd_nonwhite
 
+# --- FILTERING BY AGE --------------------------------------------------------
+
+dd_exact = dd %>%
+  filter(ageCalc >= 4.5 & ageCalc <= 5.5)
+
+# set group of interest
+# ... to exact:
+dd = dd_exact
+
 # --- FORMATTING DATA ---------------------------------------------------------
 
 # make table of character means by mental capacity
