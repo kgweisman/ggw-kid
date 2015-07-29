@@ -7,3 +7,5 @@ turk/*/sandbox-results/
 .RData
 .Rhistory
 data/
+.Rproj.user
+*.Rproj
