@@ -35,13 +35,13 @@ glimpse(dd)
 
 # --- FILTERING BY ETHNICITY --------------------------------------------------
 
-dd_white = dd %>%
-  filter(ethnicity == "white")
-
-dd_nonwhite = dd %>%
-  filter(ethnicity != "white" & 
-           ethnicity != "NA" & 
-           ethnicity != "other_prefNo")
+# dd_white = dd %>%
+#   filter(ethnicity == "white")
+# 
+# dd_nonwhite = dd %>%
+#   filter(ethnicity != "white" & 
+#            ethnicity != "NA" & 
+#            ethnicity != "other_prefNo")
 
 # set group of interest
 # ... to white:
@@ -712,9 +712,9 @@ plot(mds_hunger_Aordinal,
 hcb = hclust(dissim); hcb
 
 # Plot dendogram
-par(mfrow=c(1,2))
-hcb$merge
-plot(hcb$height)
+# par(mfrow=c(1,2))
+# hcb$merge
+# plot(hcb$height)
 plot(hcb)
 
 # ...for thinking
@@ -723,9 +723,9 @@ plot(hcb)
 hcb_thinking = hclust(dissim_thinking); hcb_thinking
 
 # Plot dendogram
-par(mfrow=c(1,2))
-hcb_thinking$merge
-plot(hcb_thinking$height)
+# par(mfrow=c(1,2))
+# hcb_thinking$merge
+# plot(hcb_thinking$height)
 plot(hcb_thinking)
 
 # ...for feelings
@@ -734,9 +734,9 @@ plot(hcb_thinking)
 hcb_feelings = hclust(dissim_feelings); hcb_feelings
 
 # Plot dendogram
-par(mfrow=c(1,2))
-hcb_feelings$merge
-plot(hcb_feelings$height)
+# par(mfrow=c(1,2))
+# hcb_feelings$merge
+# plot(hcb_feelings$height)
 plot(hcb_feelings)
 
 # ...for hunger
@@ -745,7 +745,7 @@ plot(hcb_feelings)
 hcb_hunger = hclust(dissim_hunger); hcb_hunger
 
 # Plot dendogram
-par(mfrow=c(1,2))
-hcb_hunger$merge
-plot(hcb_hunger$height)
+# par(mfrow=c(1,2))
+# hcb_hunger$merge
+# plot(hcb_hunger$height)
 plot(hcb_hunger)
