@@ -625,4 +625,21 @@ ggplot(aes(x =
        x = "\nCHARACTER PAIR CATEGORY",
        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
 
-
+# plot by pair category: different facets/axes ----
+ggplot(aes(x = interaction(predicate, pairCat),
+           y = mean,
+           group = predicate,
+           fill = predicate),
+       data = plotTable2) +
+  geom_bar(stat = "identity", position = "identity") + 
+  geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
+                    ymax = mean + 2*sd/sqrt(n),
+                    width = 0.1)) +
+  geom_hline(aes(yintercept = 0), lty = 2) +
+  theme_bw() +
+  scale_fill_brewer(type = "qual",
+                    palette = 2) +
+  theme(text = element_text(size = 20),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60,
+                                   hjust = 1))
