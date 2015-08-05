@@ -23,13 +23,13 @@ dev.off()
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-07-30_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-07-30_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
@@ -536,11 +536,12 @@ contrasts(d1$predicate) = cbind(bio.v.nonbio = c(-1,2,-1),
                                 think.v.feel = c(1,0,-1))
 
 r0 = lm(responseNumFlip ~ pair, d1); summary(r0)
-r1 = lmer(responseNumFlip ~ pair + (1 | subid), d1); summary(r1)
+r1 = lmer(responseNumFlip ~ pair + (1 | subid), d1)
 # View(as.matrix(summary(r1)$coefficients))
-r2 = lmer(responseNumFlip ~ pair + predicate + (1 | subid), d1); summary(r2)
-r3 = lmer(responseNumFlip ~ pair * predicate + (1 | subid), d1); summary(r3)
+r2 = lmer(responseNumFlip ~ pair + predicate + (1 | subid), d1)
+r3 = lmer(responseNumFlip ~ pair * predicate + (1 | subid), d1)
 anova(r1, r2, r3)
+summary(r3)
   
 # plot by pair ----
 plotTable = d1 %>% 

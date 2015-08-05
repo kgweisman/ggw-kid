@@ -23,13 +23,13 @@ dev.off()
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-07-30_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-07-30_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
@@ -377,23 +377,23 @@ plot(mds_Aordinal,
      ylim = c(-1, 1),     
      main = "MDS solution: All conditions")
 
-# plot space and stress (bigger bubble = better fit)
-plot(mds_Aordinal, plot.type = "bubbleplot",
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),     
-     main = "MDS bubble plot: All conditions")
-
-# plot stress (higher = worse fit)
-plot(mds_Aordinal, plot.type = "stressplot",
-     main = "MDS stress: All conditions")
-
-# Shepard plot
-plot(mds_Aordinal, plot.type = "Shepard",
-     main = "MDS Shepard plot: All conditions")
-
-# plot residuals
-plot(mds_Aordinal, plot.type = "resplot",
-     main = "MDS residuals: All conditions")
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: All conditions")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: All conditions")
+# 
+# # Shepard plot
+# plot(mds_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: All conditions")
+# 
+# # plot residuals
+# plot(mds_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: All conditions")
 
 ################################################### analysis & plots pt 3 #####
 
@@ -621,67 +621,67 @@ plot(mds_hunger_Aordinal,
      main = "MDS solution: HUNGER",
      xlab = "")
 
-# plot space and stress (bigger bubble = better fit)
-plot(mds_thinking_Aordinal, 
-     plot.type = "bubbleplot", 
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS bubble plot: THINKING",
-     xlab = "")
-plot(mds_feelings_Aordinal, 
-     plot.type = "bubbleplot", 
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS bubble plot: FEELINGS",
-     xlab = "")
-plot(mds_hunger_Aordinal, 
-     plot.type = "bubbleplot", 
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS bubble plot: HUNGER",
-     xlab = "")
-
-# plot stress (higher = worse fit)
-plot(mds_thinking_Aordinal, 
-     plot.type = "stressplot", 
-     main = "MDS stress: THINKING",
-     xlab = "")
-plot(mds_feelings_Aordinal, 
-     plot.type = "stressplot", 
-     main = "MDS stress: FEELINGS",
-     xlab = "")
-plot(mds_hunger_Aordinal, 
-     plot.type = "stressplot", 
-     main = "MDS stress: HUNGER",
-     xlab = "")
-
-# Shepard plot
-plot(mds_thinking_Aordinal, 
-     plot.type = "Shepard", 
-     main = "MDS Shepard plot: THINKING",
-     xlab = "")
-plot(mds_feelings_Aordinal, 
-     plot.type = "Shepard", 
-     main = "MDS Shepard plot: FEELINGS",
-     xlab = "")
-plot(mds_hunger_Aordinal, 
-     plot.type = "Shepard", 
-     main = "MDS Shepard plot: HUNGER",
-     xlab = "")
-
-# plot residuals
-plot(mds_thinking_Aordinal, 
-     plot.type = "resplot", 
-     main = "MDS residuals: THINKING",
-     xlab = "")
-plot(mds_feelings_Aordinal, 
-     plot.type = "resplot", 
-     main = "MDS residuals: FEELINGS",
-     xlab = "")
-plot(mds_hunger_Aordinal, 
-     plot.type = "resplot", 
-     main = "MDS residuals: HUNGER",
-     xlab = "")
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_thinking_Aordinal, 
+#      plot.type = "bubbleplot", 
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),
+#      main = "MDS bubble plot: THINKING",
+#      xlab = "")
+# plot(mds_feelings_Aordinal, 
+#      plot.type = "bubbleplot", 
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),
+#      main = "MDS bubble plot: FEELINGS",
+#      xlab = "")
+# plot(mds_hunger_Aordinal, 
+#      plot.type = "bubbleplot", 
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),
+#      main = "MDS bubble plot: HUNGER",
+#      xlab = "")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_thinking_Aordinal, 
+#      plot.type = "stressplot", 
+#      main = "MDS stress: THINKING",
+#      xlab = "")
+# plot(mds_feelings_Aordinal, 
+#      plot.type = "stressplot", 
+#      main = "MDS stress: FEELINGS",
+#      xlab = "")
+# plot(mds_hunger_Aordinal, 
+#      plot.type = "stressplot", 
+#      main = "MDS stress: HUNGER",
+#      xlab = "")
+# 
+# # Shepard plot
+# plot(mds_thinking_Aordinal, 
+#      plot.type = "Shepard", 
+#      main = "MDS Shepard plot: THINKING",
+#      xlab = "")
+# plot(mds_feelings_Aordinal, 
+#      plot.type = "Shepard", 
+#      main = "MDS Shepard plot: FEELINGS",
+#      xlab = "")
+# plot(mds_hunger_Aordinal, 
+#      plot.type = "Shepard", 
+#      main = "MDS Shepard plot: HUNGER",
+#      xlab = "")
+# 
+# # plot residuals
+# plot(mds_thinking_Aordinal, 
+#      plot.type = "resplot", 
+#      main = "MDS residuals: THINKING",
+#      xlab = "")
+# plot(mds_feelings_Aordinal, 
+#      plot.type = "resplot", 
+#      main = "MDS residuals: FEELINGS",
+#      xlab = "")
+# plot(mds_hunger_Aordinal, 
+#      plot.type = "resplot", 
+#      main = "MDS residuals: HUNGER",
+#      xlab = "")
 
 ################################################### analysis & plots pt 4 #####
 
