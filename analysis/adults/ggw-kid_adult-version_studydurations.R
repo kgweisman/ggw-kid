@@ -2,13 +2,14 @@
 
 # library
 library("chron")
+library(jsonlite)
 
 # --- READING IN DATA OBJECTS -------------------------------------------------
 
 # ----------> run-01 (2015-03-13) ---------------------------------------------
 
 # set working directory for india
-setwd("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid_adult-version/turk/us_run-01/")
+setwd("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/us_run-01/")
 
 # mike's json for-loop
 files <- dir("production-results/")

@@ -24,13 +24,13 @@ dev.off()
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
-# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 glimpse(dd)
 
@@ -196,3 +196,4 @@ summary(eba_hunger)
 scaleVals_hunger <- uscale(eba_hunger)
 dotchart(scaleVals_hunger, pch=16, xlim = c(0, .5),
          main = "Hunger")
+

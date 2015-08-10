@@ -15,14 +15,14 @@ rm(list=ls())
 # --- READING IN DATA OBJECTS -------------------------------------------------
 
 # kid run 01 (2015-06-13)
-files_run01 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/")
+files_run01 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid_run_01/")
 
 d_kid_run_01_raw <- data.frame()
 
 for(i in 1:length(files_run01)) {
   # gather files
   f = files_run01[i]
-  d_temp = read.csv(paste0("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_01/", files_run01[i]))
+  d_temp = read.csv(paste0("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid_run_01/", files_run01[i]))
   d_kid_run_01_raw = bind_rows(d_kid_run_01_raw, d_temp)
 }
 
@@ -31,14 +31,14 @@ d_kid_run_01_raw = d_kid_run_01_raw %>% mutate(run = factor("run01"))
 glimpse(d_kid_run_01_raw)
 
 # kid run 02 (2015-08-04)
-files_run02 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_02/")
+files_run02 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid_run_02/")
 
 d_kid_run_02_raw <- data.frame()
 
 for(i in 1:length(files_run02)) {
   # gather files
   f = files_run02[i]
-  d_temp = read.csv(paste0("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid_run_02/", files_run02[i]))
+  d_temp = read.csv(paste0("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid_run_02/", files_run02[i]))
   d_kid_run_02_raw = bind_rows(d_kid_run_02_raw, d_temp)
 }
 
@@ -131,10 +131,10 @@ d_tidy = d_tidy %>%
 # write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/randomized_subidList.csv")
 
 # write FULL DATASET to de-identified csv file
-write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01&02_2015-08-04_data_anonymized.csv")
+write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-08-04_data_anonymized.csv")
 
 # write RUN01 DATASET to de-identified csv file
-write.csv(subset(d_tidy, run == "run01"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-01_2015-06-13_data_anonymized.csv")
+write.csv(subset(d_tidy, run == "run01"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")
 
 # write RUN02 DATASET to de-identified csv file
-write.csv(subset(d_tidy, run == "run02"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/kid-run-02_2015-08-04_data_anonymized.csv")
+write.csv(subset(d_tidy, run == "run02"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-08-04_data_anonymized.csv")
