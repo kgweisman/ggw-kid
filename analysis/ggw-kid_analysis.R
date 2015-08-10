@@ -304,103 +304,105 @@ ggplot(data.frame(pca_A2_rot$scores),
 
 ################################################### analysis & plots pt 2 #####
 
+# --------------->-> dissim data-formatting function --------------------------
+
+makeDissimByPredicate <- function(selectPredicate) {
+  tempDissim <- NULL
+  
+  # make alphabetized list of characters, cycle through to fill in alphabetized pairs
+  tempDissim <- dd %>%
+    filter(predicate %in% selectPredicate) %>%
+    mutate(character1 = array(),
+           character2 = array())
+  
+  charsort = sort(levels(tempDissim$leftCharacter), decreasing = TRUE)
+  
+  for(i in 1:length(charsort)) {
+    tempDissim <- tempDissim %>%
+      mutate(
+        character1 = 
+          ifelse(leftCharacter == charsort[i] |
+                   rightCharacter == charsort[i],
+                 as.character(charsort[i]),
+                 as.character(character1)),
+        character2 = 
+          ifelse(character1 == leftCharacter,
+                 as.character(rightCharacter),
+                 as.character(leftCharacter))) %>%
+      mutate(character1 = factor(character1),
+             character2 = factor(character2))
+  }
+  
+  # make upper matrix of tempDissimilarity values
+  tempDissim <- tempDissim %>%
+    select(predicate, subid, character1, character2, responseNum) %>%
+    group_by(character1, character2) %>%
+    mutate(dist = abs(responseNum)) %>% # use absolute values of comparison scores to get distance
+    summarise(mean = mean(dist, na.rm = TRUE)) %>%
+    spread(character2, mean)
+  
+  # add NA columns and rows - depends on whether including stapler or not
+  checkNoStapler <- count(dd) == count(dd_nostapler)
+  if (FALSE %in% checkNoStapler) {
+    # including stapler
+    tempDissim <- tempDissim %>%
+      mutate(baby = NA,
+             character1 = as.character(character1)) %>%
+      rbind(c("stapler", rep(NA, 13))) %>%
+      mutate(character1 = factor(character1))
+  } else {
+    # NOT including stapler
+    tempDissim <- tempDissim %>%
+      mutate(baby = NA,
+             character1 = as.character(character1)) %>%
+      rbind(c("robot", rep(NA, 12))) %>%
+      mutate(character1 = factor(character1))
+  }
+  
+  # reorder columns
+  tempDissim = tempDissim[, c(1, length(tempDissim), 2:(length(tempDissim) - 1))]
+  
+  # get character names
+  names = tempDissim[[1]]
+  
+  # rename rows and columns
+  tempDissim = tempDissim[-1]
+  rownames(tempDissim) = names
+  colnames(tempDissim) = names
+  
+  # fill in lower triangle matrix - depends on whether including stapler or not
+  if (FALSE %in% checkNoStapler) {
+    # fill in lower triangle matrix
+    for(i in 1:9) {
+      for(j in (i+1):10) {
+        tempDissim[j,i] = tempDissim[i,j]
+      }
+    }
+  } else {
+    # fill in lower triangle matrix
+    for(i in 1:8) {
+      for(j in (i+1):9) {
+        tempDissim[j,i] = tempDissim[i,j]
+      }
+    }
+  }
+  
+  tempDissim = as.dist(tempDissim)
+  return(tempDissim)
+}
+
 # -- MULTIDIMENSIONAL SCALING ANALYSIS A --------------------------------------
-
-# --------> data formatting ---------------------------------------------------
-dissim = NULL
-
-# make alphabetized list of characters, cycle through to fill in alphabetized pairs
-dissim <- dd %>%
-  filter(phase == "test") %>%
-  mutate(character1 = array(),
-         character2 = array())
-
-charsort = sort(levels(dissim$leftCharacter), decreasing = TRUE)
-
-for(i in 1:length(charsort)) {
-  dissim <- dissim %>%
-    mutate(
-      character1 = 
-        ifelse(leftCharacter == charsort[i] |
-                 rightCharacter == charsort[i],
-               as.character(charsort[i]),
-               as.character(character1)),
-      character2 = 
-        ifelse(character1 == leftCharacter,
-               as.character(rightCharacter),
-               as.character(leftCharacter))) %>%
-    mutate(character1 = factor(character1),
-           character2 = factor(character2))
-}
-
-# make upper matrix of dissimilarity values
-dissim <- dissim %>%
-  select(predicate, subid, character1, character2, responseNum) %>%
-  group_by(character1, character2) %>%
-  mutate(dist = abs(responseNum)) %>% # use absolute values of comparison scores to get distance
-  summarise(mean = mean(dist, na.rm = TRUE)) %>%
-  spread(character2, mean)
-
-# add NA columns and rows - depends on whether including stapler or not
-checkNoStapler <- count(dd) == count(dd_nostapler)
-if (FALSE %in% checkNoStapler) {
-  # including stapler
-  dissim <- dissim %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("stapler", rep(NA, 13))) %>%
-    mutate(character1 = factor(character1))
-} else {
-  # NOT including stapler
-  dissim <- dissim %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("robot", rep(NA, 12))) %>%
-    mutate(character1 = factor(character1))
-}
-
-# reorder columns
-dissim = dissim[, c(1, length(dissim), 2:(length(dissim) - 1))]
-
-# rename rows and columns
-names = sort(charsort, decreasing = FALSE)
-names = names[names != "strawberries"]
-names = names[names != "grapes"]
-names = names[names != "icecream"]
-names = names[names != "pizza"]
-
-dissim = dissim[-1]
-rownames(dissim) = names
-colnames(dissim) = names
-
-# fill in lower triangle matrix - depends on whether including stapler or not
-if (FALSE %in% checkNoStapler) {
-  # fill in lower triangle matrix
-  for(i in 1:9) {
-    for(j in (i+1):10) {
-      dissim[j,i] = dissim[i,j]
-    }
-  }
-} else {
-  # fill in lower triangle matrix
-  for(i in 1:8) {
-    for(j in (i+1):9) {
-      dissim[j,i] = dissim[i,j]
-    }
-  }
-}
-
-dissim = as.dist(dissim)
 
 # --------> non-metric (ordinal) MDS ------------------------------------------
 # NOTE: could also explore fitting with more than 2 dimensions...
+
+# make dissimilarity matrix for all predicates
+dissim <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"))
 
 # do MDS
 mds_Aordinal = mds(dissim, ndim = 2, type = "ordinal")
 summary(mds_Aordinal)
 mds_Aordinal
-
-# --------------->-> plots ----------------------------------------------------
 
 # plot dimension space
 plot(mds_Aordinal,
@@ -431,352 +433,110 @@ plot(mds_Aordinal,
 
 # -- MULTIDIMENSIONAL SCALING ANALYSIS B --------------------------------------
 
-# --------> data formatting ---------------------------------------------------
+# --------> predicate: THINKING -----------------------------------------------
 
-# --------------->-> predicate: THINKING -------------------------------------
+# make dissimilarity matrix for all predicates
+dissim_thinking <- makeDissimByPredicate(selectPredicate = "thinking")
 
-dissim_thinking = NULL
-
-# make alphabetized list of characters, cycle through to fill in alphabetized pairs
-dissim_thinking <- dd %>%
-  filter(predicate == "thinking") %>%
-  mutate(character1 = array(),
-         character2 = array())
-
-charsort = sort(levels(dissim_thinking$leftCharacter), decreasing = TRUE)
-
-for(i in 1:length(charsort)) {
-  dissim_thinking <- dissim_thinking %>%
-    mutate(
-      character1 = 
-        ifelse(leftCharacter == charsort[i] |
-                 rightCharacter == charsort[i],
-               as.character(charsort[i]),
-               as.character(character1)),
-      character2 = 
-        ifelse(character1 == leftCharacter,
-               as.character(rightCharacter),
-               as.character(leftCharacter))) %>%
-    mutate(character1 = factor(character1),
-           character2 = factor(character2))
-}
-
-# make upper matrix of dissim_thinkingilarity values
-dissim_thinking <- dissim_thinking %>%
-  select(predicate, subid, character1, character2, responseNum) %>%
-  group_by(character1, character2) %>%
-  mutate(dist = abs(responseNum)) %>% # use absolute values of comparison scores to get distance
-  summarise(mean = mean(dist, na.rm = TRUE)) %>%
-  spread(character2, mean)
-
-# add NA columns and rows - depends on whether including stapler or not
-checkNoStapler <- count(dd) == count(dd_nostapler)
-if (FALSE %in% checkNoStapler) {
-  # including stapler
-  dissim_thinking <- dissim_thinking %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("stapler", rep(NA, 13))) %>%
-    mutate(character1 = factor(character1))
-} else {
-  # NOT including stapler
-  dissim_thinking <- dissim_thinking %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("robot", rep(NA, 12))) %>%
-    mutate(character1 = factor(character1))
-}
-
-# reorder columns
-dissim_thinking = dissim_thinking[, c(1, length(dissim_thinking), 2:(length(dissim_thinking) - 1))]
-
-# rename rows and columns
-dissim_thinking = dissim_thinking[-1]
-rownames(dissim_thinking) = names
-colnames(dissim_thinking) = names
-
-# fill in lower triangle matrix - depends on whether including stapler or not
-if (FALSE %in% checkNoStapler) {
-  # fill in lower triangle matrix
-  for(i in 1:9) {
-    for(j in (i+1):10) {
-      dissim_thinking[j,i] = dissim_thinking[i,j]
-    }
-  }
-} else {
-  # fill in lower triangle matrix
-  for(i in 1:8) {
-    for(j in (i+1):9) {
-      dissim_thinking[j,i] = dissim_thinking[i,j]
-    }
-  }
-}
-
-dissim_thinking = as.dist(dissim_thinking)
-
-# --------------->-> predicate: FEELINGS -------------------------------------
-
-dissim_feelings = NULL
-
-# make alphabetized list of characters, cycle through to fill in alphabetized pairs
-dissim_feelings <- dd %>%
-  filter(predicate == "feelings") %>%
-  mutate(character1 = array(),
-         character2 = array())
-
-charsort = sort(levels(dissim_feelings$leftCharacter), decreasing = TRUE)
-
-for(i in 1:length(charsort)) {
-  dissim_feelings <- dissim_feelings %>%
-    mutate(
-      character1 = 
-        ifelse(leftCharacter == charsort[i] |
-                 rightCharacter == charsort[i],
-               as.character(charsort[i]),
-               as.character(character1)),
-      character2 = 
-        ifelse(character1 == leftCharacter,
-               as.character(rightCharacter),
-               as.character(leftCharacter))) %>%
-    mutate(character1 = factor(character1),
-           character2 = factor(character2))
-}
-
-# make upper matrix of dissim_feelingsilarity values
-dissim_feelings <- dissim_feelings %>%
-  select(predicate, subid, character1, character2, responseNum) %>%
-  group_by(character1, character2) %>%
-  mutate(dist = abs(responseNum)) %>% # use absolute values of comparison scores to get distance
-  summarise(mean = mean(dist, na.rm = TRUE)) %>%
-  spread(character2, mean)
-
-# add NA columns and rows - depends on whether including stapler or not
-checkNoStapler <- count(dd) == count(dd_nostapler)
-if (FALSE %in% checkNoStapler) {
-  # including stapler
-  dissim_feelings <- dissim_feelings %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("stapler", rep(NA, 13))) %>%
-    mutate(character1 = factor(character1))
-} else {
-  # NOT including stapler
-  dissim_feelings <- dissim_feelings %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("robot", rep(NA, 12))) %>%
-    mutate(character1 = factor(character1))
-}
-
-# reorder columns
-dissim_feelings = dissim_feelings[, c(1, length(dissim_feelings), 2:(length(dissim_feelings) - 1))]
-
-# rename rows and columns
-dissim_feelings = dissim_feelings[-1]
-rownames(dissim_feelings) = names
-colnames(dissim_feelings) = names
-
-# fill in lower triangle matrix - depends on whether including stapler or not
-if (FALSE %in% checkNoStapler) {
-  # fill in lower triangle matrix
-  for(i in 1:9) {
-    for(j in (i+1):10) {
-      dissim_feelings[j,i] = dissim_feelings[i,j]
-    }
-  }
-} else {
-  # fill in lower triangle matrix
-  for(i in 1:8) {
-    for(j in (i+1):9) {
-      dissim_feelings[j,i] = dissim_feelings[i,j]
-    }
-  }
-}
-
-dissim_feelings = as.dist(dissim_feelings)
-
-# --------------->-> predicate: HUNGER -------------------------------------
-
-dissim_hunger = NULL
-
-# make alphabetized list of characters, cycle through to fill in alphabetized pairs
-dissim_hunger <- dd %>%
-  filter(predicate == "hunger") %>%
-  mutate(character1 = array(),
-         character2 = array())
-
-charsort = sort(levels(dissim_hunger$leftCharacter), decreasing = TRUE)
-
-for(i in 1:length(charsort)) {
-  dissim_hunger <- dissim_hunger %>%
-    mutate(
-      character1 = 
-        ifelse(leftCharacter == charsort[i] |
-                 rightCharacter == charsort[i],
-               as.character(charsort[i]),
-               as.character(character1)),
-      character2 = 
-        ifelse(character1 == leftCharacter,
-               as.character(rightCharacter),
-               as.character(leftCharacter))) %>%
-    mutate(character1 = factor(character1),
-           character2 = factor(character2))
-}
-
-# make upper matrix of dissim_hungerilarity values
-dissim_hunger <- dissim_hunger %>%
-  select(predicate, subid, character1, character2, responseNum) %>%
-  group_by(character1, character2) %>%
-  mutate(dist = abs(responseNum)) %>% # use absolute values of comparison scores to get distance
-  summarise(mean = mean(dist, na.rm = TRUE)) %>%
-  spread(character2, mean)
-
-# add NA columns and rows - depends on whether including stapler or not
-checkNoStapler <- count(dd) == count(dd_nostapler)
-if (FALSE %in% checkNoStapler) {
-  # including stapler
-  dissim_hunger <- dissim_hunger %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("stapler", rep(NA, 13))) %>%
-    mutate(character1 = factor(character1))
-} else {
-  # NOT including stapler
-  dissim_hunger <- dissim_hunger %>%
-    mutate(baby = NA,
-           character1 = as.character(character1)) %>%
-    rbind(c("robot", rep(NA, 12))) %>%
-    mutate(character1 = factor(character1))
-}
-
-# reorder columns
-dissim_hunger = dissim_hunger[, c(1, length(dissim_hunger), 2:(length(dissim_hunger) - 1))]
-
-# rename rows and columns
-dissim_hunger = dissim_hunger[-1]
-rownames(dissim_hunger) = names
-colnames(dissim_hunger) = names
-
-# fill in lower triangle matrix - depends on whether including stapler or not
-if (FALSE %in% checkNoStapler) {
-  # fill in lower triangle matrix
-  for(i in 1:9) {
-    for(j in (i+1):10) {
-      dissim_hunger[j,i] = dissim_hunger[i,j]
-    }
-  }
-} else {
-  # fill in lower triangle matrix
-  for(i in 1:8) {
-    for(j in (i+1):9) {
-      dissim_hunger[j,i] = dissim_hunger[i,j]
-    }
-  }
-}
-
-dissim_hunger = as.dist(dissim_hunger)
-
-# --------> non-metric (ordinal) MDS ------------------------------------------
-# NOTE: could also explore fitting with more than 2 dimensions...
-
-# do MDS: THINKING
+# do MDS
 mds_thinking_Aordinal = mds(dissim_thinking, ndim = 2, type = "ordinal")
 summary(mds_thinking_Aordinal)
 mds_thinking_Aordinal
 
-# do MDS: FEELINGS
+# plot dimension space
+plot(mds_thinking_Aordinal,
+     plot.type = "confplot",
+     xlim = c(-1, 1),
+     ylim = c(-1, 1),     
+     main = "MDS solution: THINKING")
+
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_thinking_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: THINKING")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_thinking_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: THINKING")
+# 
+# # Shepard plot
+# plot(mds_thinking_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: THINKING")
+# 
+# # plot residuals
+# plot(mds_thinking_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: THINKING")
+
+# --------> predicate: FEELINGS -----------------------------------------------
+
+# make dissimilarity matrix for all predicates
+dissim_feelings <- makeDissimByPredicate(selectPredicate = "feelings")
+
+# do MDS
 mds_feelings_Aordinal = mds(dissim_feelings, ndim = 2, type = "ordinal")
 summary(mds_feelings_Aordinal)
 mds_feelings_Aordinal
 
-# do MDS: HUNGER
+# plot dimension space
+plot(mds_feelings_Aordinal,
+     plot.type = "confplot",
+     xlim = c(-1, 1),
+     ylim = c(-1, 1),     
+     main = "MDS solution: FEELINGS")
+
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_feelings_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: FEELINGS")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_feelings_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: FEELINGS")
+# 
+# # Shepard plot
+# plot(mds_feelings_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: FEELINGS")
+# 
+# # plot residuals
+# plot(mds_feelings_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: FEELINGS")
+
+# --------> predicate: HUNGER -----------------------------------------------
+
+# make dissimilarity matrix for all predicates
+dissim_hunger <- makeDissimByPredicate(selectPredicate = "hunger")
+
+# do MDS
 mds_hunger_Aordinal = mds(dissim_hunger, ndim = 2, type = "ordinal")
 summary(mds_hunger_Aordinal)
 mds_hunger_Aordinal
 
-# --------------->-> plots ----------------------------------------------------
-
 # plot dimension space
-plot(mds_thinking_Aordinal, 
-     plot.type = "confplot", 
+plot(mds_hunger_Aordinal,
+     plot.type = "confplot",
      xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS solution: THINKING",
-     xlab = "")
-plot(mds_feelings_Aordinal, 
-     plot.type = "confplot", 
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS solution: FEELINGS",
-     xlab = "")
-plot(mds_hunger_Aordinal, 
-     plot.type = "confplot", 
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),
-     main = "MDS solution: HUNGER",
-     xlab = "")
+     ylim = c(-1, 1),     
+     main = "MDS solution: HUNGER")
 
 # # plot space and stress (bigger bubble = better fit)
-# plot(mds_thinking_Aordinal, 
-#      plot.type = "bubbleplot", 
+# plot(mds_hunger_Aordinal, plot.type = "bubbleplot",
 #      xlim = c(-1, 1),
-#      ylim = c(-1, 1),
-#      main = "MDS bubble plot: THINKING",
-#      xlab = "")
-# plot(mds_feelings_Aordinal, 
-#      plot.type = "bubbleplot", 
-#      xlim = c(-1, 1),
-#      ylim = c(-1, 1),
-#      main = "MDS bubble plot: FEELINGS",
-#      xlab = "")
-# plot(mds_hunger_Aordinal, 
-#      plot.type = "bubbleplot", 
-#      xlim = c(-1, 1),
-#      ylim = c(-1, 1),
-#      main = "MDS bubble plot: HUNGER",
-#      xlab = "")
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: HUNGER")
 # 
 # # plot stress (higher = worse fit)
-# plot(mds_thinking_Aordinal, 
-#      plot.type = "stressplot", 
-#      main = "MDS stress: THINKING",
-#      xlab = "")
-# plot(mds_feelings_Aordinal, 
-#      plot.type = "stressplot", 
-#      main = "MDS stress: FEELINGS",
-#      xlab = "")
-# plot(mds_hunger_Aordinal, 
-#      plot.type = "stressplot", 
-#      main = "MDS stress: HUNGER",
-#      xlab = "")
+# plot(mds_hunger_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: HUNGER")
 # 
 # # Shepard plot
-# plot(mds_thinking_Aordinal, 
-#      plot.type = "Shepard", 
-#      main = "MDS Shepard plot: THINKING",
-#      xlab = "")
-# plot(mds_feelings_Aordinal, 
-#      plot.type = "Shepard", 
-#      main = "MDS Shepard plot: FEELINGS",
-#      xlab = "")
-# plot(mds_hunger_Aordinal, 
-#      plot.type = "Shepard", 
-#      main = "MDS Shepard plot: HUNGER",
-#      xlab = "")
+# plot(mds_hunger_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: HUNGER")
 # 
 # # plot residuals
-# plot(mds_thinking_Aordinal, 
-#      plot.type = "resplot", 
-#      main = "MDS residuals: THINKING",
-#      xlab = "")
-# plot(mds_feelings_Aordinal, 
-#      plot.type = "resplot", 
-#      main = "MDS residuals: FEELINGS",
-#      xlab = "")
-# plot(mds_hunger_Aordinal, 
-#      plot.type = "resplot", 
-#      main = "MDS residuals: HUNGER",
-#      xlab = "")
+# plot(mds_hunger_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: HUNGER")
 
 ################################################### analysis & plots pt 4 #####
 
