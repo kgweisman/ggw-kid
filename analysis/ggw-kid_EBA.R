@@ -102,7 +102,7 @@ glimpse(dd)
 # --------------->-> by ageGroup ----------------------------------------------
 
 # set group of interest
-# # ... to adults:
+# ... to adults:
 # dd = dd_adults
 # ... to children:
 dd = dd_children
@@ -149,7 +149,8 @@ qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # --- choice frequencies data-formatting function -----------------------------
 
-# need absolute choice frequencies: row stimuli are chosen over column stimuli
+# make dataframe of absolute choice frequencies
+# count number of times each row character is chosen over each column stimulus
 makeM <- function(selectPredicate) {
   tempM <- NULL
   
@@ -157,7 +158,9 @@ makeM <- function(selectPredicate) {
   tempM <- dd %>%
     filter(predicate %in% selectPredicate) %>%
     mutate(character1 = array(),
-           character2 = array())
+           character2 = array(),
+           leftCharacter = factor(leftCharacter),
+           rightCharacter = factor(rightCharacter))
   
   charsort = sort(levels(tempM$leftCharacter), decreasing = TRUE)
   
@@ -188,11 +191,11 @@ makeM <- function(selectPredicate) {
                                          & responseNum > 0), "char1", "char2"))) %>%
     select(-leftCharacter, -rightCharacter, -responseNum)
   
-  # create empty dataframe
-  tempDf <- data.frame(matrix(0, nrow = 10, ncol = 10))
-  
   # name rows and columns with character names
   characterNames <- with(subset(dd, phase == "test"), levels(factor(leftCharacter)))
+  
+  # create empty dataframe
+  tempDf <- data.frame(matrix(0, nrow = length(characterNames), ncol = length(characterNames)))
   names(tempDf) = characterNames
   rownames(tempDf) = characterNames
   
@@ -220,45 +223,45 @@ makeM <- function(selectPredicate) {
   
 }
 
-# --- EBA ANALYSIS ------------------------------------------------------------
+# --- BRADLEY-TERRY-LUCE (BTL) ANALYSIS ---------------------------------------
 
 # --------> all predicates ----------------------------------------------------
 
 M_all <- makeM(selectPredicate = c("thinking", "feelings", "hunger"))
 
-eba_all <- eba(M_all)
-summary(eba_all)
-# plot(eba_all)
-scaleVals_all <- uscale(eba_all)
+btl_all <- eba(M_all)
+summary(btl_all)
+# plot(btl_all)
+scaleVals_all <- uscale(btl_all, norm = NULL)
 dotchart(scaleVals_all, pch=16,
          main = "All predicates")
 
 # --------> predicate: THINKING -----------------------------------------------
 
 M_thinking <- makeM(selectPredicate = "thinking")
-eba_thinking <- eba(M_thinking)
-summary(eba_thinking)
-# plot(eba_thinking)
-scaleVals_thinking <- uscale(eba_thinking)
-dotchart(scaleVals_thinking, pch=16, xlim = c(0, .5),
+btl_thinking <- eba(M_thinking)
+summary(btl_thinking)
+# plot(btl_thinking)
+scaleVals_thinking <- uscale(btl_thinking, norm = NULL)
+dotchart(scaleVals_thinking, pch=16,
          main = "Thinking")
 
 # --------> predicate: FEELINGS -----------------------------------------------
 
 M_feelings <- makeM(selectPredicate = "feelings")
-eba_feelings <- eba(M_feelings)
-summary(eba_feelings)
-# plot(eba_feelings)
-scaleVals_feelings <- uscale(eba_feelings)
-dotchart(scaleVals_feelings, pch=16, xlim = c(0, .5),
+btl_feelings <- eba(M_feelings)
+summary(btl_feelings)
+# plot(btl_feelings)
+scaleVals_feelings <- uscale(btl_feelings, norm = NULL)
+dotchart(scaleVals_feelings, pch=16,
          main = "Feelings")
 
 # --------> predicate: HUNGER -------------------------------------------------
 
 M_hunger <- makeM(selectPredicate = "hunger")
-eba_hunger <- eba(M_hunger)
-summary(eba_hunger)
-# plot(eba_hunger)
-scaleVals_hunger <- uscale(eba_hunger)
-dotchart(scaleVals_hunger, pch=16, xlim = c(0, .5),
+btl_hunger <- eba(M_hunger)
+summary(btl_hunger)
+# plot(btl_hunger)
+scaleVals_hunger <- uscale(btl_hunger, norm = NULL)
+dotchart(scaleVals_hunger, pch=16,
          main = "Hunger")
