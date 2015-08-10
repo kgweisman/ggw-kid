@@ -341,13 +341,6 @@ dissim <- dissim %>%
   summarise(mean = mean(dist, na.rm = TRUE)) %>%
   spread(character2, mean)
 
-# # add in NA column for baby, NA row for stapler
-# dissim <- dissim %>%
-#   mutate(baby = NA,
-#          character1 = as.character(character1)) %>%
-#   rbind(c("stapler", rep(NA, 13))) %>%
-#   mutate(character1 = factor(character1))
-
 # add NA columns and rows - depends on whether including stapler or not
 checkNoStapler <- count(dd) == count(dd_nostapler)
 if (FALSE %in% checkNoStapler) {
@@ -476,25 +469,46 @@ dissim_thinking <- dissim_thinking %>%
   summarise(mean = mean(dist, na.rm = TRUE)) %>%
   spread(character2, mean)
 
-# add in NA column for baby, NA row for stapler
-dissim_thinking <- dissim_thinking %>%
-  mutate(baby = NA,
-         character1 = as.character(character1)) %>%
-  rbind(c("stapler", rep(NA, 13))) %>%
-  mutate(character1 = factor(character1))
+# add NA columns and rows - depends on whether including stapler or not
+checkNoStapler <- count(dd) == count(dd_nostapler)
+if (FALSE %in% checkNoStapler) {
+  # including stapler
+  dissim_thinking <- dissim_thinking %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("stapler", rep(NA, 13))) %>%
+    mutate(character1 = factor(character1))
+} else {
+  # NOT including stapler
+  dissim_thinking <- dissim_thinking %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("robot", rep(NA, 12))) %>%
+    mutate(character1 = factor(character1))
+}
 
 # reorder columns
-dissim_thinking = dissim_thinking[, c(1, 11, 2:10)]
+dissim_thinking = dissim_thinking[, c(1, length(dissim_thinking), 2:(length(dissim_thinking) - 1))]
 
 # rename rows and columns
 dissim_thinking = dissim_thinking[-1]
 rownames(dissim_thinking) = names
 colnames(dissim_thinking) = names
 
-# fill in lower triangle matrix
-for(i in 1:9) {
-  for(j in (i+1):10) {
-    dissim_thinking[j,i] = dissim_thinking[i,j]
+# fill in lower triangle matrix - depends on whether including stapler or not
+if (FALSE %in% checkNoStapler) {
+  # fill in lower triangle matrix
+  for(i in 1:9) {
+    for(j in (i+1):10) {
+      dissim_thinking[j,i] = dissim_thinking[i,j]
+    }
+  }
+} else {
+  # fill in lower triangle matrix
+  for(i in 1:8) {
+    for(j in (i+1):9) {
+      dissim_thinking[j,i] = dissim_thinking[i,j]
+    }
   }
 }
 
@@ -536,31 +550,52 @@ dissim_feelings <- dissim_feelings %>%
   summarise(mean = mean(dist, na.rm = TRUE)) %>%
   spread(character2, mean)
 
-# add in NA column for baby, NA row for stapler
-dissim_feelings <- dissim_feelings %>%
-  mutate(baby = NA,
-         character1 = as.character(character1)) %>%
-  rbind(c("stapler", rep(NA, 13))) %>%
-  mutate(character1 = factor(character1))
+# add NA columns and rows - depends on whether including stapler or not
+checkNoStapler <- count(dd) == count(dd_nostapler)
+if (FALSE %in% checkNoStapler) {
+  # including stapler
+  dissim_feelings <- dissim_feelings %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("stapler", rep(NA, 13))) %>%
+    mutate(character1 = factor(character1))
+} else {
+  # NOT including stapler
+  dissim_feelings <- dissim_feelings %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("robot", rep(NA, 12))) %>%
+    mutate(character1 = factor(character1))
+}
 
 # reorder columns
-dissim_feelings = dissim_feelings[, c(1, 11, 2:10)]
+dissim_feelings = dissim_feelings[, c(1, length(dissim_feelings), 2:(length(dissim_feelings) - 1))]
 
 # rename rows and columns
 dissim_feelings = dissim_feelings[-1]
 rownames(dissim_feelings) = names
 colnames(dissim_feelings) = names
 
-# fill in lower triangle matrix
-for(i in 1:9) {
-  for(j in (i+1):10) {
-    dissim_feelings[j,i] = dissim_feelings[i,j]
+# fill in lower triangle matrix - depends on whether including stapler or not
+if (FALSE %in% checkNoStapler) {
+  # fill in lower triangle matrix
+  for(i in 1:9) {
+    for(j in (i+1):10) {
+      dissim_feelings[j,i] = dissim_feelings[i,j]
+    }
+  }
+} else {
+  # fill in lower triangle matrix
+  for(i in 1:8) {
+    for(j in (i+1):9) {
+      dissim_feelings[j,i] = dissim_feelings[i,j]
+    }
   }
 }
 
 dissim_feelings = as.dist(dissim_feelings)
 
-# --------------->-> predicate: HUNGER ----------------------------------------
+# --------------->-> predicate: HUNGER -------------------------------------
 
 dissim_hunger = NULL
 
@@ -596,25 +631,46 @@ dissim_hunger <- dissim_hunger %>%
   summarise(mean = mean(dist, na.rm = TRUE)) %>%
   spread(character2, mean)
 
-# add in NA column for baby, NA row for stapler
-dissim_hunger <- dissim_hunger %>%
-  mutate(baby = NA,
-         character1 = as.character(character1)) %>%
-  rbind(c("stapler", rep(NA, 13))) %>%
-  mutate(character1 = factor(character1))
+# add NA columns and rows - depends on whether including stapler or not
+checkNoStapler <- count(dd) == count(dd_nostapler)
+if (FALSE %in% checkNoStapler) {
+  # including stapler
+  dissim_hunger <- dissim_hunger %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("stapler", rep(NA, 13))) %>%
+    mutate(character1 = factor(character1))
+} else {
+  # NOT including stapler
+  dissim_hunger <- dissim_hunger %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("robot", rep(NA, 12))) %>%
+    mutate(character1 = factor(character1))
+}
 
 # reorder columns
-dissim_hunger = dissim_hunger[, c(1, 11, 2:10)]
+dissim_hunger = dissim_hunger[, c(1, length(dissim_hunger), 2:(length(dissim_hunger) - 1))]
 
 # rename rows and columns
 dissim_hunger = dissim_hunger[-1]
 rownames(dissim_hunger) = names
 colnames(dissim_hunger) = names
 
-# fill in lower triangle matrix
-for(i in 1:9) {
-  for(j in (i+1):10) {
-    dissim_hunger[j,i] = dissim_hunger[i,j]
+# fill in lower triangle matrix - depends on whether including stapler or not
+if (FALSE %in% checkNoStapler) {
+  # fill in lower triangle matrix
+  for(i in 1:9) {
+    for(j in (i+1):10) {
+      dissim_hunger[j,i] = dissim_hunger[i,j]
+    }
+  }
+} else {
+  # fill in lower triangle matrix
+  for(i in 1:8) {
+    for(j in (i+1):9) {
+      dissim_hunger[j,i] = dissim_hunger[i,j]
+    }
   }
 }
 
