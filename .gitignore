@@ -9,3 +9,4 @@ turk/*/sandbox-results/
 data/
 .Rproj.user
 *.Rproj
+*messy*
