@@ -57,7 +57,7 @@ dd_exact = dd %>%
 
 # set group of interest
 # ... to exact:
-# dd = dd_exact
+dd = dd_exact
 
 # --- FILTERING BY FINISHED ---------------------------------------------------
 
@@ -68,6 +68,17 @@ dd_finished = dd %>%
 # set group of interest
 # ... to exact:
 dd = dd_finished
+
+# --- FILTERING BY NO STAPLER -------------------------------------------------
+
+dd_nostapler <- dd %>%
+  filter(leftCharacter != "stapler" & rightCharacter != "stapler") %>%
+  mutate(leftCharacter = factor(leftCharacter),
+         rightCharacter = factor(rightCharacter))
+
+# set group of interest
+# ... to exact:
+dd = dd_nostapler
 
 # --- FORMATTING DATA ---------------------------------------------------------
 
@@ -330,15 +341,33 @@ dissim <- dissim %>%
   summarise(mean = mean(dist, na.rm = TRUE)) %>%
   spread(character2, mean)
 
-# add in NA column for baby, NA row for stapler
-dissim <- dissim %>%
-  mutate(baby = NA,
-         character1 = as.character(character1)) %>%
-  rbind(c("stapler", rep(NA, 13))) %>%
-  mutate(character1 = factor(character1))
+# # add in NA column for baby, NA row for stapler
+# dissim <- dissim %>%
+#   mutate(baby = NA,
+#          character1 = as.character(character1)) %>%
+#   rbind(c("stapler", rep(NA, 13))) %>%
+#   mutate(character1 = factor(character1))
+
+# add NA columns and rows - depends on whether including stapler or not
+checkNoStapler <- count(dd) == count(dd_nostapler)
+if (FALSE %in% checkNoStapler) {
+  # including stapler
+  dissim <- dissim %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("stapler", rep(NA, 13))) %>%
+    mutate(character1 = factor(character1))
+} else {
+  # NOT including stapler
+  dissim <- dissim %>%
+    mutate(baby = NA,
+           character1 = as.character(character1)) %>%
+    rbind(c("robot", rep(NA, 12))) %>%
+    mutate(character1 = factor(character1))
+}
 
 # reorder columns
-dissim = dissim[, c(1, 11, 2:10)]
+dissim = dissim[, c(1, length(dissim), 2:(length(dissim) - 1))]
 
 # rename rows and columns
 names = sort(charsort, decreasing = FALSE)
@@ -351,10 +380,20 @@ dissim = dissim[-1]
 rownames(dissim) = names
 colnames(dissim) = names
 
-# fill in lower triangle matrix
-for(i in 1:9) {
-  for(j in (i+1):10) {
-    dissim[j,i] = dissim[i,j]
+# fill in lower triangle matrix - depends on whether including stapler or not
+if (FALSE %in% checkNoStapler) {
+  # fill in lower triangle matrix
+  for(i in 1:9) {
+    for(j in (i+1):10) {
+      dissim[j,i] = dissim[i,j]
+    }
+  }
+} else {
+  # fill in lower triangle matrix
+  for(i in 1:8) {
+    for(j in (i+1):9) {
+      dissim[j,i] = dissim[i,j]
+    }
   }
 }
 
