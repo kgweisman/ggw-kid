@@ -1,0 +1,272 @@
+/*general style*/
+
+/*disable text selection*/
+body {
+  -webkit-user-select: none;
+     -moz-user-select: -moz-none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+/*general styling for slides*/
+.slide {
+	/*pad the inside of the slide*/
+	padding: 30px;
+	padding-top: 50px;
+
+    /*center slide within the window*/
+	margin: auto auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	/*all elements in a slide will be centered by default*/
+    /*text-align: center;*/
+
+    /*border: 5px solid;*/
+    width: 800px;
+    /*width: 1200px;*/
+
+    /*could explicitly set the following, but these are the defaults for me (chrome, linux)*/
+    font-family: "Bookman Old Style", Bookman, serif;
+	font-size: 18px;
+    /*background-color: rgb(255,255,255);*/
+}
+
+.slide#stage, .slide#practice {
+	padding-top: 30px;
+}
+
+/*style headings and other kinds of text*/
+h1 {
+	font-size: 32px;
+	font-weight: 2000;
+	color: rgb(50,10,100);
+	text-align: center;
+	margin-top: 0px;
+}
+
+h2 {
+	font-size: 24px;
+	font-weight: 2000;
+	color: rgb(50,10,100);
+	text-align: center;
+	margin-top: 5px;
+}
+
+.fun-text {
+	text-align: center;
+	font-size: 18px;
+}
+
+.fun-text#survey-descrip {
+	width: 400px;
+	margin: 20px auto 20px auto;
+	text-align: justify;
+	padding-top: 10px;
+	/*padding-bottom: 80px;*/
+}
+
+#survey-descrip1, #survey-descrip2, #survey-descrip3, #survey-descrip4 {
+	font-weight: bold;
+	color: rgb(50,10,100);
+}
+
+.fun-text#descrip-question {
+	font-size: 18px;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 40px;
+}
+
+span#explanation {
+	font-style: italic;
+	font-size: 11px;
+}
+
+span#question {
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	font-weight: bold;
+	color: rgb(50,10,100);
+	/*font-size: 20px;*/
+}
+
+.fun-text#ranking-intro {
+	width: 350px;
+	margin: 20px auto 20px auto;
+	text-align: justify;
+}
+
+.subtitle {
+	text-align: center;
+}
+
+.title-text {
+	padding-top: 60px;
+	font-size: 100px;
+}
+
+.legal {
+	text-align: justify;
+	font-style: italic;
+	font-size: 10px;
+}
+
+.block-text#character {
+	text-align: center;
+	height: 70px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.question-wrapper {
+	height: 100px;
+}
+
+#demographicsForm {
+	font-size: 14px;
+}
+
+/*style beginning slides*/
+div.beginning img {
+	margin: auto;
+	width: 70%;
+	height: 70%;
+	padding: 500px;
+}
+
+.beginning button {
+	margin: 20px;
+}
+
+.session-info {
+	padding: 500px auto 500px auto;
+	width: 220px;
+	margin: auto;
+	margin-top: 50px;
+}
+
+/*style table*/
+table {
+	text-align: justify;
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	table-layout: fixed;
+}
+
+table td, th {
+	padding: 15px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-align: top;
+	text-align: center;
+}
+
+table img {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+table p {
+	padding-bottom: 10px;
+}
+
+table td > div {
+	height: 50px;
+}
+
+table#surveysTable h2 {
+	padding-top: 35px;
+}
+
+table#resultsTable {
+	width: 96%;
+	margin: 0px;
+	margin-top: -20px;
+	margin-bottom: 50px;
+	padding: 10px;
+}
+
+.progress {
+	height: 10px;
+}
+
+.progress-bar {
+	transition: none;
+	text-align: center;
+}
+
+.progress-text {
+	font-style: italic;
+	font-size: 12px;
+	margin-bottom: 6px;
+}
+
+/*center buttons*/
+.button {
+	margin-top: 120px;
+	text-align: center;
+}
+
+#consent .button {
+	margin-top: 10px;
+}
+
+/*display images during character introduction and results slides*/
+img {
+	margin: 20px;
+	display: block;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 200px;
+	/*border: solid black 3px;*/
+}
+
+img#buttons {
+	height: 150px!important; 
+}
+
+/*display images during experiment stage slides*/
+#stage img, #practice img {
+	height: 200px;
+	/*display: block;*/
+}
+
+/*display images during results slide*/
+#results img {
+	height: 47px;
+	/*border: solid black 2px;*/
+}
+
+/*display response buttons during experiment stage slides*/
+#stage button, #practice button {
+	margin-top: 20px;
+	width: 110px;
+	padding: 5px!important;
+}
+
+/*spacing between parts of demographics form*/
+.control-group {
+	margin-bottom: 30px;
+}
+
+/*style circle buttons*/
+.btn-circle {
+	border: 0;
+	outline: 0;
+    background-color: rgb(255,255,255);
+    margin: 0 auto 0 auto;
+}
+
+.btn-circle:focus {
+	outline: 0;
+}
+
+#both.btn-default, #skip.btn-default {
+	width: 100px;
+	margin: auto!important;
+	/*margin-bottom: 20px!important;*/
+}
