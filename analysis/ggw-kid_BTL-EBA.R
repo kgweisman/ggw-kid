@@ -13,6 +13,7 @@ library(stats)
 library(scales)
 library(smacof)
 library(eba)
+library(abind)
 
 # clear environment
 rm(list=ls())
@@ -105,7 +106,7 @@ glimpse(dd)
 # ... to adults:
 # dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -151,12 +152,14 @@ qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # make dataframe of absolute choice frequencies
 # count number of times each row character is chosen over each column stimulus
-makeM <- function(selectPredicate) {
+makeM <- function(selectPredicate = c("hunger", "feelings", "thinking"),
+                  selectAgeGroup = c("adults", "children")) {
   tempM <- NULL
   
   # make alphabetized list of characters, cycle through to fill in alphabetized pairs
   tempM <- dd %>%
-    filter(predicate %in% selectPredicate) %>%
+    filter(predicate %in% selectPredicate &
+             ageGroup %in% selectAgeGroup) %>%
     mutate(character1 = array(),
            character2 = array(),
            leftCharacter = factor(leftCharacter),
@@ -225,43 +228,156 @@ makeM <- function(selectPredicate) {
 
 # --- BRADLEY-TERRY-LUCE (BTL) ANALYSIS ---------------------------------------
 
-# --------> all predicates ----------------------------------------------------
+# --------> adults ------------------------------------------------------------
 
-M_all <- makeM(selectPredicate = c("thinking", "feelings", "hunger"))
+# --------------->-> all predicates -------------------------------------------
 
-btl_all <- eba(M_all)
-summary(btl_all)
-# plot(btl_all)
-scaleVals_all <- uscale(btl_all, norm = NULL)
-dotchart(scaleVals_all, pch=16,
-         main = "All predicates")
+M_adults_all <- makeM(selectAgeGroup = "adults")
+btl_adults_all <- eba(M_adults_all); summary(btl_adults_all)
+scaleVals_adults_all <- uscale(btl_adults_all, norm = NULL)
+dotchart(scaleVals_adults_all, pch=16,
+         main = "Adults: All predicates")
 
-# --------> predicate: THINKING -----------------------------------------------
+# --------------->-> predicate: HUNGER ----------------------------------------
 
-M_thinking <- makeM(selectPredicate = "thinking")
-btl_thinking <- eba(M_thinking)
-summary(btl_thinking)
-# plot(btl_thinking)
-scaleVals_thinking <- uscale(btl_thinking, norm = NULL)
-dotchart(scaleVals_thinking, pch=16,
-         main = "Thinking")
+M_adults_hunger <- makeM(selectPredicate = "hunger",
+                         selectAgeGroup = "adults")
+btl_adults_hunger <- eba(M_adults_hunger); summary(btl_adults_hunger)
+scaleVals_adults_hunger <- uscale(btl_adults_hunger, norm = NULL)
+dotchart(scaleVals_adults_hunger, pch=16,
+         main = "Adults: Hunger")
 
-# --------> predicate: FEELINGS -----------------------------------------------
+# --------------->-> predicate: FEELINGS --------------------------------------
 
-M_feelings <- makeM(selectPredicate = "feelings")
-btl_feelings <- eba(M_feelings)
-summary(btl_feelings)
-# plot(btl_feelings)
-scaleVals_feelings <- uscale(btl_feelings, norm = NULL)
-dotchart(scaleVals_feelings, pch=16,
-         main = "Feelings")
+M_adults_feelings <- makeM(selectPredicate = "feelings",
+                           selectAgeGroup = "adults")
+btl_adults_feelings <- eba(M_adults_feelings); summary(btl_adults_feelings)
+scaleVals_adults_feelings <- uscale(btl_adults_feelings, norm = NULL)
+dotchart(scaleVals_adults_feelings, pch=16,
+         main = "Adults: Feelings")
 
-# --------> predicate: HUNGER -------------------------------------------------
+# --------------->-> predicate: THINKING --------------------------------------
 
-M_hunger <- makeM(selectPredicate = "hunger")
-btl_hunger <- eba(M_hunger)
-summary(btl_hunger)
-# plot(btl_hunger)
-scaleVals_hunger <- uscale(btl_hunger, norm = NULL)
-dotchart(scaleVals_hunger, pch=16,
-         main = "Hunger")
+M_adults_thinking <- makeM(selectPredicate = "thinking",
+                           selectAgeGroup = "adults")
+btl_adults_thinking <- eba(M_adults_thinking); summary(btl_adults_thinking)
+scaleVals_adults_thinking <- uscale(btl_adults_thinking, norm = NULL)
+dotchart(scaleVals_adults_thinking, pch=16,
+         main = "Adults: Thinking")
+
+# --------> children ------------------------------------------------------------
+
+# --------------->-> all predicates -------------------------------------------
+
+M_children_all <- makeM(selectAgeGroup = "children")
+btl_children_all <- eba(M_children_all); summary(btl_children_all)
+scaleVals_children_all <- uscale(btl_children_all, norm = NULL)
+dotchart(scaleVals_children_all, pch=16,
+         main = "Children: All predicates")
+
+# --------------->-> predicate: HUNGER ----------------------------------------
+
+M_children_hunger <- makeM(selectPredicate = "hunger",
+                         selectAgeGroup = "children")
+btl_children_hunger <- eba(M_children_hunger); summary(btl_children_hunger)
+scaleVals_children_hunger <- uscale(btl_children_hunger, norm = NULL)
+dotchart(scaleVals_children_hunger, pch=16,
+         main = "Children: Hunger")
+
+# --------------->-> predicate: FEELINGS --------------------------------------
+
+M_children_feelings <- makeM(selectPredicate = "feelings",
+                           selectAgeGroup = "children")
+btl_children_feelings <- eba(M_children_feelings); summary(btl_children_feelings)
+scaleVals_children_feelings <- uscale(btl_children_feelings, norm = NULL)
+dotchart(scaleVals_children_feelings, pch=16,
+         main = "Children: Feelings")
+
+# --------------->-> predicate: THINKING --------------------------------------
+
+M_children_thinking <- makeM(selectPredicate = "thinking",
+                           selectAgeGroup = "children")
+btl_children_thinking <- eba(M_children_thinking); summary(btl_children_thinking)
+scaleVals_children_thinking <- uscale(btl_children_thinking, norm = NULL)
+dotchart(scaleVals_children_thinking, pch=16,
+         main = "Children: Thinking")
+
+# --------> test differences between groupings --------------------------------
+
+# --------------->-> adults: among predicates ---------------------------------
+
+M_adults_compPredicates <- abind(M_adults_hunger, M_adults_feelings, M_adults_thinking, 
+                                 along = 3,
+                                 new.names = c("hunger", "feelings", "thinking"))
+# double-check same as above
+# dotchart(uscale(eba(M_adults_compPredicates[,,"hunger"])))
+# dotchart(uscale(eba(M_adults_compPredicates[,,"feelings"])))
+# dotchart(uscale(eba(M_adults_compPredicates[,,"thinking"])))
+
+test_adults_compPredicates <- group.test(M_adults_compPredicates)
+test_adults_compPredicates
+
+# --------------->-> children: among predicates ---------------------------------
+
+M_children_compPredicates <- abind(M_children_hunger, M_children_feelings, M_children_thinking, 
+                                 along = 3,
+                                 new.names = c("hunger", "feelings", "thinking"))
+# double-check same as above
+# dotchart(uscale(eba(M_children_compPredicates[,,"hunger"])))
+# dotchart(uscale(eba(M_children_compPredicates[,,"feelings"])))
+# dotchart(uscale(eba(M_children_compPredicates[,,"thinking"])))
+
+test_children_compPredicates <- group.test(M_children_compPredicates)
+test_children_compPredicates
+
+# --------------->-> adults vs. children: across predicates -------------------
+
+M_compAgeGroups <- abind(M_adults_all, M_children_all, 
+                                   along = 3,
+                                   new.names = c("adults", "children"))
+# double-check same as above
+# dotchart(uscale(eba(M_compAgeGroups[,,"adults"])))
+# dotchart(uscale(eba(M_compAgeGroups[,,"children"])))
+
+test_compAgeGroups <- group.test(M_compAgeGroups)
+test_compAgeGroups
+
+# --------------->-> interaction: adults vs. children X predicates -------------------------
+
+# try 6 groups
+M_compInteraction <- abind(M_adults_hunger, M_adults_feelings, M_adults_thinking,
+                           M_children_hunger, M_children_feelings, M_children_thinking, 
+                           along = 3,
+                           new.names = c("adults.hunger", 
+                                         "adults.feelings", 
+                                         "adults.thinking",
+                                         "children.hunger",
+                                         "children.feelings",
+                                         "children.thinking"))
+
+test_compInteraction <- group.test(M_compInteraction)
+test_compInteraction
+
+# hunger only
+M_compInteraction_hunger <- abind(M_adults_hunger, M_children_hunger, 
+                           along = 3,
+                           new.names = c("adults.hunger", 
+                                         "children.hunger"))
+test_compInteraction_hunger <- group.test(M_compInteraction_hunger)
+test_compInteraction_hunger
+
+# feelings only
+M_compInteraction_feelings <- abind(M_adults_feelings, M_children_feelings, 
+                                  along = 3,
+                                  new.names = c("adults.feelings", 
+                                                "children.feelings"))
+test_compInteraction_feelings <- group.test(M_compInteraction_feelings)
+test_compInteraction_feelings
+
+# thinking only
+M_compInteraction_thinking <- abind(M_adults_thinking, M_children_thinking, 
+                                    along = 3,
+                                    new.names = c("adults.thinking", 
+                                                  "children.thinking"))
+test_compInteraction_thinking <- group.test(M_compInteraction_thinking)
+test_compInteraction_thinking
