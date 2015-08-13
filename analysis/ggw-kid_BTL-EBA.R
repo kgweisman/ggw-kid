@@ -106,7 +106,7 @@ glimpse(dd)
 # ... to adults:
 # dd = dd_adults
 # ... to children:
-# dd = dd_children
+dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -139,8 +139,11 @@ demo %>% group_by(ageGroup) %>% count(ethnicity)
 
 # age
 demo %>% group_by(ageGroup) %>% summarise(mean_age = mean(ageCalc, na.rm = T), sd_age = sd(ageCalc, na.rm = T))
-qplot(subset(demo, ageGroup == "children")$ageCalc)
-qplot(subset(demo, ageGroup == "adults")$ageCalc)
+qplot(subset(demo, ageGroup == "children")$ageCalc, binwidth = 1/12,
+      xlab = "\nAge (years)", ylab = "Count\n") +
+  scale_x_continuous(breaks = seq(4,6,.25)) +
+  theme(text = element_text(size = 20))
+# qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # demo %>% group_by(ageGroup) %>% filter(age < 100) %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
 # qplot(subset(demo, ageGroup == "children")$age[demo$age < 100])
@@ -235,7 +238,10 @@ makeM <- function(selectPredicate = c("hunger", "feelings", "thinking"),
 M_adults_all <- makeM(selectAgeGroup = "adults")
 btl_adults_all <- eba(M_adults_all); summary(btl_adults_all)
 scaleVals_adults_all <- uscale(btl_adults_all, norm = NULL)
-dotchart(scaleVals_adults_all, pch=16,
+dotchart(scaleVals_adults_all[c("stapler", "car", "computer", "robot",
+                                "bug", "bear", "dog", 
+                                "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Adults: All predicates")
 
 # --------------->-> predicate: HUNGER ----------------------------------------
@@ -244,7 +250,10 @@ M_adults_hunger <- makeM(selectPredicate = "hunger",
                          selectAgeGroup = "adults")
 btl_adults_hunger <- eba(M_adults_hunger); summary(btl_adults_hunger)
 scaleVals_adults_hunger <- uscale(btl_adults_hunger, norm = NULL)
-dotchart(scaleVals_adults_hunger, pch=16,
+dotchart(scaleVals_adults_hunger[c("stapler", "car", "computer", "robot",
+                                   "bug", "bear", "dog", 
+                                   "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Adults: Hunger")
 
 # --------------->-> predicate: FEELINGS --------------------------------------
@@ -253,7 +262,10 @@ M_adults_feelings <- makeM(selectPredicate = "feelings",
                            selectAgeGroup = "adults")
 btl_adults_feelings <- eba(M_adults_feelings); summary(btl_adults_feelings)
 scaleVals_adults_feelings <- uscale(btl_adults_feelings, norm = NULL)
-dotchart(scaleVals_adults_feelings, pch=16,
+dotchart(scaleVals_adults_feelings[c("stapler", "car", "computer", "robot",
+                                     "bug", "bear", "dog", 
+                                     "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Adults: Feelings")
 
 # --------------->-> predicate: THINKING --------------------------------------
@@ -262,7 +274,10 @@ M_adults_thinking <- makeM(selectPredicate = "thinking",
                            selectAgeGroup = "adults")
 btl_adults_thinking <- eba(M_adults_thinking); summary(btl_adults_thinking)
 scaleVals_adults_thinking <- uscale(btl_adults_thinking, norm = NULL)
-dotchart(scaleVals_adults_thinking, pch=16,
+dotchart(scaleVals_adults_thinking[c("stapler", "car", "computer", "robot",
+                                     "bug", "bear", "dog", 
+                                     "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Adults: Thinking")
 
 # --------> children ------------------------------------------------------------
@@ -272,7 +287,10 @@ dotchart(scaleVals_adults_thinking, pch=16,
 M_children_all <- makeM(selectAgeGroup = "children")
 btl_children_all <- eba(M_children_all); summary(btl_children_all)
 scaleVals_children_all <- uscale(btl_children_all, norm = NULL)
-dotchart(scaleVals_children_all, pch=16,
+dotchart(scaleVals_children_all[c("stapler", "car", "computer", "robot",
+                                "bug", "bear", "dog", 
+                                "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Children: All predicates")
 
 # --------------->-> predicate: HUNGER ----------------------------------------
@@ -281,7 +299,10 @@ M_children_hunger <- makeM(selectPredicate = "hunger",
                          selectAgeGroup = "children")
 btl_children_hunger <- eba(M_children_hunger); summary(btl_children_hunger)
 scaleVals_children_hunger <- uscale(btl_children_hunger, norm = NULL)
-dotchart(scaleVals_children_hunger, pch=16,
+dotchart(scaleVals_children_hunger[c("stapler", "car", "computer", "robot",
+                                   "bug", "bear", "dog", 
+                                   "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Children: Hunger")
 
 # --------------->-> predicate: FEELINGS --------------------------------------
@@ -290,7 +311,10 @@ M_children_feelings <- makeM(selectPredicate = "feelings",
                            selectAgeGroup = "children")
 btl_children_feelings <- eba(M_children_feelings); summary(btl_children_feelings)
 scaleVals_children_feelings <- uscale(btl_children_feelings, norm = NULL)
-dotchart(scaleVals_children_feelings, pch=16,
+dotchart(scaleVals_children_feelings[c("stapler", "car", "computer", "robot",
+                                     "bug", "bear", "dog", 
+                                     "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Children: Feelings")
 
 # --------------->-> predicate: THINKING --------------------------------------
@@ -299,7 +323,10 @@ M_children_thinking <- makeM(selectPredicate = "thinking",
                            selectAgeGroup = "children")
 btl_children_thinking <- eba(M_children_thinking); summary(btl_children_thinking)
 scaleVals_children_thinking <- uscale(btl_children_thinking, norm = NULL)
-dotchart(scaleVals_children_thinking, pch=16,
+dotchart(scaleVals_children_thinking[c("stapler", "car", "computer", "robot",
+                                     "bug", "bear", "dog", 
+                                     "baby", "kid", "grownup")], 
+         pch = 16,
          main = "Children: Thinking")
 
 # --------> test differences between groupings --------------------------------
