@@ -138,8 +138,11 @@ demo %>% group_by(ageGroup) %>% count(ethnicity)
 
 # age
 demo %>% group_by(ageGroup) %>% summarise(mean_age = mean(ageCalc, na.rm = T), sd_age = sd(ageCalc, na.rm = T))
-qplot(subset(demo, ageGroup == "children")$ageCalc)
-qplot(subset(demo, ageGroup == "adults")$ageCalc)
+qplot(subset(demo, ageGroup == "children")$ageCalc, binwidth = 1/12,
+      xlab = "\nAge (years)", ylab = "Count\n") +
+  scale_x_continuous(breaks = seq(4,6,.25)) +
+  theme(text = element_text(size = 20))
+# qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # demo %>% group_by(ageGroup) %>% filter(age < 100) %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
 # qplot(subset(demo, ageGroup == "children")$age[demo$age < 100])
