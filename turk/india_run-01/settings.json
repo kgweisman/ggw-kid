@@ -8,7 +8,7 @@
     "auto_approval_delay":  "5 minutes",
     "reward":               0.32,
     "qualifications": {
-        "location": "India",
+        "location": "IN",
         "approval_percentage": 95
     }
 }
