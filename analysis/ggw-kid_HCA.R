@@ -25,7 +25,7 @@ dev.off()
 # --------> adults ----------------------------------------------------------
 
 # read in data: individual scores
-dd_adults = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_adults = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-08-17_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_adults <- dd_adults %>%
@@ -50,6 +50,23 @@ dd_children <- dd_children %>%
   mutate(ageGroup = "children")
 
 glimpse(dd_children)
+
+# --------> FILTERING (adult data only) ---------------------------------------
+
+# --------------->-> by country ---------------------------------------------
+
+dd_adults_us = dd_adults %>%
+  filter(country == "us")
+
+dd_adults_india = dd_adults %>%
+  filter(country == "india")
+
+# set group of interest
+# ... to us:
+# dd_adults = dd_adults_us
+
+# ... to india:
+dd_adults = dd_adults_india
 
 # --------> FILTERING (child data only) ---------------------------------------
 
@@ -305,3 +322,4 @@ hcb_hunger = hclust(dissim_hunger); hcb_hunger
 # hcb_hunger$merge
 # plot(hcb_hunger$height)
 plot(hcb_hunger)
+
