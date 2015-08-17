@@ -6,7 +6,7 @@ library(tidyr)
 library(ggplot2)
 library(lme4)
 library(jsonlite)
-library(stats)
+# library(stats)
 library(stringr)
 
 # clear environment
@@ -74,7 +74,18 @@ jsonFormat = function(wd, runName) {
         is.null(jd$answers$data$newData$job) == TRUE | 
           jd$answers$data$newData$job == "", NA,
         jd$answers$data$newData$job),
-            
+      
+      # subject-level data: comprehension checks
+      cc1 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck1) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck1, collapse = ', ')),
+      cc2 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck2) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck2, collapse = ', ')),
+      cc3 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck3) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck3, collapse = ', ')),
+      
       # subject-level data: open-ended responses
       comments = ifelse(
         is.null(jd$answers$data$newData$comments) | 
@@ -143,9 +154,7 @@ d_tidy <- d_us_run_01 %>%
   # full_join(d_india_run_01.4) %>%
   # full_join(d_india_run_01.5) %>%
   full_join(d_india_run_01.6) %>%
-  full_join(d_india_run_01.7)
-
-d_tidy <- d_tidy %>%
+  full_join(d_india_run_01.7) %>%
   mutate(
     run = factor(run),
     subid = factor(subid),
@@ -161,6 +170,9 @@ d_tidy <- d_tidy %>%
     religionChild = factor(religionChild),
     religionNow = factor(religionNow),
     englishNative = factor(englishNative),
+    cc1 = factor(cc1),
+    cc2 = factor(cc2),
+    cc3 = factor(cc3),
     job = factor(job),
     predicate = factor(predicate),
     leftCharacter = factor(leftCharacter),
@@ -187,10 +199,11 @@ comments = d_tidy %>%
 
 # exclude people who said they had problems loading pictures
 # NOTE: make sure to redo whenever new participants are added!!
-d_tidy = d_tidy %>%
+d_tidy <- d_tidy %>%
   filter(subid != "us_run_01_10",
          subid != "us_run_01_34")
 
+# exclude people who failed the practice trials or were marked as "drop"
 subidsToKeep = d_tidy %>%
   filter(predicate == "colder") %>%
   mutate(drop = ifelse(leftCharacter == "icecream",
@@ -205,12 +218,28 @@ subidsToKeep = d_tidy %>%
   select(sequence, subid, drop) %>%
   filter(drop != "drop")
                        
-d_tidy = d_tidy %>%
+d_tidy <- d_tidy %>%
   filter(is.element(subid, subidsToKeep$subid))
+
+# add info on whether they passed the comprehension check in 1 try
+d_tidy <- d_tidy %>%
+  mutate(cc1_attempts = 1 + str_count(cc1, pattern = ","),
+         cc2_attempts = 1 + str_count(cc2, pattern = ","),
+         cc3_attempts = 1 + str_count(cc3, pattern = ","))
+
+d_pass1 <- d_tidy %>% 
+  filter(cc1_attempts < 2 & cc2_attempts < 2 & cc3_attempts < 2)
+
+d_pass2 <- d_tidy %>% 
+  filter(cc1_attempts < 3 & cc2_attempts < 3 & cc3_attempts < 3)
+
+# screen by comprehension check (option)
+# d_tidy <- d_pass1
+d_tidy <- d_pass2
 
 # --- EVENING OUT CONDITION ASSIGNMENT ----------------------------------------
 
-# NEED TO IMPLEMENT COMPREHENSION CHECK AND EVENING OUT FOR INDIAN Ps
+# NEED TO ADD MORE INDIAN Ps!
 
 # # randomly choose N participants from each sequence
 # n = 10 # set number to choose
@@ -220,17 +249,26 @@ d_tidy = d_tidy %>%
 #   group_by(country, sequence) %>%
 #   sample_n(n, replace = FALSE)
 # 
-# d_tidy = d_tidy %>%
+# d_tidy <- d_tidy %>%
 #   filter(is.element(subid, subidList$subid))
-#   
-# # check
-# d_tidy %>% group_by(country, sequence) %>% select(subid) %>% 
-#   unique() %>% summarise(count = length(subid))
+
+# (temp) choose ALL participants from each sequence
+subidList = d_tidy %>%
+  select(country, sequence, subid) %>%
+  distinct() %>%
+  group_by(country, sequence)
+
+d_tidy <- d_tidy %>%
+  filter(is.element(subid, subidList$subid))
+  
+# check
+d_tidy %>% group_by(country, sequence) %>% select(subid) %>% 
+  unique() %>% summarise(count = length(subid))
 
 # --- WRITING ANONYMIZED CSV --------------------------------------------------
 
 # # write subidList to csv file
-# write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")
+write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")
 
 # write data to de-identified csv file
 write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-08-17_data_anonymized.csv")

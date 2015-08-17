@@ -72,6 +72,17 @@ jsonFormatCharmeans = function(wd, runName) {
           jd$answers$data$newData$job == "", NA,
         jd$answers$data$newData$job),
       
+      # subject-level data: comprehension checks
+      cc1 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck1) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck1, collapse = ', ')),
+      cc2 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck2) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck2, collapse = ', ')),
+      cc3 = ifelse(
+        is.null(jd$answers$data$newData$comprehensionCheck3) == TRUE, "NA",
+        paste(jd$answers$data$newData$comprehensionCheck3, collapse = ', ')),
+      
       # subject-level data: open-ended responses
       comments = ifelse(
         is.null(jd$answers$data$newData$comments) | 
@@ -145,7 +156,17 @@ d_tidy <- d_us_run_01 %>%
   full_join(d_india_run_01.6) %>%
   full_join(d_india_run_01.7)
 
-d_tidy <- d_tidy %>%
+# clean up variables
+d_tidy <- d_us_run_01 %>%
+  #   full_join(d_us_run_02) %>% ...etc.
+  full_join(d_india_run_01.0) %>%
+  full_join(d_india_run_01.1) %>%
+  full_join(d_india_run_01.2) %>%
+  # full_join(d_india_run_01.3) %>%
+  # full_join(d_india_run_01.4) %>%
+  # full_join(d_india_run_01.5) %>%
+  full_join(d_india_run_01.6) %>%
+  full_join(d_india_run_01.7) %>%
   mutate(
     run = factor(run),
     subid = factor(subid),
@@ -161,17 +182,21 @@ d_tidy <- d_tidy %>%
     religionChild = factor(religionChild),
     religionNow = factor(religionNow),
     englishNative = factor(englishNative),
-    job = factor(job)
-  )
+    cc1 = factor(cc1),
+    cc2 = factor(cc2),
+    cc3 = factor(cc3),
+    job = factor(job))
+
+glimpse(d_tidy)
 
 # --- EVENING OUT CONDITION ASSIGNMENT ----------------------------------------
 
-# # import subidList from first formatting file
-# subidList = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")[-1]
-# 
-# # filter by subidList
-# d_tidy = d_tidy %>%
-#   filter(is.element(subid, subidList$subid))
+# import subidList from first formatting file
+subidList = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")[-1]
+
+# filter by subidList
+d_tidy = d_tidy %>%
+  filter(is.element(subid, subidList$subid))
 
 # check
 d_tidy %>% group_by(country, sequence) %>% select(subid) %>% unique() %>% summarise(count = length(subid))
