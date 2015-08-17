@@ -104,11 +104,48 @@ d_us_run_01 = jsonFormat(
   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/us_run-01/",
   runName = "us_run_01")
 
+# India run 01 (2015-08-15)
+d_india_run_01.0 = jsonFormat(
+  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01/",
+  runName = "india_run_01.0")
+d_india_run_01.1 = jsonFormat(
+  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.1/",
+  runName = "india_run_01.1")
+d_india_run_01.2 = jsonFormat(
+  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.2/",
+  runName = "india_run_01.2")
+# SAME AS RUN 01.2!
+# d_india_run_01.3 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.3/",
+#   runName = "india_run_01.3")
+# d_india_run_01.4 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.4/",
+#   runName = "india_run_01.4")
+# d_india_run_01.5 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.5/",
+#   runName = "india_run_01.5")
+d_india_run_01.6 = jsonFormat(
+  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.6/",
+  runName = "india_run_01.6")
+d_india_run_01.7 = jsonFormat(
+  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.7/",
+  runName = "india_run_01.7")
+
 # --- TIDYING -----------------------------------------------------------------
 
 # clean up variables
-d_tidy = d_us_run_01 %>%
+d_tidy <- d_us_run_01 %>%
 #   full_join(d_us_run_02) %>% ...etc.
+  full_join(d_india_run_01.0) %>%
+  full_join(d_india_run_01.1) %>%
+  full_join(d_india_run_01.2) %>%
+  # full_join(d_india_run_01.3) %>%
+  # full_join(d_india_run_01.4) %>%
+  # full_join(d_india_run_01.5) %>%
+  full_join(d_india_run_01.6) %>%
+  full_join(d_india_run_01.7)
+
+d_tidy <- d_tidy %>%
   mutate(
     run = factor(run),
     subid = factor(subid),
@@ -134,8 +171,7 @@ d_tidy = d_us_run_01 %>%
              ifelse(response == "slightly more left", -1,
                     ifelse(response == "both equally", 0,
                            ifelse(response == "slightly more right", 1,
-                                  ifelse(response == "much more right", 2, NA)))))
-    )
+                                  ifelse(response == "much more right", 2, NA))))))
 
 glimpse(d_tidy)
 
@@ -174,27 +210,30 @@ d_tidy = d_tidy %>%
 
 # --- EVENING OUT CONDITION ASSIGNMENT ----------------------------------------
 
-# randomly choose N participants from each sequence
-n = 10 # set number to choose
-subidList = d_tidy %>%
-  select(sequence, subid) %>%
-  distinct() %>%
-  group_by(sequence) %>%
-  sample_n(n, replace = FALSE)
+# NEED TO IMPLEMENT COMPREHENSION CHECK AND EVENING OUT FOR INDIAN Ps
 
-d_tidy = d_tidy %>%
-  filter(is.element(subid, subidList$subid))
-  
-# check
-d_tidy %>% group_by(sequence) %>% select(subid) %>% unique() %>% summarise(count = length(subid))
+# # randomly choose N participants from each sequence
+# n = 10 # set number to choose
+# subidList = d_tidy %>%
+#   select(country, sequence, subid) %>%
+#   distinct() %>%
+#   group_by(country, sequence) %>%
+#   sample_n(n, replace = FALSE)
+# 
+# d_tidy = d_tidy %>%
+#   filter(is.element(subid, subidList$subid))
+#   
+# # check
+# d_tidy %>% group_by(country, sequence) %>% select(subid) %>% 
+#   unique() %>% summarise(count = length(subid))
 
 # --- WRITING ANONYMIZED CSV --------------------------------------------------
 
-# write subidList to csv file
-write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")
+# # write subidList to csv file
+# write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/randomized_subidList.csv")
 
 # write data to de-identified csv file
-write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-05-09_data_anonymized.csv")
+write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-08-17_data_anonymized.csv")
 
-d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-05-09_data_anonymized.csv")[-1] # get rid of column of obs numbers
+d = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/adults/run-01_2015-08-17_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
