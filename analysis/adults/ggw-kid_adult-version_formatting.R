@@ -235,7 +235,7 @@ d_pass2 <- d_tidy %>%
 
 # screen by comprehension check (option)
 # d_tidy <- d_pass1
-d_tidy <- d_pass2
+# d_tidy <- d_pass2
 
 # --- EVENING OUT CONDITION ASSIGNMENT ----------------------------------------
 
