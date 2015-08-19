@@ -38,13 +38,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-08-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-08-04_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-08-19_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -64,10 +64,10 @@ dd_adults_india = dd_adults %>%
 
 # set group of interest
 # ... to us:
-# dd_adults = dd_adults_us
+dd_adults = dd_adults_us
 
 # ... to india:
-dd_adults = dd_adults_india
+# dd_adults = dd_adults_india
 
 # --------> FILTERING (child data only) ---------------------------------------
 
@@ -121,9 +121,9 @@ glimpse(dd)
 
 # set group of interest
 # ... to adults:
-dd = dd_adults
+# dd = dd_adults
 # ... to children:
-# dd = dd_children
+dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -133,7 +133,7 @@ dd_nostapler <- dd %>%
          rightCharacter = factor(rightCharacter))
 
 # set group of interest
-# ... to exact:
+# ... to no stapler:
 # dd = dd_nostapler
 
 ########################################################### summary stats #####
