@@ -38,13 +38,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-08-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-09-10_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-08-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-09-10_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -97,16 +97,6 @@ dd_children_exact = dd_children %>%
 # ... to exact:
 dd_children = dd_children_exact
 
-# --------------->-> by finished ----------------------------------------------
-
-dd_children_finished = dd_children %>%
-  filter(subid != "d107" &
-           subid != "k104")
-
-# set group of interest
-# ... to exact:
-dd_children = dd_children_finished
-
 # --------> merge adults & children -------------------------------------------
 
 # merge datasets
@@ -123,7 +113,7 @@ glimpse(dd)
 # ... to adults:
 # dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
