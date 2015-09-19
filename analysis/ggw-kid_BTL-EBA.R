@@ -126,6 +126,17 @@ dd_nostapler <- dd %>%
 # ... to no stapler:
 # dd = dd_nostapler
 
+# --------------->-> exclude baby trials --------------------------------------
+
+dd_nobaby <- dd %>%
+  filter(leftCharacter != "baby" & rightCharacter != "baby") %>%
+  mutate(leftCharacter = factor(leftCharacter),
+         rightCharacter = factor(rightCharacter))
+
+# set group of interest
+# ... to no baby:
+dd = dd_nobaby
+
 ########################################################### summary stats #####
 
 # --- DEMOGRAPHICS ------------------------------------------------------------
