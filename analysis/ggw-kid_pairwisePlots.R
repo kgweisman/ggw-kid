@@ -112,7 +112,7 @@ glimpse(dd)
 # ... to adults:
 # dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -166,7 +166,6 @@ qplot(subset(demo, ageGroup == "adults")$ageCalc)
 ######################################################## analysis & plots #####
 
 # --- MAKE CHARACTER PAIRS DATAFRAME ------------------------------------------
-
 
 d1 = dd %>% 
   filter(phase == "test") %>%
@@ -641,3 +640,49 @@ plot_cat.v2 <- ggplot(aes(x = interaction(predicate, pairCat),
 plot_char
 plot_cat
 # plot_cat.v2
+
+# --- COMPARE CHILDREN TO ADULTS ----------------------------------------------
+
+temp = d1 %>% 
+  group_by(predicate, pairCat, ageGroup, subid) %>% 
+  summarise(mean = mean(responseNumFlip, na.rm = T),
+            sd = sd(responseNumFlip, na.rm = T),
+            n = length(responseNumFlip)) %>%
+  group_by(predicate, pairCat, ageGroup) %>%
+  summarise(mean_mean = mean(mean, na.rm = T),
+            sd_mean = sd(mean, na.rm = T),
+            n_mean = length(mean))
+
+gtemp <- ggplot(aes(x = 
+                      reorder(pairCat,
+                              as.numeric(
+                                factor(pairCat,
+                                       levels = c("human.human",
+                                                  "animal.animal",
+                                                  "tech.tech",
+                                                  "human.animal",
+                                                  "human.tech",
+                                                  "animal.tech",
+                                                  "control")))),
+                    y = mean_mean,
+                    fill = pairCat),
+                data = temp) +
+  facet_grid(predicate ~ ageGroup,
+             labeller = labeller(predicate = c("hunger" = "...get hungry",
+                                               "feelings" = "...have feelings",
+                                               "thinking" = "...think"))) +
+  geom_bar(stat = "identity", position = "identity") +
+  geom_errorbar(aes(ymin = mean_mean - 2*sd_mean/sqrt(n_mean),
+                    ymax = mean_mean + 2*sd_mean/sqrt(n_mean),
+                    width = 0.1)) +
+  geom_hline(aes(yintercept = 0), lty = 2) +
+  theme_bw() +
+  scale_fill_brewer(type = "qual",
+                    palette = 2) +
+  theme(text = element_text(size = 20),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60,
+                                   hjust = 1)) +
+  labs(title = "mean_mean COMPARISON SCORES\nby character pair category\n",
+       x = "\nCHARACTER PAIR CATEGORY",
+       y = "mean_mean RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
