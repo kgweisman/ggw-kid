@@ -686,3 +686,48 @@ gtemp <- ggplot(aes(x =
   labs(title = "mean_mean COMPARISON SCORES\nby character pair category\n",
        x = "\nCHARACTER PAIR CATEGORY",
        y = "mean_mean RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
+
+temp2 = d1 %>% 
+  group_by(predicate, pairCat, pair, ageGroup, subid) %>% 
+  summarise(mean = mean(responseNumFlip, na.rm = T),
+            sd = sd(responseNumFlip, na.rm = T),
+            n = length(responseNumFlip)) %>%
+  group_by(predicate, pairCat, pair, ageGroup) %>%
+  summarise(mean_mean = mean(mean, na.rm = T),
+            sd_mean = sd(mean, na.rm = T),
+            n_mean = length(mean))
+
+gtemp2 <- ggplot(aes(x = 
+                          reorder(pair,
+                                  as.numeric(
+                                    factor(pairCat,
+                                           levels = c("human.human",
+                                                      "animal.animal",
+                                                      "tech.tech",
+                                                      "human.animal",
+                                                      "human.tech",
+                                                      "animal.tech",
+                                                      "control")))),
+                        y = mean_mean,
+                        fill = pairCat),
+                    data = temp2) +
+  facet_grid(predicate ~ ageGroup,
+             labeller = labeller(predicate = c("hunger" = "...get hungry",
+                                               "feelings" = "...have feelings",
+                                               "thinking" = "...think"))) +
+  geom_bar(stat = "identity", position = "identity") +
+  geom_errorbar(aes(ymin = mean_mean - 2*sd_mean/sqrt(n_mean),
+                    ymax = mean_mean + 2*sd_mean/sqrt(n_mean),
+                    width = 0.1)) +
+  geom_hline(aes(yintercept = 0), lty = 2) +
+  theme_bw() +
+  scale_fill_brewer(type = "qual",
+                    palette = 2) +
+  theme(text = element_text(size = 20),
+        legend.position = "top",
+        axis.text.x = element_text(angle = 60,
+                                   hjust = 1)) +
+  labs(title = "mean_mean COMPARISON SCORES\nby character pair\n",
+       x = "\nCHARACTER PAIR",
+       y = "mean_mean RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
+       fill = "PAIR CATEGORY: ")
