@@ -167,6 +167,9 @@ qplot(subset(demo, ageGroup == "children")$ageCalc, binwidth = 1/12,
 # qplot(subset(demo, ageGroup == "children")$age[demo$age < 100])
 # qplot(subset(demo, ageGroup == "adults")$age[demo$age < 100])
 
+# age by condition
+demo %>% group_by(ageGroup, sequence) %>% summarise(mean_age = round(mean(ageCalc, na.rm = T), 2), sd_age = round(sd(ageCalc, na.rm = T), 2))
+
 ######################################################## analysis & plots #####
 
 # --- choice frequencies data-formatting function -----------------------------
