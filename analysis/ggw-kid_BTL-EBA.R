@@ -270,12 +270,58 @@ dotchart(scaleVals_adults_all[c("stapler", "car", "computer", "robot",
 M_adults_hunger <- makeM(selectPredicate = "hunger",
                          selectAgeGroup = "adults")
 btl_adults_hunger <- eba(M_adults_hunger); summary(btl_adults_hunger)
-scaleVals_adults_hunger <- uscale(btl_adults_hunger, norm = NULL)
-dotchart(scaleVals_adults_hunger[c("stapler", "car", "computer", "robot",
-                                   "bug", "bear", "dog", 
-                                   "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Adults: Hunger")
+scaleVals_adults_hunger <- uscale(btl_adults_hunger, norm = NULL)[c("stapler", 
+                                                                    "car", 
+                                                                    "computer", 
+                                                                    "robot",
+                                                                    "bug", 
+                                                                    "bear", 
+                                                                    "dog", 
+                                                                    "baby", 
+                                                                    "kid", 
+                                                                    "grownup")]
+# dotchart(scaleVals_adults_hunger, 
+#          pch = 16,
+#          main = "Adults: Hunger")
+
+scaleVals_adults_hunger_df <- data.frame(scaleVals_adults_hunger) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_adults_hunger,
+           colour = category), 
+       data = scaleVals_adults_hunger_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Hunger\n")
 
 # --------------->-> predicate: FEELINGS --------------------------------------
 
@@ -283,11 +329,51 @@ M_adults_feelings <- makeM(selectPredicate = "feelings",
                            selectAgeGroup = "adults")
 btl_adults_feelings <- eba(M_adults_feelings); summary(btl_adults_feelings)
 scaleVals_adults_feelings <- uscale(btl_adults_feelings, norm = NULL)
-dotchart(scaleVals_adults_feelings[c("stapler", "car", "computer", "robot",
-                                     "bug", "bear", "dog", 
-                                     "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Adults: Feelings")
+
+# dotchart(scaleVals_adults_feelings[c("stapler", "car", "computer", "robot",
+#                                      "bug", "bear", "dog", 
+#                                      "baby", "kid", "grownup")], 
+#          pch = 16,
+#          main = "Adults: Feelings")
+
+scaleVals_adults_feelings_df <- data.frame(scaleVals_adults_feelings) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_adults_feelings,
+           colour = category), 
+       data = scaleVals_adults_feelings_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Feelings\n")
 
 # --------------->-> predicate: THINKING --------------------------------------
 
@@ -295,11 +381,51 @@ M_adults_thinking <- makeM(selectPredicate = "thinking",
                            selectAgeGroup = "adults")
 btl_adults_thinking <- eba(M_adults_thinking); summary(btl_adults_thinking)
 scaleVals_adults_thinking <- uscale(btl_adults_thinking, norm = NULL)
-dotchart(scaleVals_adults_thinking[c("stapler", "car", "computer", "robot",
-                                     "bug", "bear", "dog", 
-                                     "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Adults: Thinking")
+
+# dotchart(scaleVals_adults_thinking[c("stapler", "car", "computer", "robot",
+#                                      "bug", "bear", "dog", 
+#                                      "baby", "kid", "grownup")], 
+#          pch = 16,
+#          main = "Adults: Thinking")
+
+scaleVals_adults_thinking_df <- data.frame(scaleVals_adults_thinking) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_adults_thinking,
+           colour = category), 
+       data = scaleVals_adults_thinking_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Thinking\n")
 
 # --------> children ------------------------------------------------------------
 
@@ -319,12 +445,58 @@ dotchart(scaleVals_children_all[c("stapler", "car", "computer", "robot",
 M_children_hunger <- makeM(selectPredicate = "hunger",
                          selectAgeGroup = "children")
 btl_children_hunger <- eba(M_children_hunger); summary(btl_children_hunger)
-scaleVals_children_hunger <- uscale(btl_children_hunger, norm = NULL)
-dotchart(scaleVals_children_hunger[c("stapler", "car", "computer", "robot",
-                                   "bug", "bear", "dog", 
-                                   "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Children: Hunger")
+scaleVals_children_hunger <- uscale(btl_children_hunger, norm = NULL)[c("stapler", 
+                                                                    "car", 
+                                                                    "computer", 
+                                                                    "robot",
+                                                                    "bug", 
+                                                                    "bear", 
+                                                                    "dog", 
+                                                                    "baby", 
+                                                                    "kid", 
+                                                                    "grownup")]
+# dotchart(scaleVals_children_hunger, 
+#          pch = 16,
+#          main = "Adults: Hunger")
+
+scaleVals_children_hunger_df <- data.frame(scaleVals_children_hunger) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_children_hunger,
+           colour = category), 
+       data = scaleVals_children_hunger_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Hunger\n")
 
 # --------------->-> predicate: FEELINGS --------------------------------------
 
@@ -332,11 +504,51 @@ M_children_feelings <- makeM(selectPredicate = "feelings",
                            selectAgeGroup = "children")
 btl_children_feelings <- eba(M_children_feelings); summary(btl_children_feelings)
 scaleVals_children_feelings <- uscale(btl_children_feelings, norm = NULL)
-dotchart(scaleVals_children_feelings[c("stapler", "car", "computer", "robot",
-                                     "bug", "bear", "dog", 
-                                     "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Children: Feelings")
+
+# dotchart(scaleVals_children_feelings[c("stapler", "car", "computer", "robot",
+#                                      "bug", "bear", "dog", 
+#                                      "baby", "kid", "grownup")], 
+#          pch = 16,
+#          main = "Adults: Feelings")
+
+scaleVals_children_feelings_df <- data.frame(scaleVals_children_feelings) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_children_feelings,
+           colour = category), 
+       data = scaleVals_children_feelings_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Feelings\n")
 
 # --------------->-> predicate: THINKING --------------------------------------
 
@@ -344,11 +556,51 @@ M_children_thinking <- makeM(selectPredicate = "thinking",
                            selectAgeGroup = "children")
 btl_children_thinking <- eba(M_children_thinking); summary(btl_children_thinking)
 scaleVals_children_thinking <- uscale(btl_children_thinking, norm = NULL)
-dotchart(scaleVals_children_thinking[c("stapler", "car", "computer", "robot",
-                                     "bug", "bear", "dog", 
-                                     "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Children: Thinking")
+
+# dotchart(scaleVals_children_thinking[c("stapler", "car", "computer", "robot",
+#                                      "bug", "bear", "dog", 
+#                                      "baby", "kid", "grownup")], 
+#          pch = 16,
+#          main = "Adults: Thinking")
+
+scaleVals_children_thinking_df <- data.frame(scaleVals_children_thinking) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("animal", "human", "control", "technology")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ggplot(aes(y = reorder(character, order), 
+           x = scaleVals_children_thinking,
+           colour = category), 
+       data = scaleVals_children_thinking_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "BTL Solution: Thinking\n")
 
 # --------> test differences between groupings --------------------------------
 
