@@ -253,13 +253,13 @@ d_tidy <- d_tidy %>%
   filter(is.element(subid, subidList$subid))
 
 # (temp) choose ALL participants from each sequence
-subidList = d_tidy %>%
-  select(country, sequence, subid) %>%
-  distinct() %>%
-  group_by(country, sequence)
-
-d_tidy <- d_tidy %>%
-  filter(is.element(subid, subidList$subid))
+# subidList = d_tidy %>%
+#   select(country, sequence, subid) %>%
+#   distinct() %>%
+#   group_by(country, sequence)
+# 
+# d_tidy <- d_tidy %>%
+#   filter(is.element(subid, subidList$subid))
   
 # check
 d_tidy %>% group_by(country, sequence) %>% select(subid) %>% 
