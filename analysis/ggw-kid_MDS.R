@@ -63,7 +63,7 @@ dd_adults_india = dd_adults %>%
 
 # set group of interest
 # ... to us:
-# dd_adults = dd_adults_us
+dd_adults = dd_adults_us
 
 # ... to india:
 # dd_adults = dd_adults_india
@@ -271,12 +271,42 @@ mds_Aordinal = mds(dissim, ndim = 2, type = "ordinal")
 summary(mds_Aordinal)
 mds_Aordinal
 
-# plot dimension space
-plot(mds_Aordinal,
-     plot.type = "confplot",
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),     
-     main = "MDS solution: All conditions")
+# plot dimension space (built in function)
+# plot(mds_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: All conditions")
+
+# plot (ggplot)
+conf_Aordinal <- data.frame(mds_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
+                           "human",
+                        ifelse(character %in% c("dog", "bear", "bug"), 
+                               "animal",
+                               ifelse(character %in% c("robot", "computer", "car"), 
+                                      "technology",
+                                      "purple"))))
+xRange_Aordinal <- range(conf_Aordinal$D1)
+yRange_Aordinal <- range(conf_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "Dimension 1", y = "Dimension 2",
+       title = "MDS Solution: All predicates\n") +
+  xlim(c(xRange_Aordinal[1] - 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])),
+       xRange_Aordinal[2] + 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])) +
+  ylim(c(yRange_Aordinal[1] - 0.05*(yRange_Aordinal[2]-yRange_Aordinal[1])),
+       yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
+  
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_Aordinal, plot.type = "bubbleplot",
@@ -308,23 +338,42 @@ mds_thinking_Aordinal = mds(dissim_thinking, ndim = 2, type = "ordinal")
 summary(mds_thinking_Aordinal)
 mds_thinking_Aordinal
 
-# plot dimension space
-plot(mds_thinking_Aordinal,
-     plot.type = "confplot",
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),     
-     main = "MDS solution: THINKING")
-
-# # plot space and stress (bigger bubble = better fit)
-# plot(mds_thinking_Aordinal, plot.type = "bubbleplot",
+# plot dimension space (built in function)
+# plot(mds_thinking_Aordinal,
+#      plot.type = "confplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
-#      main = "MDS bubble plot: THINKING")
-# 
-# # plot stress (higher = worse fit)
-# plot(mds_thinking_Aordinal, plot.type = "stressplot",
-#      main = "MDS stress: THINKING")
-# 
+#      main = "MDS solution: Thinking")
+
+# plot (ggplot)
+conf_thinking_Aordinal <- data.frame(mds_thinking_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
+                           "human",
+                           ifelse(character %in% c("dog", "bear", "bug"), 
+                                  "animal",
+                                  ifelse(character %in% c("robot", "computer", "car"), 
+                                         "technology",
+                                         "purple"))))
+xRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D1)
+yRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_thinking_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "Dimension 1", y = "Dimension 2",
+       title = "MDS Solution: Thinking\n") +
+  xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
+       xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
+  ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
+       yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
+
 # # Shepard plot
 # plot(mds_thinking_Aordinal, plot.type = "Shepard",
 #      main = "MDS Shepard plot: THINKING")
@@ -343,12 +392,41 @@ mds_feelings_Aordinal = mds(dissim_feelings, ndim = 2, type = "ordinal")
 summary(mds_feelings_Aordinal)
 mds_feelings_Aordinal
 
-# plot dimension space
-plot(mds_feelings_Aordinal,
-     plot.type = "confplot",
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),     
-     main = "MDS solution: FEELINGS")
+# plot dimension space (built in function)
+# plot(mds_feelings_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: Feelings")
+
+# plot (ggplot)
+conf_feelings_Aordinal <- data.frame(mds_feelings_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
+                           "human",
+                           ifelse(character %in% c("dog", "bear", "bug"), 
+                                  "animal",
+                                  ifelse(character %in% c("robot", "computer", "car"), 
+                                         "technology",
+                                         "purple"))))
+xRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D1)
+yRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_feelings_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "Dimension 1", y = "Dimension 2",
+       title = "MDS Solution: Feelings\n") +
+  xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
+       xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
+  ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
+       yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_feelings_Aordinal, plot.type = "bubbleplot",
@@ -378,12 +456,41 @@ mds_hunger_Aordinal = mds(dissim_hunger, ndim = 2, type = "ordinal")
 summary(mds_hunger_Aordinal)
 mds_hunger_Aordinal
 
-# plot dimension space
-plot(mds_hunger_Aordinal,
-     plot.type = "confplot",
-     xlim = c(-1, 1),
-     ylim = c(-1, 1),     
-     main = "MDS solution: HUNGER")
+# plot dimension space (built in function)
+# plot(mds_hunger_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: Hunger")
+
+# plot (ggplot)
+conf_hunger_Aordinal <- data.frame(mds_hunger_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
+                           "human",
+                           ifelse(character %in% c("dog", "bear", "bug"), 
+                                  "animal",
+                                  ifelse(character %in% c("robot", "computer", "car"), 
+                                         "technology",
+                                         "purple"))))
+xRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D1)
+yRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_hunger_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "Dimension 1", y = "Dimension 2",
+       title = "MDS Solution: Hunger\n") +
+  xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
+       xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
+  ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),
+       yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_hunger_Aordinal, plot.type = "bubbleplot",
