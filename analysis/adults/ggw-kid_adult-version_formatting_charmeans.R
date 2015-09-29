@@ -115,58 +115,59 @@ d_us_run_01 = jsonFormatCharmeans(
   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/us_run-01/",
   runName = "us_run_01")
 
-# India run 01 (2015-08-15)
-d_india_run_01.0 = jsonFormatCharmeans(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01/",
-  runName = "india_run_01.0")
-d_india_run_01.1 = jsonFormatCharmeans(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.1/",
-  runName = "india_run_01.1")
-d_india_run_01.2 = jsonFormatCharmeans(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.2/",
-  runName = "india_run_01.2")
-# SAME AS RUN 01.2!
-# d_india_run_01.3 = jsonFormatCharmeans(
-#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.3/",
-#   runName = "india_run_01.3")
-# d_india_run_01.4 = jsonFormatCharmeans(
-#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.4/",
-#   runName = "india_run_01.4")
-# d_india_run_01.5 = jsonFormatCharmeans(
-#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.5/",
-#   runName = "india_run_01.5")
-d_india_run_01.6 = jsonFormatCharmeans(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.6/",
-  runName = "india_run_01.6")
-d_india_run_01.7 = jsonFormatCharmeans(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.7/",
-  runName = "india_run_01.7")
+# # India run 01 (2015-08-15)
+# d_india_run_01.0 = jsonFormatCharmeans(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01/",
+#   runName = "india_run_01.0")
+# d_india_run_01.1 = jsonFormatCharmeans(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.1/",
+#   runName = "india_run_01.1")
+# d_india_run_01.2 = jsonFormatCharmeans(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.2/",
+#   runName = "india_run_01.2")
+# # SAME AS RUN 01.2!
+# # d_india_run_01.3 = jsonFormatCharmeans(
+# #   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.3/",
+# #   runName = "india_run_01.3")
+# # d_india_run_01.4 = jsonFormatCharmeans(
+# #   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.4/",
+# #   runName = "india_run_01.4")
+# # d_india_run_01.5 = jsonFormatCharmeans(
+# #   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.5/",
+# #   runName = "india_run_01.5")
+# d_india_run_01.6 = jsonFormatCharmeans(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.6/",
+#   runName = "india_run_01.6")
+# d_india_run_01.7 = jsonFormatCharmeans(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.7/",
+#   runName = "india_run_01.7")
 
 # --- TIDYING -----------------------------------------------------------------
 
 # clean up variables
-d_tidy <- d_us_run_01 %>%
+d_tidy <- d_us_run_01 
+#%>%
   #   full_join(d_us_run_02) %>% ...etc.
-  full_join(d_india_run_01.0) %>%
-  full_join(d_india_run_01.1) %>%
-  full_join(d_india_run_01.2) %>%
-  # full_join(d_india_run_01.3) %>%
-  # full_join(d_india_run_01.4) %>%
-  # full_join(d_india_run_01.5) %>%
-  full_join(d_india_run_01.6) %>%
-  full_join(d_india_run_01.7)
+#   full_join(d_india_run_01.0) %>%
+#   full_join(d_india_run_01.1) %>%
+#   full_join(d_india_run_01.2) %>%
+#   # full_join(d_india_run_01.3) %>%
+#   # full_join(d_india_run_01.4) %>%
+#   # full_join(d_india_run_01.5) %>%
+#   full_join(d_india_run_01.6) %>%
+#   full_join(d_india_run_01.7)
 
 # clean up variables
 d_tidy <- d_us_run_01 %>%
   #   full_join(d_us_run_02) %>% ...etc.
-  full_join(d_india_run_01.0) %>%
-  full_join(d_india_run_01.1) %>%
-  full_join(d_india_run_01.2) %>%
-  # full_join(d_india_run_01.3) %>%
-  # full_join(d_india_run_01.4) %>%
-  # full_join(d_india_run_01.5) %>%
-  full_join(d_india_run_01.6) %>%
-  full_join(d_india_run_01.7) %>%
+#   full_join(d_india_run_01.0) %>%
+#   full_join(d_india_run_01.1) %>%
+#   full_join(d_india_run_01.2) %>%
+#   # full_join(d_india_run_01.3) %>%
+#   # full_join(d_india_run_01.4) %>%
+#   # full_join(d_india_run_01.5) %>%
+#   full_join(d_india_run_01.6) %>%
+#   full_join(d_india_run_01.7) %>%
   mutate(
     run = factor(run),
     subid = factor(subid),
