@@ -115,16 +115,16 @@ d_us_run_01 = jsonFormat(
   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/us_run-01/",
   runName = "us_run_01")
 
-# India run 01 (2015-08-15)
-d_india_run_01.0 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01/",
-  runName = "india_run_01.0")
-d_india_run_01.1 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.1/",
-  runName = "india_run_01.1")
-d_india_run_01.2 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.2/",
-  runName = "india_run_01.2")
+# # India run 01 (2015-08-15)
+# d_india_run_01.0 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01/",
+#   runName = "india_run_01.0")
+# d_india_run_01.1 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.1/",
+#   runName = "india_run_01.1")
+# d_india_run_01.2 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.2/",
+#   runName = "india_run_01.2")
 # SAME AS RUN 01.2!
 # d_india_run_01.3 = jsonFormat(
 #   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.3/",
@@ -135,26 +135,26 @@ d_india_run_01.2 = jsonFormat(
 # d_india_run_01.5 = jsonFormat(
 #   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.5/",
 #   runName = "india_run_01.5")
-d_india_run_01.6 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.6/",
-  runName = "india_run_01.6")
-d_india_run_01.7 = jsonFormat(
-  wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.7/",
-  runName = "india_run_01.7")
+# d_india_run_01.6 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.6/",
+#   runName = "india_run_01.6")
+# d_india_run_01.7 = jsonFormat(
+#   wd = "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/turk/india_run-01.7/",
+#   runName = "india_run_01.7")
 
 # --- TIDYING -----------------------------------------------------------------
 
 # clean up variables
 d_tidy <- d_us_run_01 %>%
 #   full_join(d_us_run_02) %>% ...etc.
-  full_join(d_india_run_01.0) %>%
-  full_join(d_india_run_01.1) %>%
-  full_join(d_india_run_01.2) %>%
-  # full_join(d_india_run_01.3) %>%
-  # full_join(d_india_run_01.4) %>%
-  # full_join(d_india_run_01.5) %>%
-  full_join(d_india_run_01.6) %>%
-  full_join(d_india_run_01.7) %>%
+#   full_join(d_india_run_01.0) %>%
+#   full_join(d_india_run_01.1) %>%
+#   full_join(d_india_run_01.2) %>%
+#   # full_join(d_india_run_01.3) %>%
+#   # full_join(d_india_run_01.4) %>%
+#   # full_join(d_india_run_01.5) %>%
+#   full_join(d_india_run_01.6) %>%
+#   full_join(d_india_run_01.7) %>%
   mutate(
     run = factor(run),
     subid = factor(subid),
@@ -241,16 +241,16 @@ d_pass2 <- d_tidy %>%
 
 # NEED TO ADD MORE INDIAN Ps!
 
-# # randomly choose N participants from each sequence
-# n = 10 # set number to choose
-# subidList = d_tidy %>%
-#   select(country, sequence, subid) %>%
-#   distinct() %>%
-#   group_by(country, sequence) %>%
-#   sample_n(n, replace = FALSE)
-# 
-# d_tidy <- d_tidy %>%
-#   filter(is.element(subid, subidList$subid))
+# randomly choose N participants from each sequence
+n = 10 # set number to choose
+subidList = d_tidy %>%
+  select(country, sequence, subid) %>%
+  distinct() %>%
+  group_by(country, sequence) %>%
+  sample_n(n, replace = FALSE)
+
+d_tidy <- d_tidy %>%
+  filter(is.element(subid, subidList$subid))
 
 # (temp) choose ALL participants from each sequence
 subidList = d_tidy %>%
