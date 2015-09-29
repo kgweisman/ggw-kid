@@ -294,7 +294,7 @@ scaleVals_adults_hunger_df <- data.frame(scaleVals_adults_hunger) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -346,7 +346,7 @@ scaleVals_adults_feelings_df <- data.frame(scaleVals_adults_feelings) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -398,7 +398,7 @@ scaleVals_adults_thinking_df <- data.frame(scaleVals_adults_thinking) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -469,7 +469,7 @@ scaleVals_children_hunger_df <- data.frame(scaleVals_children_hunger) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -521,7 +521,7 @@ scaleVals_children_feelings_df <- data.frame(scaleVals_children_feelings) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -573,7 +573,7 @@ scaleVals_children_thinking_df <- data.frame(scaleVals_children_thinking) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "human", "control", "technology")),
+                           levels = c("animal", "control", "human", "technology")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",

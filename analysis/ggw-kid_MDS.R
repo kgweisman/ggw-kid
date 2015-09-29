@@ -287,7 +287,7 @@ conf_Aordinal <- data.frame(mds_Aordinal$conf) %>%
                                "animal",
                                ifelse(character %in% c("robot", "computer", "car"), 
                                       "technology",
-                                      "purple"))))
+                                      "control"))))
 xRange_Aordinal <- range(conf_Aordinal$D1)
 yRange_Aordinal <- range(conf_Aordinal$D2)
 
@@ -302,10 +302,12 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   geom_text(vjust = -1, size = 7) +
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: All predicates\n") +
-  xlim(c(xRange_Aordinal[1] - 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])),
-       xRange_Aordinal[2] + 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])) +
-  ylim(c(yRange_Aordinal[1] - 0.05*(yRange_Aordinal[2]-yRange_Aordinal[1])),
-       yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1))
+#   xlim(c(xRange_Aordinal[1] - 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])),
+#        xRange_Aordinal[2] + 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])) +
+#   ylim(c(yRange_Aordinal[1] - 0.05*(yRange_Aordinal[2]-yRange_Aordinal[1])),
+#        yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
   
 
 # # plot space and stress (bigger bubble = better fit)
@@ -354,7 +356,7 @@ conf_thinking_Aordinal <- data.frame(mds_thinking_Aordinal$conf) %>%
                                   "animal",
                                   ifelse(character %in% c("robot", "computer", "car"), 
                                          "technology",
-                                         "purple"))))
+                                         "control"))))
 xRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D1)
 yRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D2)
 
@@ -369,10 +371,12 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   geom_text(vjust = -1, size = 7) +
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Thinking\n") +
-  xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
-       xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
-  ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
-       yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1))
+#   xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
+#        xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
+#   ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
+#        yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
 
 # # Shepard plot
 # plot(mds_thinking_Aordinal, plot.type = "Shepard",
@@ -408,7 +412,7 @@ conf_feelings_Aordinal <- data.frame(mds_feelings_Aordinal$conf) %>%
                                   "animal",
                                   ifelse(character %in% c("robot", "computer", "car"), 
                                          "technology",
-                                         "purple"))))
+                                         "control"))))
 xRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D1)
 yRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D2)
 
@@ -423,10 +427,12 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   geom_text(vjust = -1, size = 7) +
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Feelings\n") +
-  xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
-       xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
-  ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
-       yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1))
+#   xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
+#        xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
+#   ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
+#        yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_feelings_Aordinal, plot.type = "bubbleplot",
@@ -472,7 +478,7 @@ conf_hunger_Aordinal <- data.frame(mds_hunger_Aordinal$conf) %>%
                                   "animal",
                                   ifelse(character %in% c("robot", "computer", "car"), 
                                          "technology",
-                                         "purple"))))
+                                         "control"))))
 xRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D1)
 yRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D2)
 
@@ -487,10 +493,12 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   geom_text(vjust = -1, size = 7) +
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Hunger\n") +
-  xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
-       xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
-  ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),
-       yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1))
+#   xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
+#        xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
+#   ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),
+#        yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_hunger_Aordinal, plot.type = "bubbleplot",
