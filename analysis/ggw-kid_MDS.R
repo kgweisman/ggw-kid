@@ -13,6 +13,8 @@ library(psych)
 library(scales)
 library(smacof)
 library(eba)
+library(langcog)
+library(grid)
 
 # clear environment
 rm(list=ls())
@@ -37,13 +39,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-09-25_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-09-25_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -281,13 +283,15 @@ mds_Aordinal
 # plot (ggplot)
 conf_Aordinal <- data.frame(mds_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
-  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
-                           "human",
-                        ifelse(character %in% c("dog", "bear", "bug"), 
-                               "animal",
-                               ifelse(character %in% c("robot", "computer", "car"), 
-                                      "technology",
-                                      "control"))))
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
 xRange_Aordinal <- range(conf_Aordinal$D1)
 yRange_Aordinal <- range(conf_Aordinal$D2)
 
@@ -303,13 +307,13 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: All predicates\n") +
   xlim(c(-1, 1)) +
-  ylim(c(-1, 1))
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
 #   xlim(c(xRange_Aordinal[1] - 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])),
 #        xRange_Aordinal[2] + 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])) +
 #   ylim(c(yRange_Aordinal[1] - 0.05*(yRange_Aordinal[2]-yRange_Aordinal[1])),
 #        yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
   
-
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_Aordinal, plot.type = "bubbleplot",
 #      xlim = c(-1, 1),
@@ -350,13 +354,15 @@ mds_thinking_Aordinal
 # plot (ggplot)
 conf_thinking_Aordinal <- data.frame(mds_thinking_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
-  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
-                           "human",
-                           ifelse(character %in% c("dog", "bear", "bug"), 
-                                  "animal",
-                                  ifelse(character %in% c("robot", "computer", "car"), 
-                                         "technology",
-                                         "control"))))
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
 xRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D1)
 yRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D2)
 
@@ -372,7 +378,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Thinking\n") +
   xlim(c(-1, 1)) +
-  ylim(c(-1, 1))
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
 #   xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
 #        xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
 #   ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
@@ -406,13 +413,15 @@ mds_feelings_Aordinal
 # plot (ggplot)
 conf_feelings_Aordinal <- data.frame(mds_feelings_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
-  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
-                           "human",
-                           ifelse(character %in% c("dog", "bear", "bug"), 
-                                  "animal",
-                                  ifelse(character %in% c("robot", "computer", "car"), 
-                                         "technology",
-                                         "control"))))
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
 xRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D1)
 yRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D2)
 
@@ -428,7 +437,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Feelings\n") +
   xlim(c(-1, 1)) +
-  ylim(c(-1, 1))
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
 #   xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
 #        xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
 #   ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
@@ -472,13 +482,15 @@ mds_hunger_Aordinal
 # plot (ggplot)
 conf_hunger_Aordinal <- data.frame(mds_hunger_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
-  mutate(category = ifelse(character %in% c("grownup", "kid", "baby"), 
-                           "human",
-                           ifelse(character %in% c("dog", "bear", "bug"), 
-                                  "animal",
-                                  ifelse(character %in% c("robot", "computer", "car"), 
-                                         "technology",
-                                         "control"))))
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
 xRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D1)
 yRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D2)
 
@@ -494,7 +506,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
   labs(x = "Dimension 1", y = "Dimension 2",
        title = "MDS Solution: Hunger\n") +
   xlim(c(-1, 1)) +
-  ylim(c(-1, 1))
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
 #   xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
 #        xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
 #   ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),

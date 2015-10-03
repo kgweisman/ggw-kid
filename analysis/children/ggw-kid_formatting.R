@@ -30,7 +30,7 @@ d_kid_run_01_raw = d_kid_run_01_raw %>% mutate(run = factor("run01"))
 
 glimpse(d_kid_run_01_raw)
 
-# kid run 02 (2015-09-25)
+# kid run 02 (2015-10-02)
 files_run02 <- dir("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid_run_02/")
 
 d_kid_run_02_raw <- data.frame()
@@ -140,10 +140,11 @@ d_tidy = d_tidy %>%
 # write.csv(subidList, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/randomized_subidList.csv")
 
 # write FULL DATASET to de-identified csv file
-write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-09-25_data_anonymized.csv")
+write.csv(d_tidy, "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-02_data_anonymized.csv")
 
 # write RUN01 DATASET to de-identified csv file
 write.csv(subset(d_tidy, run == "run01"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")
 
 # write RUN02 DATASET to de-identified csv file
-write.csv(subset(d_tidy, run == "run02"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-09-25_data_anonymized.csv")
+write.csv(subset(d_tidy, run == "run02"), "/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-02_data_anonymized.csv")
+
