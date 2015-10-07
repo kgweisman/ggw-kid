@@ -37,13 +37,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-09-29_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-09-29_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -734,3 +734,51 @@ gtemp2 <- ggplot(aes(x =
        x = "\nCHARACTER PAIR",
        y = "mean_mean RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
        fill = "PAIR CATEGORY: ")
+
+
+
+# --- CLOSE LOOK PLOTTING ----------------------------------------------------
+
+closeLook <- function(chosenCharacters) {
+  
+  allPairs <- levels(d1$pair)
+  
+  chosenPair <- data.frame(allPairs) %>% 
+    filter(grepl(chosenCharacters[1], allPairs) & 
+             grepl(chosenCharacters[2], allPairs))
+  
+  chosenPair <- as.character(chosenPair$allPairs)
+  
+  df <- d1 %>%
+    filter(pair == chosenPair) %>%
+    mutate(responseSpec = factor(responseNumFlip,
+                                 levels = c(-2, -1, 0, 1, 2),
+                                 labels = c(paste("much more", chosenCharacters[1]),
+                                            paste("slightly more", chosenCharacters[1]),
+                                            "both equally",
+                                            paste("slightly more", chosenCharacters[2]),
+                                            paste("much more", chosenCharacters[2]))))
+  
+  g <- ggplot(aes(x = responseSpec),
+              data = df) +
+    facet_grid(predicate ~ ageGroup,
+               labeller = labeller(predicate = c("hunger" = "'...get hungry?'",
+                                                 "feelings" = "'...have feelings?'",
+                                                 "thinking" = "'...think?'"),
+                                   ageGroup = c("adults" = "Adults (Study 1)", 
+                                                "children" = "Children (Study 2)"))) +
+    geom_bar() +
+    theme_bw() +
+    theme(text = element_text(size = 20),
+          axis.text.x = element_text(angle = 30, hjust = 1)) +
+    scale_y_discrete() +
+    labs(title = paste(chosenCharacters[1], "vs.", chosenCharacters[2], "comparisons by predicate and age group\n'Which one is more likely to...'\n"),
+         x = "\nResponse",
+         y = "Count\n")
+  
+  return(g)
+}
+
+# robot vs. bug only
+
+gtemp3 <- closeLook(c("robot", "bug")); gtemp3
