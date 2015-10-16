@@ -11,3 +11,5 @@ data/
 *.Rproj
 *messy*
 plots/
+*.png
+*.jpg
