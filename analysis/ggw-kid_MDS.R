@@ -92,6 +92,7 @@ dd_adults = dd_adults_us
 # --------------->-> by age ---------------------------------------------------
 
 dd_children_exact = dd_children %>%
+  # filter(ageCalc >= 4.25 & ageCalc <= 5.25)
   filter(ageCalc >= 4.5 & ageCalc <= 5.5)
 
 # set group of interest
