@@ -280,7 +280,8 @@ plot(hcb_adults,
      main = "Adults: All predicates (HCA)",
      sub = "",
      xlab = "",
-     ylab = "Height")
+     ylab = "Height",
+     edgePar = list(col = 1:2, lty = 2:3))
 
 # ...for thinking
 dissim_adults_thinking <- makeDissimByPredicate(selectPredicate = "thinking",
