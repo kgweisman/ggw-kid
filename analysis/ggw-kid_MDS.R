@@ -112,10 +112,10 @@ glimpse(dd)
 # --------------->-> by ageGroup ----------------------------------------------
 
 # set group of interest
-# # ... to adults:
-# dd = dd_adults
+# ... to adults:
+dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -300,7 +300,7 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
        data = conf_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        # axis.title = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
@@ -371,7 +371,7 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
        data = conf_thinking_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        # axis.title = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
@@ -430,7 +430,7 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
        data = conf_feelings_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        # axis.title = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
@@ -499,7 +499,7 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
        data = conf_hunger_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        # axis.title = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
