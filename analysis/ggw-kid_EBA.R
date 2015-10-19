@@ -93,6 +93,7 @@ dd_adults = dd_adults_us
 # --------------->-> by age ---------------------------------------------------
 
 dd_children_exact = dd_children %>%
+  # filter(ageCalc >= 4.25 & ageCalc <= 5.25)
   filter(ageCalc >= 4.5 & ageCalc <= 5.5)
 
 # set group of interest
@@ -248,45 +249,89 @@ makeM <- function(selectPredicate = c("hunger", "feelings", "thinking"),
     }
   }
   
+  # set diagonal to NA
+  diag(tempDf) <- NA
+  
   return(tempDf)
   
 }
 
-# --- BRADLEY-TERRY-LUCE (BTL) ANALYSIS ---------------------------------------
+# --- ELIMINATION-BY-ASPECTS (EBA) ANALYSIS -----------------------------------
+
+# GENERAL PARAMETERS
+
+# aspects for EBA analyses
+# ... option 1: living, human, technology, individuals
+aspects13a <- list(baby = c(1, 11, 12),
+                  bear = c(2, 12),
+                  bug = c(3, 12),
+                  car = c(4, 13),
+                  computer = c(5, 13),
+                  dog = c(6, 12),
+                  grownup = c(7, 11, 12),
+                  kid = c(8, 11, 12),
+                  robot = c(9, 13),
+                  stapler = c(10))
+
+# ... option 2: human, animal, technology, individuals
+aspects13b <- list(baby = c(1, 11),
+                  bear = c(2, 12),
+                  bug = c(3, 12),
+                  car = c(4, 13),
+                  computer = c(5, 13),
+                  dog = c(6, 12),
+                  grownup = c(7, 11),
+                  kid = c(8, 11),
+                  robot = c(9, 13),
+                  stapler = c(10))
+
+# ... option 3: living, individuals
+aspects11 <- list(baby = c(1, 11),
+                  bear = c(2, 11),
+                  bug = c(3, 11),
+                  car = c(4),
+                  computer = c(5),
+                  dog = c(6, 11),
+                  grownup = c(7, 11),
+                  kid = c(8, 11),
+                  robot = c(9),
+                  stapler = c(10))
+
+# ... option 4: individuals
+aspects10 <- list(baby = c(1),
+                bear = c(2),
+                bug = c(3),
+                car = c(4),
+                computer = c(5),
+                dog = c(6),
+                grownup = c(7),
+                kid = c(8),
+                robot = c(9),
+                stapler = c(10))
+
+# set option
+# aspects <- aspects13a
+# aspects <- aspects13b
+# aspects <- aspects11
+aspects <- aspects10
+
+# set continuity correction
+# continuityCorr <- 1
+continuityCorr <- 0
+
+# xlim for EBA plots
+upperLim <- 0.4
 
 # --------> adults ------------------------------------------------------------
 
 # --------------->-> all predicates -------------------------------------------
 
-M_adults_all <- makeM(selectAgeGroup = "adults")
-btl_adults_all <- eba(M_adults_all); summary(btl_adults_all)
-scaleVals_adults_all <- uscale(btl_adults_all, norm = NULL)
-dotchart(scaleVals_adults_all[c("stapler", "car", "computer", "robot",
-                                "bug", "bear", "dog", 
-                                "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Adults: All predicates")
+M_adults_all <- makeM(selectAgeGroup = "adults") + continuityCorr # continuity correction
 
-# --------------->-> predicate: HUNGER ----------------------------------------
+eba_adults_all <- OptiPt(M_adults_all,
+                         A = aspects); summary(eba_adults_all)
 
-M_adults_hunger <- makeM(selectPredicate = "hunger",
-                         selectAgeGroup = "adults")
-btl_adults_hunger <- eba(M_adults_hunger); summary(btl_adults_hunger)
-scaleVals_adults_hunger <- uscale(btl_adults_hunger, norm = NULL)[c("stapler", 
-                                                                    "car", 
-                                                                    "computer", 
-                                                                    "robot",
-                                                                    "bug", 
-                                                                    "bear", 
-                                                                    "dog", 
-                                                                    "baby", 
-                                                                    "kid", 
-                                                                    "grownup")]
-# dotchart(scaleVals_adults_hunger, 
-#          pch = 16,
-#          main = "Adults: Hunger")
-
-scaleVals_adults_hunger_df <- data.frame(scaleVals_adults_hunger) %>%
+eba_adults_all_df_0 <- data.frame(eba_adults_all$u) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -296,7 +341,7 @@ scaleVals_adults_hunger_df <- data.frame(scaleVals_adults_hunger) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -312,33 +357,49 @@ scaleVals_adults_hunger_df <- data.frame(scaleVals_adults_hunger) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
-ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_adults_hunger,
-           colour = category), 
-       data = scaleVals_adults_hunger_df) +
-  theme_bw() +
-  theme(text = element_text(size = 20),
-        axis.title = element_blank(),
-        legend.position = "none",
-        panel.border = element_rect(size = 2),
-        panel.grid.major.y = element_line(size = 1)) +
-  geom_point(size = 5) +
-  labs(title = "BTL Solution: Hunger\n")
+# eba_adults_all_df <- multi_boot.data.frame(data = eba_adults_all_df_0,
+#                                               summary_function = "mean",
+#                                               column = "eba_adults_all.u",
+#                                               summary_groups = c("category", 
+#                                                                  "character",
+#                                                                  "order"),
+#                                               statistics_functions = c("ci_lower", 
+#                                                                        "mean", "ci_upper")) %>%
+#   mutate(ci_upper_new = as.numeric(ifelse(mean + ci_upper > upperLim, upperLim - mean, NA)))
+# 
+# ggplot(aes(y = reorder(character, order), 
+#            x = mean,
+#            colour = category), 
+#        data = eba_adults_all_df) +
+#   theme_bw() +
+#   theme(text = element_text(size = 20),
+#         axis.title = element_blank(),
+#         legend.position = "none",
+#         panel.border = element_rect(size = 2),
+#         panel.grid.major.y = element_line(size = 1)) +
+#   geom_point(size = 5) +
+#   labs(title = "EBA Solution: All predicates\n") +
+#   geom_errorbarh(aes(xmin = mean - ci_lower,
+#                      xmax = mean + ci_upper,
+#                      height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+# #   geom_segment(aes(y = character, yend = character, 
+# #                    x = mean - ci_lower, xend = mean + ci_upper_new), 
+# #                arrow = arrow(length = unit(0.1, "inches"))) +
+# #   geom_text(aes(y = character, vjust = 2,
+# #                 x = 2*upperLim - (mean + ci_upper_new), hjust = 1,
+# #                 label = paste("upper limit:", round(mean + ci_upper, 2)))) +
+#   scale_colour_brewer(type = "qual", palette = 6)
 
-# --------------->-> predicate: FEELINGS --------------------------------------
+# --------------->-> HUNGER ---------------------------------------------------
 
-M_adults_feelings <- makeM(selectPredicate = "feelings",
-                           selectAgeGroup = "adults")
-btl_adults_feelings <- eba(M_adults_feelings); summary(btl_adults_feelings)
-scaleVals_adults_feelings <- uscale(btl_adults_feelings, norm = NULL)
+M_adults_hunger <- makeM(selectAgeGroup = "adults", 
+                      selectPredicate = "hunger") + 1 # add one for continuity correction
 
-# dotchart(scaleVals_adults_feelings[c("stapler", "car", "computer", "robot",
-#                                      "bug", "bear", "dog", 
-#                                      "baby", "kid", "grownup")], 
-#          pch = 16,
-#          main = "Adults: Feelings")
+eba_adults_hunger <- OptiPt(M_adults_hunger,
+                         A = aspects); summary(eba_adults_hunger)
 
-scaleVals_adults_feelings_df <- data.frame(scaleVals_adults_feelings) %>%
+eba_adults_hunger_df_0 <- data.frame("utility" = uscale(eba_adults_hunger)) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -348,7 +409,7 @@ scaleVals_adults_feelings_df <- data.frame(scaleVals_adults_feelings) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -364,33 +425,51 @@ scaleVals_adults_feelings_df <- data.frame(scaleVals_adults_feelings) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
+ci_adults_hunger <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_adults_hunger)))) %>%
+  add_rownames(var = "character")
+
+eba_adults_hunger_df <- eba_adults_hunger_df_0 %>%
+  full_join(ci_adults_hunger) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
 ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_adults_feelings,
+           x = utility,
            colour = category), 
-       data = scaleVals_adults_feelings_df) +
+       data = eba_adults_hunger_df) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        axis.title.y = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "BTL Solution: Feelings\n")
+  labs(title = "Adults: Hunger\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+  xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
 
-# --------------->-> predicate: THINKING --------------------------------------
+# --------------->-> FEELINGS ---------------------------------------------------
 
-M_adults_thinking <- makeM(selectPredicate = "thinking",
-                           selectAgeGroup = "adults")
-btl_adults_thinking <- eba(M_adults_thinking); summary(btl_adults_thinking)
-scaleVals_adults_thinking <- uscale(btl_adults_thinking, norm = NULL)
+M_adults_feelings <- makeM(selectAgeGroup = "adults", 
+                         selectPredicate = "feelings") + 1 # add one for continuity correction
 
-# dotchart(scaleVals_adults_thinking[c("stapler", "car", "computer", "robot",
-#                                      "bug", "bear", "dog", 
-#                                      "baby", "kid", "grownup")], 
-#          pch = 16,
-#          main = "Adults: Thinking")
+eba_adults_feelings <- OptiPt(M_adults_feelings,
+                            A = aspects); summary(eba_adults_feelings)
 
-scaleVals_adults_thinking_df <- data.frame(scaleVals_adults_thinking) %>%
+eba_adults_feelings_df_0 <- data.frame("utility" = uscale(eba_adults_feelings)) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -400,7 +479,7 @@ scaleVals_adults_thinking_df <- data.frame(scaleVals_adults_thinking) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -416,52 +495,122 @@ scaleVals_adults_thinking_df <- data.frame(scaleVals_adults_thinking) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
+ci_adults_feelings <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_adults_feelings)))) %>%
+  add_rownames(var = "character")
+
+eba_adults_feelings_df <- eba_adults_feelings_df_0 %>%
+  full_join(ci_adults_feelings) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
 ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_adults_thinking,
+           x = utility,
            colour = category), 
-       data = scaleVals_adults_thinking_df) +
+       data = eba_adults_feelings_df) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        axis.title.y = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "BTL Solution: Thinking\n")
+  labs(title = "Adults: Feelings\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
+
+# --------------->-> THINKING ---------------------------------------------------
+
+M_adults_thinking <- makeM(selectAgeGroup = "adults", 
+                         selectPredicate = "thinking") + 1 # add one for continuity correction
+
+eba_adults_thinking <- OptiPt(M_adults_thinking,
+                            A = aspects); summary(eba_adults_thinking)
+
+eba_adults_thinking_df_0 <- data.frame("utility" = uscale(eba_adults_thinking)) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("human", "animal", "technology", "control")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ci_adults_thinking <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_adults_thinking)))) %>%
+  add_rownames(var = "character")
+
+eba_adults_thinking_df <- eba_adults_thinking_df_0 %>%
+  full_join(ci_adults_thinking) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
+ggplot(aes(y = reorder(character, order), 
+           x = utility,
+           colour = category), 
+       data = eba_adults_thinking_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "Adults: Thinking\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
 
 # --------> children ------------------------------------------------------------
 
 # --------------->-> all predicates -------------------------------------------
 
-M_children_all <- makeM(selectAgeGroup = "children")
-btl_children_all <- eba(M_children_all); summary(btl_children_all)
-scaleVals_children_all <- uscale(btl_children_all, norm = NULL)
-dotchart(scaleVals_children_all[c("stapler", "car", "computer", "robot",
-                                "bug", "bear", "dog", 
-                                "baby", "kid", "grownup")], 
-         pch = 16,
-         main = "Children: All predicates")
+M_children_all <- makeM(selectAgeGroup = "children") + continuityCorr # continuity correction
 
-# --------------->-> predicate: HUNGER ----------------------------------------
+eba_children_all <- OptiPt(M_children_all,
+                         A = aspects); summary(eba_children_all)
 
-M_children_hunger <- makeM(selectPredicate = "hunger",
-                         selectAgeGroup = "children")
-btl_children_hunger <- eba(M_children_hunger); summary(btl_children_hunger)
-scaleVals_children_hunger <- uscale(btl_children_hunger, norm = NULL)[c("stapler", 
-                                                                    "car", 
-                                                                    "computer", 
-                                                                    "robot",
-                                                                    "bug", 
-                                                                    "bear", 
-                                                                    "dog", 
-                                                                    "baby", 
-                                                                    "kid", 
-                                                                    "grownup")]
-# dotchart(scaleVals_children_hunger, 
-#          pch = 16,
-#          main = "Adults: Hunger")
-
-scaleVals_children_hunger_df <- data.frame(scaleVals_children_hunger) %>%
+eba_children_all_df_0 <- data.frame(eba_children_all$u) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -471,7 +620,7 @@ scaleVals_children_hunger_df <- data.frame(scaleVals_children_hunger) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -487,33 +636,49 @@ scaleVals_children_hunger_df <- data.frame(scaleVals_children_hunger) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
-ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_children_hunger,
-           colour = category), 
-       data = scaleVals_children_hunger_df) +
-  theme_bw() +
-  theme(text = element_text(size = 20),
-        axis.title = element_blank(),
-        legend.position = "none",
-        panel.border = element_rect(size = 2),
-        panel.grid.major.y = element_line(size = 1)) +
-  geom_point(size = 5) +
-  labs(title = "BTL Solution: Hunger\n")
+# eba_children_all_df <- multi_boot.data.frame(data = eba_children_all_df_0,
+#                                            summary_function = "mean",
+#                                            column = "eba_children_all.u",
+#                                            summary_groups = c("category", 
+#                                                               "character",
+#                                                               "order"),
+#                                            statistics_functions = c("ci_lower", 
+#                                                                     "mean", "ci_upper")) %>%
+#   mutate(ci_upper_new = as.numeric(ifelse(mean + ci_upper > upperLim, upperLim - mean, NA)))
+# 
+# ggplot(aes(y = reorder(character, order), 
+#            x = mean,
+#            colour = category), 
+#        data = eba_children_all_df) +
+#   theme_bw() +
+#   theme(text = element_text(size = 20),
+#         axis.title = element_blank(),
+#         legend.position = "none",
+#         panel.border = element_rect(size = 2),
+#         panel.grid.major.y = element_line(size = 1)) +
+#   geom_point(size = 5) +
+#   labs(title = "EBA Solution: All predicates\n") +
+#   geom_errorbarh(aes(xmin = mean - ci_lower,
+#                      xmax = mean + ci_upper,
+#                      height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+# #   geom_segment(aes(y = character, yend = character, 
+# #                    x = mean - ci_lower, xend = mean + ci_upper_new), 
+# #                arrow = arrow(length = unit(0.1, "inches"))) +
+# #   geom_text(aes(y = character, vjust = 2,
+# #                 x = 2*upperLim - (mean + ci_upper_new), hjust = 1,
+# #                 label = paste("upper limit:", round(mean + ci_upper, 2)))) +
+#   scale_colour_brewer(type = "qual", palette = 6)
 
-# --------------->-> predicate: FEELINGS --------------------------------------
+# --------------->-> HUNGER ---------------------------------------------------
 
-M_children_feelings <- makeM(selectPredicate = "feelings",
-                           selectAgeGroup = "children")
-btl_children_feelings <- eba(M_children_feelings); summary(btl_children_feelings)
-scaleVals_children_feelings <- uscale(btl_children_feelings, norm = NULL)
+M_children_hunger <- makeM(selectAgeGroup = "children", 
+                         selectPredicate = "hunger") + 1 # add one for continuity correction
 
-# dotchart(scaleVals_children_feelings[c("stapler", "car", "computer", "robot",
-#                                      "bug", "bear", "dog", 
-#                                      "baby", "kid", "grownup")], 
-#          pch = 16,
-#          main = "Adults: Feelings")
+eba_children_hunger <- OptiPt(M_children_hunger,
+                            A = aspects); summary(eba_children_hunger)
 
-scaleVals_children_feelings_df <- data.frame(scaleVals_children_feelings) %>%
+eba_children_hunger_df_0 <- data.frame("utility" = uscale(eba_children_hunger)) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -523,7 +688,7 @@ scaleVals_children_feelings_df <- data.frame(scaleVals_children_feelings) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -539,33 +704,51 @@ scaleVals_children_feelings_df <- data.frame(scaleVals_children_feelings) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
+ci_children_hunger <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_children_hunger)))) %>%
+  add_rownames(var = "character")
+
+eba_children_hunger_df <- eba_children_hunger_df_0 %>%
+  full_join(ci_children_hunger) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
 ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_children_feelings,
+           x = utility,
            colour = category), 
-       data = scaleVals_children_feelings_df) +
+       data = eba_children_hunger_df) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        axis.title.y = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "BTL Solution: Feelings\n")
+  labs(title = "Children: Hunger\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
 
-# --------------->-> predicate: THINKING --------------------------------------
+# --------------->-> FEELINGS ---------------------------------------------------
 
-M_children_thinking <- makeM(selectPredicate = "thinking",
-                           selectAgeGroup = "children")
-btl_children_thinking <- eba(M_children_thinking); summary(btl_children_thinking)
-scaleVals_children_thinking <- uscale(btl_children_thinking, norm = NULL)
+M_children_feelings <- makeM(selectAgeGroup = "children", 
+                           selectPredicate = "feelings") + 1 # add one for continuity correction
 
-# dotchart(scaleVals_children_thinking[c("stapler", "car", "computer", "robot",
-#                                      "bug", "bear", "dog", 
-#                                      "baby", "kid", "grownup")], 
-#          pch = 16,
-#          main = "Adults: Thinking")
+eba_children_feelings <- OptiPt(M_children_feelings,
+                              A = aspects); summary(eba_children_feelings)
 
-scaleVals_children_thinking_df <- data.frame(scaleVals_children_thinking) %>%
+eba_children_feelings_df_0 <- data.frame("utility" = uscale(eba_children_feelings)) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
                                   "human",
@@ -575,7 +758,7 @@ scaleVals_children_thinking_df <- data.frame(scaleVals_children_thinking) %>%
                                                 
                                                 "technology",
                                                 "control"))),
-                           levels = c("animal", "control", "human", "technology")),
+                           levels = c("human", "animal", "technology", "control")),
          character = factor(character,
                             levels = c("grownup", "kid", "baby",
                                        "dog", "bear", "bug",
@@ -591,18 +774,111 @@ scaleVals_children_thinking_df <- data.frame(scaleVals_children_thinking) %>%
                                                                          ifelse(character == "car", 2,
                                                                                 ifelse(character == "stapler", 1, NA)))))))))))
 
+ci_children_feelings <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_children_feelings)))) %>%
+  add_rownames(var = "character")
+
+eba_children_feelings_df <- eba_children_feelings_df_0 %>%
+  full_join(ci_children_feelings) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
 ggplot(aes(y = reorder(character, order), 
-           x = scaleVals_children_thinking,
+           x = utility,
            colour = category), 
-       data = scaleVals_children_thinking_df) +
+       data = eba_children_feelings_df) +
   theme_bw() +
   theme(text = element_text(size = 20),
-        axis.title = element_blank(),
+        axis.title.y = element_blank(),
         legend.position = "none",
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "BTL Solution: Thinking\n")
+  labs(title = "Children: Feelings\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
+
+# --------------->-> THINKING ---------------------------------------------------
+
+M_children_thinking <- makeM(selectAgeGroup = "children", 
+                           selectPredicate = "thinking") + 1 # add one for continuity correction
+
+eba_children_thinking <- OptiPt(M_children_thinking,
+                              A = aspects); summary(eba_children_thinking)
+
+eba_children_thinking_df_0 <- data.frame("utility" = uscale(eba_children_thinking)) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(ifelse(character %in% c("grownup", "kid", "baby"), 
+                                  "human",
+                                  ifelse(character %in% c("dog", "bear", "bug"), 
+                                         "animal",
+                                         ifelse(character %in% c("robot", "computer", "car"), 
+                                                
+                                                "technology",
+                                                "control"))),
+                           levels = c("human", "animal", "technology", "control")),
+         character = factor(character,
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car", "stapler")),
+         order = ifelse(character == "grownup", 10,
+                        ifelse(character == "kid", 9,
+                               ifelse(character == "baby", 8,
+                                      ifelse(character == "dog", 7,
+                                             ifelse(character == "bear", 6,
+                                                    ifelse(character == "bug", 5,
+                                                           ifelse(character == "robot", 4,
+                                                                  ifelse(character == "computer", 3,
+                                                                         ifelse(character == "car", 2,
+                                                                                ifelse(character == "stapler", 1, NA)))))))))))
+
+ci_children_thinking <- data.frame("me" = 1.96 * sqrt(diag(cov.u(eba_children_thinking)))) %>%
+  add_rownames(var = "character")
+
+eba_children_thinking_df <- eba_children_thinking_df_0 %>%
+  full_join(ci_children_thinking) %>%
+  mutate(ci_lower = utility - me,
+         ci_upper = utility + me,
+         ci_lower_new = as.numeric(ifelse(ci_lower < 0, 0, ci_lower)), # hacky :(
+         ci_upper_new = as.numeric(ifelse(ci_upper > upperLim, upperLim, NA)))
+
+ggplot(aes(y = reorder(character, order), 
+           x = utility,
+           colour = category), 
+       data = eba_children_thinking_df) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2),
+        panel.grid.major.y = element_line(size = 1)) +
+  geom_point(size = 5) +
+  labs(title = "Children: Thinking\n",
+       x = "\nUtility scale value") +
+  geom_errorbarh(aes(xmin = ci_lower_new,
+                     xmax = ci_upper,
+                     height = 0.1)) +
+#   xlim(c(0, upperLim)) +
+#   geom_segment(aes(y = character, yend = character, 
+#                    x = ci_lower_new, xend = ci_upper_new), 
+#                arrow = arrow(length = unit(0.1, "inches"))) +
+#   geom_text(aes(y = character, vjust = 2,
+#                 x = 2*upperLim - (ci_upper_new), hjust = 1,
+#                 label = paste("upper limit:", round(ci_upper, 2)))) +
+  geom_vline(aes(xintercept = 0.1), lty = 2) +
+  scale_colour_brewer(type = "qual", palette = 6)
 
 # --------> test differences between groupings --------------------------------
 
@@ -616,32 +892,35 @@ M_adults_compPredicates <- abind(M_adults_hunger, M_adults_feelings, M_adults_th
 # dotchart(uscale(eba(M_adults_compPredicates[,,"feelings"])))
 # dotchart(uscale(eba(M_adults_compPredicates[,,"thinking"])))
 
-test_adults_compPredicates <- group.test(M_adults_compPredicates)
+test_adults_compPredicates <- group.test(M_adults_compPredicates,
+                                         A = aspects)
 test_adults_compPredicates
 
 # --------------->-> children: among predicates ---------------------------------
 
 M_children_compPredicates <- abind(M_children_hunger, M_children_feelings, M_children_thinking, 
-                                 along = 3,
-                                 new.names = c("hunger", "feelings", "thinking"))
+                                   along = 3,
+                                   new.names = c("hunger", "feelings", "thinking"))
 # double-check same as above
 # dotchart(uscale(eba(M_children_compPredicates[,,"hunger"])))
 # dotchart(uscale(eba(M_children_compPredicates[,,"feelings"])))
 # dotchart(uscale(eba(M_children_compPredicates[,,"thinking"])))
 
-test_children_compPredicates <- group.test(M_children_compPredicates)
+test_children_compPredicates <- group.test(M_children_compPredicates,
+                                           A = aspects)
 test_children_compPredicates
 
 # --------------->-> adults vs. children: across predicates -------------------
 
 M_compAgeGroups <- abind(M_adults_all, M_children_all, 
-                                   along = 3,
-                                   new.names = c("adults", "children"))
+                         along = 3,
+                         new.names = c("adults", "children"))
 # double-check same as above
 # dotchart(uscale(eba(M_compAgeGroups[,,"adults"])))
 # dotchart(uscale(eba(M_compAgeGroups[,,"children"])))
 
-test_compAgeGroups <- group.test(M_compAgeGroups)
+test_compAgeGroups <- group.test(M_compAgeGroups, 
+                                 A = aspects)
 test_compAgeGroups
 
 # --------------->-> interaction: adults vs. children X predicates -------------------------
@@ -657,23 +936,26 @@ M_compInteraction <- abind(M_adults_hunger, M_adults_feelings, M_adults_thinking
                                          "children.feelings",
                                          "children.thinking"))
 
-test_compInteraction <- group.test(M_compInteraction)
+test_compInteraction <- group.test(M_compInteraction,
+                                   A = aspects)
 test_compInteraction
 
 # hunger only
 M_compInteraction_hunger <- abind(M_adults_hunger, M_children_hunger, 
-                           along = 3,
-                           new.names = c("adults.hunger", 
-                                         "children.hunger"))
-test_compInteraction_hunger <- group.test(M_compInteraction_hunger)
+                                  along = 3,
+                                  new.names = c("adults.hunger", 
+                                                "children.hunger"))
+test_compInteraction_hunger <- group.test(M_compInteraction_hunger,
+                                          A = aspects)
 test_compInteraction_hunger
 
 # feelings only
 M_compInteraction_feelings <- abind(M_adults_feelings, M_children_feelings, 
-                                  along = 3,
-                                  new.names = c("adults.feelings", 
-                                                "children.feelings"))
-test_compInteraction_feelings <- group.test(M_compInteraction_feelings)
+                                    along = 3,
+                                    new.names = c("adults.feelings", 
+                                                  "children.feelings"))
+test_compInteraction_feelings <- group.test(M_compInteraction_feelings,
+                                            A = aspects)
 test_compInteraction_feelings
 
 # thinking only
@@ -681,5 +963,6 @@ M_compInteraction_thinking <- abind(M_adults_thinking, M_children_thinking,
                                     along = 3,
                                     new.names = c("adults.thinking", 
                                                   "children.thinking"))
-test_compInteraction_thinking <- group.test(M_compInteraction_thinking)
+test_compInteraction_thinking <- group.test(M_compInteraction_thinking,
+                                            A = aspects)
 test_compInteraction_thinking
