@@ -113,7 +113,7 @@ glimpse(dd)
 
 # set group of interest
 # ... to adults:
-dd = dd_adults
+# dd = dd_adults
 # ... to children:
 # dd = dd_children
 
@@ -176,12 +176,13 @@ demo %>% group_by(ageGroup, sequence) %>% summarise(mean_age = round(mean(ageCal
 
 # --- dissimilarities data-formatting function --------------------------------
 
-makeDissimByPredicate <- function(selectPredicate) {
+makeDissimByPredicate <- function(selectPredicate, selectAgeGroup) {
   tempDissim <- NULL
   
   # make alphabetized list of characters, cycle through to fill in alphabetized pairs
   tempDissim <- dd %>%
-    filter(predicate %in% selectPredicate) %>%
+    filter(predicate %in% selectPredicate & 
+             ageGroup %in% selectAgeGroup) %>%
     mutate(character1 = array(),
            character2 = array())
   
@@ -261,28 +262,31 @@ makeDissimByPredicate <- function(selectPredicate) {
   return(tempDissim)
 }
 
-# --- MULTIDIMENSIONAL SCALING ANALYSIS A -------------------------------------
+# --- adults ------------------------------------------------------------------
 
-# --------> non-metric (ordinal) MDS ------------------------------------------
+# --------> MULTIDIMENSIONAL SCALING ANALYSIS A -------------------------------
+
+# -------------> non-metric (ordinal) MDS -------------------------------------
 # NOTE: could also explore fitting with more than 2 dimensions...
 
 # make dissimilarity matrix for all predicates
-dissim <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"))
+dissim_adults <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"),
+                                selectAgeGroup = "adults")
 
 # do MDS
-mds_Aordinal = mds(dissim, ndim = 2, type = "ordinal")
-summary(mds_Aordinal)
-mds_Aordinal
+mds_adults_Aordinal = mds(dissim_adults, ndim = 2, type = "ordinal")
+summary(mds_adults_Aordinal)
+mds_adults_Aordinal
 
 # plot dimension space (built in function)
-# plot(mds_Aordinal,
+# plot(mds_adults_Aordinal,
 #      plot.type = "confplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS solution: All conditions")
 
 # plot (ggplot)
-conf_Aordinal <- data.frame(mds_Aordinal$conf) %>%
+conf_Aordinal <- data.frame(mds_adults_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(
     ifelse(character %in% c("grownup", "kid", "baby"), 
@@ -305,8 +309,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
   geom_text(vjust = -1, size = 7) +
-  labs(x = "Dimension 1", y = "Dimension 2",
-       title = "MDS Solution: All predicates\n") +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Adults: All predicates (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
@@ -316,44 +320,45 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
 #        yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
   
 # # plot space and stress (bigger bubble = better fit)
-# plot(mds_Aordinal, plot.type = "bubbleplot",
+# plot(mds_adults_Aordinal, plot.type = "bubbleplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS bubble plot: All conditions")
 # 
 # # plot stress (higher = worse fit)
-# plot(mds_Aordinal, plot.type = "stressplot",
+# plot(mds_adults_Aordinal, plot.type = "stressplot",
 #      main = "MDS stress: All conditions")
 # 
 # # Shepard plot
-# plot(mds_Aordinal, plot.type = "Shepard",
+# plot(mds_adults_Aordinal, plot.type = "Shepard",
 #      main = "MDS Shepard plot: All conditions")
 # 
 # # plot residuals
-# plot(mds_Aordinal, plot.type = "resplot",
+# plot(mds_adults_Aordinal, plot.type = "resplot",
 #      main = "MDS residuals: All conditions")
 
-# --- MULTIDIMENSIONAL SCALING ANALYSIS B -------------------------------------
+# --------> MULTIDIMENSIONAL SCALING ANALYSIS B -------------------------------
 
-# --------> predicate: THINKING -----------------------------------------------
+# -------------> predicate: THINKING ------------------------------------------
 
 # make dissimilarity matrix for all predicates
-dissim_thinking <- makeDissimByPredicate(selectPredicate = "thinking")
+dissim_adults_thinking <- makeDissimByPredicate(selectPredicate = "thinking",
+                                         selectAgeGroup = "adults")
 
 # do MDS
-mds_thinking_Aordinal = mds(dissim_thinking, ndim = 2, type = "ordinal")
-summary(mds_thinking_Aordinal)
-mds_thinking_Aordinal
+mds_adults_thinking_Aordinal = mds(dissim_adults_thinking, ndim = 2, type = "ordinal")
+summary(mds_adults_thinking_Aordinal)
+mds_adults_thinking_Aordinal
 
 # plot dimension space (built in function)
-# plot(mds_thinking_Aordinal,
+# plot(mds_adults_thinking_Aordinal,
 #      plot.type = "confplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS solution: Thinking")
 
 # plot (ggplot)
-conf_thinking_Aordinal <- data.frame(mds_thinking_Aordinal$conf) %>%
+conf_adults_thinking_Aordinal <- data.frame(mds_adults_thinking_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(
     ifelse(character %in% c("grownup", "kid", "baby"), 
@@ -364,11 +369,11 @@ conf_thinking_Aordinal <- data.frame(mds_thinking_Aordinal$conf) %>%
                          "technology",
                          "control"))),
     levels = c("human", "animal", "technology", "control")))
-xRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D1)
-yRange_thinking_Aordinal <- range(conf_thinking_Aordinal$D2)
+xRange_thinking_Aordinal <- range(conf_adults_thinking_Aordinal$D1)
+yRange_thinking_Aordinal <- range(conf_adults_thinking_Aordinal$D2)
 
 ggplot(aes(x = D1, y = D2, colour = category, label = character), 
-       data = conf_thinking_Aordinal) +
+       data = conf_adults_thinking_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
         # axis.title = element_blank(),
@@ -376,8 +381,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
   geom_text(vjust = -1, size = 7) +
-  labs(x = "Dimension 1", y = "Dimension 2",
-       title = "MDS Solution: Thinking\n") +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Adults: Thinking (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
@@ -387,32 +392,33 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
 #        yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
 
 # # Shepard plot
-# plot(mds_thinking_Aordinal, plot.type = "Shepard",
+# plot(mds_adults_thinking_Aordinal, plot.type = "Shepard",
 #      main = "MDS Shepard plot: THINKING")
 # 
 # # plot residuals
-# plot(mds_thinking_Aordinal, plot.type = "resplot",
+# plot(mds_adults_thinking_Aordinal, plot.type = "resplot",
 #      main = "MDS residuals: THINKING")
 
-# --------> predicate: FEELINGS -----------------------------------------------
+# -------------> predicate: FEELINGS ------------------------------------------
 
 # make dissimilarity matrix for all predicates
-dissim_feelings <- makeDissimByPredicate(selectPredicate = "feelings")
+dissim_adults_feelings <- makeDissimByPredicate(selectPredicate = "feelings",
+                                         selectAgeGroup = "adults")
 
 # do MDS
-mds_feelings_Aordinal = mds(dissim_feelings, ndim = 2, type = "ordinal")
-summary(mds_feelings_Aordinal)
-mds_feelings_Aordinal
+mds_adults_feelings_Aordinal = mds(dissim_adults_feelings, ndim = 2, type = "ordinal")
+summary(mds_adults_feelings_Aordinal)
+mds_adults_feelings_Aordinal
 
 # plot dimension space (built in function)
-# plot(mds_feelings_Aordinal,
+# plot(mds_adults_feelings_Aordinal,
 #      plot.type = "confplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS solution: Feelings")
 
 # plot (ggplot)
-conf_feelings_Aordinal <- data.frame(mds_feelings_Aordinal$conf) %>%
+conf_adults_feelings_Aordinal <- data.frame(mds_adults_feelings_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(
     ifelse(character %in% c("grownup", "kid", "baby"), 
@@ -423,11 +429,11 @@ conf_feelings_Aordinal <- data.frame(mds_feelings_Aordinal$conf) %>%
                          "technology",
                          "control"))),
     levels = c("human", "animal", "technology", "control")))
-xRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D1)
-yRange_feelings_Aordinal <- range(conf_feelings_Aordinal$D2)
+xRange_feelings_Aordinal <- range(conf_adults_feelings_Aordinal$D1)
+yRange_feelings_Aordinal <- range(conf_adults_feelings_Aordinal$D2)
 
 ggplot(aes(x = D1, y = D2, colour = category, label = character), 
-       data = conf_feelings_Aordinal) +
+       data = conf_adults_feelings_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
         # axis.title = element_blank(),
@@ -435,8 +441,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
   geom_text(vjust = -1, size = 7) +
-  labs(x = "Dimension 1", y = "Dimension 2",
-       title = "MDS Solution: Feelings\n") +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Adults: Feelings (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
@@ -446,42 +452,43 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
 #        yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
-# plot(mds_feelings_Aordinal, plot.type = "bubbleplot",
+# plot(mds_adults_feelings_Aordinal, plot.type = "bubbleplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS bubble plot: FEELINGS")
 # 
 # # plot stress (higher = worse fit)
-# plot(mds_feelings_Aordinal, plot.type = "stressplot",
+# plot(mds_adults_feelings_Aordinal, plot.type = "stressplot",
 #      main = "MDS stress: FEELINGS")
 # 
 # # Shepard plot
-# plot(mds_feelings_Aordinal, plot.type = "Shepard",
+# plot(mds_adults_feelings_Aordinal, plot.type = "Shepard",
 #      main = "MDS Shepard plot: FEELINGS")
 # 
 # # plot residuals
-# plot(mds_feelings_Aordinal, plot.type = "resplot",
+# plot(mds_adults_feelings_Aordinal, plot.type = "resplot",
 #      main = "MDS residuals: FEELINGS")
 
-# --------> predicate: HUNGER -----------------------------------------------
+# -------------> predicate: HUNGER --------------------------------------------
 
 # make dissimilarity matrix for all predicates
-dissim_hunger <- makeDissimByPredicate(selectPredicate = "hunger")
+dissim_adults_hunger <- makeDissimByPredicate(selectPredicate = "hunger",
+                                       selectAgeGroup = "adults")
 
 # do MDS
-mds_hunger_Aordinal = mds(dissim_hunger, ndim = 2, type = "ordinal")
-summary(mds_hunger_Aordinal)
-mds_hunger_Aordinal
+mds_adults_hunger_Aordinal = mds(dissim_adults_hunger, ndim = 2, type = "ordinal")
+summary(mds_adults_hunger_Aordinal)
+mds_adults_hunger_Aordinal
 
 # plot dimension space (built in function)
-# plot(mds_hunger_Aordinal,
+# plot(mds_adults_hunger_Aordinal,
 #      plot.type = "confplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS solution: Hunger")
 
 # plot (ggplot)
-conf_hunger_Aordinal <- data.frame(mds_hunger_Aordinal$conf) %>%
+conf_adults_hunger_Aordinal <- data.frame(mds_adults_hunger_Aordinal$conf) %>%
   add_rownames(var = "character") %>%
   mutate(category = factor(
     ifelse(character %in% c("grownup", "kid", "baby"), 
@@ -492,11 +499,11 @@ conf_hunger_Aordinal <- data.frame(mds_hunger_Aordinal$conf) %>%
                          "technology",
                          "control"))),
     levels = c("human", "animal", "technology", "control")))
-xRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D1)
-yRange_hunger_Aordinal <- range(conf_hunger_Aordinal$D2)
+xRange_hunger_Aordinal <- range(conf_adults_hunger_Aordinal$D1)
+yRange_hunger_Aordinal <- range(conf_adults_hunger_Aordinal$D2)
 
 ggplot(aes(x = D1, y = D2, colour = category, label = character), 
-       data = conf_hunger_Aordinal) +
+       data = conf_adults_hunger_Aordinal) +
   theme_bw() +
   theme(text = element_text(size = 20),
         # axis.title = element_blank(),
@@ -504,8 +511,8 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
         panel.border = element_rect(size = 2)) +
   geom_point(size = 5) +
   geom_text(vjust = -1, size = 7) +
-  labs(x = "Dimension 1", y = "Dimension 2",
-       title = "MDS Solution: Hunger\n") +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Adults: Hunger (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
@@ -515,19 +522,296 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
 #        yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
-# plot(mds_hunger_Aordinal, plot.type = "bubbleplot",
+# plot(mds_adults_hunger_Aordinal, plot.type = "bubbleplot",
 #      xlim = c(-1, 1),
 #      ylim = c(-1, 1),     
 #      main = "MDS bubble plot: HUNGER")
 # 
 # # plot stress (higher = worse fit)
-# plot(mds_hunger_Aordinal, plot.type = "stressplot",
+# plot(mds_adults_hunger_Aordinal, plot.type = "stressplot",
 #      main = "MDS stress: HUNGER")
 # 
 # # Shepard plot
-# plot(mds_hunger_Aordinal, plot.type = "Shepard",
+# plot(mds_adults_hunger_Aordinal, plot.type = "Shepard",
 #      main = "MDS Shepard plot: HUNGER")
 # 
 # # plot residuals
-# plot(mds_hunger_Aordinal, plot.type = "resplot",
+# plot(mds_adults_hunger_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: HUNGER")
+
+# --- children ----------------------------------------------------------------
+
+# --------> MULTIDIMENSIONAL SCALING ANALYSIS A -------------------------------
+
+# -------------> non-metric (ordinal) MDS -------------------------------------
+# NOTE: could also explore fitting with more than 2 dimensions...
+
+# make dissimilarity matrix for all predicates
+dissim_children <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"),
+                                       selectAgeGroup = "children")
+
+# do MDS
+mds_children_Aordinal = mds(dissim_children, ndim = 2, type = "ordinal")
+summary(mds_children_Aordinal)
+mds_children_Aordinal
+
+# plot dimension space (built in function)
+# plot(mds_children_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: All conditions")
+
+# plot (ggplot)
+conf_Aordinal <- data.frame(mds_children_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
+xRange_Aordinal <- range(conf_Aordinal$D1)
+yRange_Aordinal <- range(conf_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Children: All predicates (MDS)\n") +
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
+#   xlim(c(xRange_Aordinal[1] - 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])),
+#        xRange_Aordinal[2] + 0.10*(xRange_Aordinal[2]-xRange_Aordinal[1])) +
+#   ylim(c(yRange_Aordinal[1] - 0.05*(yRange_Aordinal[2]-yRange_Aordinal[1])),
+#        yRange_Aordinal[2] + 0.15*(yRange_Aordinal[2]-yRange_Aordinal[1]))
+
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_children_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: All conditions")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_children_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: All conditions")
+# 
+# # Shepard plot
+# plot(mds_children_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: All conditions")
+# 
+# # plot residuals
+# plot(mds_children_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: All conditions")
+
+# --------> MULTIDIMENSIONAL SCALING ANALYSIS B -------------------------------
+
+# -------------> predicate: THINKING ------------------------------------------
+
+# make dissimilarity matrix for all predicates
+dissim_children_thinking <- makeDissimByPredicate(selectPredicate = "thinking",
+                                                selectAgeGroup = "children")
+
+# do MDS
+mds_children_thinking_Aordinal = mds(dissim_children_thinking, ndim = 2, type = "ordinal")
+summary(mds_children_thinking_Aordinal)
+mds_children_thinking_Aordinal
+
+# plot dimension space (built in function)
+# plot(mds_children_thinking_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: Thinking")
+
+# plot (ggplot)
+conf_children_thinking_Aordinal <- data.frame(mds_children_thinking_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
+xRange_thinking_Aordinal <- range(conf_children_thinking_Aordinal$D1)
+yRange_thinking_Aordinal <- range(conf_children_thinking_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_children_thinking_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Children: Thinking (MDS)\n") +
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
+#   xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
+#        xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
+#   ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
+#        yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
+
+# # Shepard plot
+# plot(mds_children_thinking_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: THINKING")
+# 
+# # plot residuals
+# plot(mds_children_thinking_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: THINKING")
+
+# -------------> predicate: FEELINGS ------------------------------------------
+
+# make dissimilarity matrix for all predicates
+dissim_children_feelings <- makeDissimByPredicate(selectPredicate = "feelings",
+                                                selectAgeGroup = "children")
+
+# do MDS
+mds_children_feelings_Aordinal = mds(dissim_children_feelings, ndim = 2, type = "ordinal")
+summary(mds_children_feelings_Aordinal)
+mds_children_feelings_Aordinal
+
+# plot dimension space (built in function)
+# plot(mds_children_feelings_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: Feelings")
+
+# plot (ggplot)
+conf_children_feelings_Aordinal <- data.frame(mds_children_feelings_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
+xRange_feelings_Aordinal <- range(conf_children_feelings_Aordinal$D1)
+yRange_feelings_Aordinal <- range(conf_children_feelings_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_children_feelings_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Children: Feelings (MDS)\n") +
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
+#   xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
+#        xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
+#   ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
+#        yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
+
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_children_feelings_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: FEELINGS")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_children_feelings_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: FEELINGS")
+# 
+# # Shepard plot
+# plot(mds_children_feelings_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: FEELINGS")
+# 
+# # plot residuals
+# plot(mds_children_feelings_Aordinal, plot.type = "resplot",
+#      main = "MDS residuals: FEELINGS")
+
+# -------------> predicate: HUNGER --------------------------------------------
+
+# make dissimilarity matrix for all predicates
+dissim_children_hunger <- makeDissimByPredicate(selectPredicate = "hunger",
+                                              selectAgeGroup = "children")
+
+# do MDS
+mds_children_hunger_Aordinal = mds(dissim_children_hunger, ndim = 2, type = "ordinal")
+summary(mds_children_hunger_Aordinal)
+mds_children_hunger_Aordinal
+
+# plot dimension space (built in function)
+# plot(mds_children_hunger_Aordinal,
+#      plot.type = "confplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS solution: Hunger")
+
+# plot (ggplot)
+conf_children_hunger_Aordinal <- data.frame(mds_children_hunger_Aordinal$conf) %>%
+  add_rownames(var = "character") %>%
+  mutate(category = factor(
+    ifelse(character %in% c("grownup", "kid", "baby"), 
+           "human",
+           ifelse(character %in% c("dog", "bear", "bug"),
+                  "animal",
+                  ifelse(character %in% c("robot", "computer", "car"),
+                         "technology",
+                         "control"))),
+    levels = c("human", "animal", "technology", "control")))
+xRange_hunger_Aordinal <- range(conf_children_hunger_Aordinal$D1)
+yRange_hunger_Aordinal <- range(conf_children_hunger_Aordinal$D2)
+
+ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+       data = conf_children_hunger_Aordinal) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  geom_point(size = 5) +
+  geom_text(vjust = -1, size = 7) +
+  labs(x = "\nDimension 1", y = "Dimension 2\n",
+       title = "Children: Hunger (MDS)\n") +
+  xlim(c(-1, 1)) +
+  ylim(c(-1, 1)) +
+  scale_color_brewer(type = "qual", palette = 6)
+#   xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
+#        xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
+#   ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),
+#        yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
+
+# # plot space and stress (bigger bubble = better fit)
+# plot(mds_children_hunger_Aordinal, plot.type = "bubbleplot",
+#      xlim = c(-1, 1),
+#      ylim = c(-1, 1),     
+#      main = "MDS bubble plot: HUNGER")
+# 
+# # plot stress (higher = worse fit)
+# plot(mds_children_hunger_Aordinal, plot.type = "stressplot",
+#      main = "MDS stress: HUNGER")
+# 
+# # Shepard plot
+# plot(mds_children_hunger_Aordinal, plot.type = "Shepard",
+#      main = "MDS Shepard plot: HUNGER")
+# 
+# # plot residuals
+# plot(mds_children_hunger_Aordinal, plot.type = "resplot",
 #      main = "MDS residuals: HUNGER")

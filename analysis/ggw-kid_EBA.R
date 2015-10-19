@@ -446,7 +446,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Adults: Hunger\n",
+  labs(title = "Adults: Hunger (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,
@@ -516,7 +516,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Adults: Feelings\n",
+  labs(title = "Adults: Feelings (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,
@@ -586,7 +586,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Adults: Thinking\n",
+  labs(title = "Adults: Thinking (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,
@@ -725,7 +725,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Children: Hunger\n",
+  labs(title = "Children: Hunger (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,
@@ -795,7 +795,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Children: Feelings\n",
+  labs(title = "Children: Feelings (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,
@@ -865,7 +865,7 @@ ggplot(aes(y = reorder(character, order),
         panel.border = element_rect(size = 2),
         panel.grid.major.y = element_line(size = 1)) +
   geom_point(size = 5) +
-  labs(title = "Children: Thinking\n",
+  labs(title = "Children: Thinking (EBA)\n",
        x = "\nUtility scale value") +
   geom_errorbarh(aes(xmin = ci_lower_new,
                      xmax = ci_upper,

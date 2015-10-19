@@ -109,10 +109,10 @@ glimpse(dd)
 # --------------->-> by ageGroup ----------------------------------------------
 
 # set group of interest
-# # ... to adults:
+# ... to adults:
 # dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -173,12 +173,13 @@ demo %>% group_by(ageGroup, sequence) %>% summarise(mean_age = round(mean(ageCal
 
 # --- dissimilarities data-formatting function --------------------------------
 
-makeDissimByPredicate <- function(selectPredicate) {
+makeDissimByPredicate <- function(selectPredicate, selectAgeGroup) {
   tempDissim <- NULL
   
   # make alphabetized list of characters, cycle through to fill in alphabetized pairs
   tempDissim <- dd %>%
-    filter(predicate %in% selectPredicate) %>%
+    filter(predicate %in% selectPredicate &
+             ageGroup %in% selectAgeGroup) %>%
     mutate(character1 = array(),
            character2 = array())
   
@@ -258,72 +259,156 @@ makeDissimByPredicate <- function(selectPredicate) {
   return(tempDissim)
 }
 
-# --- HIERARCHICAL CLUSTER ANALYSIS A -----------------------------------------
-# IS THIS RIGHT???
-# # Roughly equivalent to pca_A
-# # Could also do the parallel version of pca_B
-# 
-# # Construct dissimilarity matrix
-# d2 = as.dist((1-cor(d1))/2) # NEED TO CHECK ON WHY WE DIVIDE CORRELATIONS BY 2
-# 
-# # Conduct hierarchical cluster analysis
-# hca = hclust(d2); hca
-# 
-# # Plot dendogram
-# par(mfrow=c(1,2))
-# rs1=hclust(d2)
-# rs1$merge
-# plot(rs1$height)
-# plot(rs1)
+# --- adults ------------------------------------------------------------------
 
-# --- HIERARCHICAL CLUSTER ANALYSIS B -----------------------------------------
+# --------> HIERARCHICAL CLUSTER ANALYSIS -------------------------------------
 # Roughly equivalent to pca_B
 
 # ...for all conditions
-dissim <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"))
+dissim_adults <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"),
+                                       selectAgeGroup = "adults")
 
 # Conduct hierarchical cluster analysis
-hcb = hclust(dissim); hcb
+hcb_adults = hclust(dissim_adults); hcb_adults
 
 # Plot dendogram
 # par(mfrow=c(1,2))
-# hcb$merge
-# plot(hcb$height)
-plot(hcb)
+# hcb_adults$merge
+# plot(hcb_adults$height)
+plot(hcb_adults,
+     font.main = 1,
+     main = "Adults: All predicates (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
 
 # ...for thinking
-dissim_thinking <- makeDissimByPredicate(selectPredicate = "thinking")
+dissim_adults_thinking <- makeDissimByPredicate(selectPredicate = "thinking",
+                                                selectAgeGroup = "adults")
 
 # Conduct hierarchical cluster analysis
-hcb_thinking = hclust(dissim_thinking); hcb_thinking
+hcb_adults_thinking = hclust(dissim_adults_thinking); hcb_adults_thinking
 
 # Plot dendogram
 # par(mfrow=c(1,2))
-# hcb_thinking$merge
-# plot(hcb_thinking$height)
-plot(hcb_thinking)
+# hcb_adults_thinking$merge
+# plot(hcb_adults_thinking$height)
+plot(hcb_adults_thinking,
+     font.main = 1,
+     main = "Adults: Thinking (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
 
 # ...for feelings
-dissim_feelings <- makeDissimByPredicate(selectPredicate = "feelings")
+dissim_adults_feelings <- makeDissimByPredicate(selectPredicate = "feelings",
+                                                selectAgeGroup = "adults")
 
 # Conduct hierarchical cluster analysis
-hcb_feelings = hclust(dissim_feelings); hcb_feelings
+hcb_adults_feelings = hclust(dissim_adults_feelings); hcb_adults_feelings
 
 # Plot dendogram
 # par(mfrow=c(1,2))
-# hcb_feelings$merge
-# plot(hcb_feelings$height)
-plot(hcb_feelings)
+# hcb_adults_feelings$merge
+# plot(hcb_adults_feelings$height)
+plot(hcb_adults_feelings,
+     font.main = 1,
+     main = "Adults: Feelings (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
 
 # ...for hunger
-dissim_hunger <- makeDissimByPredicate(selectPredicate = "hunger")
+dissim_adults_hunger <- makeDissimByPredicate(selectPredicate = "hunger",
+                                              selectAgeGroup = "adults")
 
 # Conduct hierarchical cluster analysis
-hcb_hunger = hclust(dissim_hunger); hcb_hunger
+hcb_adults_hunger = hclust(dissim_adults_hunger); hcb_adults_hunger
 
 # Plot dendogram
 # par(mfrow=c(1,2))
-# hcb_hunger$merge
-# plot(hcb_hunger$height)
-plot(hcb_hunger)
+# hcb_adults_hunger$merge
+# plot(hcb_adults_hunger$height)
+plot(hcb_adults_hunger,
+     font.main = 1,
+     main = "Adults: Hunger (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
 
+# --- children ----------------------------------------------------------------
+
+# --------> HIERARCHICAL CLUSTER ANALYSIS -------------------------------------
+# Roughly equivalent to pca_B
+
+# ...for all conditions
+dissim_children <- makeDissimByPredicate(selectPredicate = c("thinking", "feelings", "hunger"),
+                                       selectAgeGroup = "children")
+
+# Conduct hierarchical cluster analysis
+hcb_children = hclust(dissim_children); hcb_children
+
+# Plot dendogram
+# par(mfrow=c(1,2))
+# hcb_children$merge
+# plot(hcb_children$height)
+plot(hcb_children,
+     font.main = 1,
+     main = "Children: All predicates (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
+
+# ...for thinking
+dissim_children_thinking <- makeDissimByPredicate(selectPredicate = "thinking",
+                                                selectAgeGroup = "children")
+
+# Conduct hierarchical cluster analysis
+hcb_children_thinking = hclust(dissim_children_thinking); hcb_children_thinking
+
+# Plot dendogram
+# par(mfrow=c(1,2))
+# hcb_children_thinking$merge
+# plot(hcb_children_thinking$height)
+plot(hcb_children_thinking,
+     font.main = 1,
+     main = "Children: Thinking (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
+
+# ...for feelings
+dissim_children_feelings <- makeDissimByPredicate(selectPredicate = "feelings",
+                                                selectAgeGroup = "children")
+
+# Conduct hierarchical cluster analysis
+hcb_children_feelings = hclust(dissim_children_feelings); hcb_children_feelings
+
+# Plot dendogram
+# par(mfrow=c(1,2))
+# hcb_children_feelings$merge
+# plot(hcb_children_feelings$height)
+plot(hcb_children_feelings,
+     font.main = 1,
+     main = "Children: Feelings (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
+
+# ...for hunger
+dissim_children_hunger <- makeDissimByPredicate(selectPredicate = "hunger",
+                                              selectAgeGroup = "children")
+
+# Conduct hierarchical cluster analysis
+hcb_children_hunger = hclust(dissim_children_hunger); hcb_children_hunger
+
+# Plot dendogram
+# par(mfrow=c(1,2))
+# hcb_children_hunger$merge
+# plot(hcb_children_hunger$height)
+plot(hcb_children_hunger,
+     font.main = 1,
+     main = "Children: Hunger (HCA)",
+     sub = "",
+     xlab = "",
+     ylab = "Height")
