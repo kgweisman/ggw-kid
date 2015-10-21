@@ -37,13 +37,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-16_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-16_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -904,6 +904,21 @@ ggplot(data = temp4_adults, aes(x = character, y = countTotal,
        y = "Count\n",
        fill = "Response",
        title = "Adults: Raw counts of responses by character and capacity\n")
+
+ggplot(data = temp4_adults %>% filter(predicate == "hunger"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nResponse",
+       y = "Count\n",
+       fill = "Response",
+       title = "Adults: Hunger\nRaw counts of responses\n")
 
 # plot children
 # ggplot(data = temp4_children, aes(x = responseFlip, y = countTotal,
