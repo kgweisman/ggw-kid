@@ -883,6 +883,7 @@ temp4_children <- temp3 %>% filter(ageGroup == "children")
 #                                "both the same", "slightly more the other one",
 #                                "much more the other one")) +
 #   theme_bw() +
+#   scale_y_continuous(breaks = seq(0, 90, 15)) +
 #   theme(text = element_text(size = 20)) +
 #   labs(x = "\nResponse",
 #        y = "Count\n",
@@ -898,9 +899,10 @@ ggplot(data = temp4_adults, aes(x = character, y = countTotal,
                     labels = c("much more this one", "slightly more this one",
                                "both the same", "slightly more the other one",
                                "much more the other one")) +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
   theme(text = element_text(size = 20)) +
-  labs(x = "\nResponse",
+  labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
        title = "Adults: Raw counts of responses by character and capacity\n")
@@ -913,12 +915,45 @@ ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
                     labels = c("much more this one", "slightly more this one",
                                "both the same", "slightly more the other one",
                                "much more the other one")) +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
   theme(text = element_text(size = 20)) +
-  labs(x = "\nResponse",
+  labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
        title = "Adults: Hunger\nRaw counts of responses\n")
+
+ggplot(data = temp4_adults %>% filter(predicate == "feelings"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nCharacter",
+       y = "Count\n",
+       fill = "Response",
+       title = "Adults: Feelings\nRaw counts of responses\n")
+
+ggplot(data = temp4_adults %>% filter(predicate == "thinking"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nCharacter",
+       y = "Count\n",
+       fill = "Response",
+       title = "Adults: Thinking\nRaw counts of responses\n")
 
 # plot children
 # ggplot(data = temp4_children, aes(x = responseFlip, y = countTotal,
@@ -929,6 +964,7 @@ ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
 #                     labels = c("much more this one", "slightly more this one",
 #                                "both the same", "slightly more the other one",
 #                                "much more the other one")) +
+#   scale_y_continuous(breaks = seq(0, 90, 15)) +
 #   theme_bw() +
 #   theme(text = element_text(size = 20)) +
 #   labs(x = "\nResponse",
@@ -946,8 +982,57 @@ ggplot(data = temp4_children, aes(x = character, y = countTotal,
                                "both the same", "slightly more the other one",
                                "much more the other one")) +
   theme_bw() +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme(text = element_text(size = 20)) +
-  labs(x = "\nResponse",
+  labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
        title = "Children: Raw counts of responses by character and capacity\n")
+
+ggplot(data = temp4_children %>% filter(predicate == "hunger"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nCharacter",
+       y = "Count\n",
+       fill = "Response",
+       title = "Children: Hunger\nRaw counts of responses\n")
+
+ggplot(data = temp4_children %>% filter(predicate == "feelings"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nCharacter",
+       y = "Count\n",
+       fill = "Response",
+       title = "Children: Feelings\nRaw counts of responses\n")
+
+ggplot(data = temp4_children %>% filter(predicate == "thinking"), 
+       aes(x = character, y = countTotal,
+           fill = responseFlip, order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  scale_y_continuous(breaks = seq(0, 90, 15)) +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nCharacter",
+       y = "Count\n",
+       fill = "Response",
+       title = "Children: Thinking\nRaw counts of responses\n")
