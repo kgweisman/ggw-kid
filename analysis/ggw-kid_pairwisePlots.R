@@ -825,3 +825,110 @@ setwd("./plots")
 png(filename = "comparison%03d.png", width = 1400, height = 1300)
 plots
 graphics.off()
+
+
+# --- RAW COUNTS PLOTTING -----------------------------------------------------
+
+temp1 <- dd %>% 
+  filter(phase == "test" & is.na(responseNum) == F) %>%
+  mutate(responseCat = factor(responseNum,
+                              levels = c("-2", "-1", "0", "1", "2")),
+         responseFlip = factor(responseNum, # need to flip for leftCharacter
+                               labels = c("2", "1", "0", "-1", "-2"))) %>%
+  # count(ageGroup, predicate, leftCharacter) %>% 
+  count(ageGroup, predicate, leftCharacter, responseFlip) %>% 
+  rename(character = leftCharacter,
+         countLeft = n)
+temp2 <- dd %>% 
+  filter(phase == "test" & is.na(responseNum) == F) %>%
+  mutate(responseCat = factor(responseNum, # don't need to flip for rightCharacter
+                              levels = c("2", "1", "0", "-1", "-2")),
+         responseFlip = responseCat) %>%
+  # count(ageGroup, predicate, leftCharacter) %>% 
+  count(ageGroup, predicate, rightCharacter, responseFlip) %>% 
+  rename(character = rightCharacter,
+         countRight = n)
+temp3 <- full_join(temp1, temp2) %>%
+  mutate(countLeft = ifelse(is.na(countLeft) == TRUE, 0, as.numeric(countLeft)),
+         countRight = ifelse(is.na(countRight) == TRUE, 0, as.numeric(countRight)),
+         countTotal = countLeft + countRight,
+         responseFlip = factor(responseFlip,
+                              levels = c("2", "1", "0", "-1", "-2"))) %>%
+  select(-countLeft, -countRight) %>%
+  ungroup() %>%
+  mutate(character = factor(character, levels = c("grownup", "kid", "baby",
+                                                  "dog", "bear", "bug",
+                                                  "robot", "computer", "car",
+                                                  "stapler")),
+         predicate = factor(predicate, levels = c("hunger", "feelings", "thinking")))
+
+# check <- temp3 %>%
+#   group_by(ageGroup, predicate, character) %>%
+#   summarise(sum = sum(countTotal, na.rm = T))
+
+temp4_adults <- temp3 %>% filter(ageGroup == "adults")
+temp4_children <- temp3 %>% filter(ageGroup == "children")
+
+# plot adults
+# ggplot(data = temp4_adults, aes(x = responseFlip, y = countTotal,
+#                                 fill = responseFlip)) +
+#   geom_bar(position = "identity", stat = "identity") +
+#   facet_grid(predicate ~ character) +
+#   scale_fill_brewer(type = "div", palette = 7, 
+#                     labels = c("much more this one", "slightly more this one",
+#                                "both the same", "slightly more the other one",
+#                                "much more the other one")) +
+#   theme_bw() +
+#   theme(text = element_text(size = 20)) +
+#   labs(x = "\nResponse",
+#        y = "Count\n",
+#        fill = "Response",
+#        title = "Adults: Raw counts of responses by character and capacity\n")
+
+ggplot(data = temp4_adults, aes(x = character, y = countTotal, 
+                                fill = responseFlip,
+                                order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  facet_grid(predicate ~ .) +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nResponse",
+       y = "Count\n",
+       fill = "Response",
+       title = "Adults: Raw counts of responses by character and capacity\n")
+
+# plot children
+# ggplot(data = temp4_children, aes(x = responseFlip, y = countTotal,
+#                                   fill = responseFlip)) +
+#   geom_bar(position = "identity", stat = "identity") +
+#   facet_grid(predicate ~ character) +
+#   scale_fill_brewer(type = "div", palette = 7, 
+#                     labels = c("much more this one", "slightly more this one",
+#                                "both the same", "slightly more the other one",
+#                                "much more the other one")) +
+#   theme_bw() +
+#   theme(text = element_text(size = 20)) +
+#   labs(x = "\nResponse",
+#        y = "Count\n",
+#        fill = "Response",
+#        title = "Children: Raw counts of responses by character and capacity\n")
+
+ggplot(data = temp4_children, aes(x = character, y = countTotal, 
+                                  fill = responseFlip,
+                                  order = responseFlip)) +
+  geom_bar(position = "stack", stat = "identity") +
+  facet_grid(predicate ~ .) +
+  scale_fill_brewer(type = "div", palette = 7, 
+                    labels = c("much more this one", "slightly more this one",
+                               "both the same", "slightly more the other one",
+                               "much more the other one")) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nResponse",
+       y = "Count\n",
+       fill = "Response",
+       title = "Children: Raw counts of responses by character and capacity\n")
