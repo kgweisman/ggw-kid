@@ -878,7 +878,7 @@ temp4_children <- temp3 %>% filter(ageGroup == "children")
 #                                 fill = responseFlip)) +
 #   geom_bar(position = "identity", stat = "identity") +
 #   facet_grid(predicate ~ character) +
-#   scale_fill_brewer(type = "div", palette = 7, 
+#   scale_fill_brewer(type = "div", palette = 4, 
 #                     labels = c("much more this one", "slightly more this one",
 #                                "both the same", "slightly more the other one",
 #                                "much more the other one")) +
@@ -895,13 +895,14 @@ ggplot(data = temp4_adults, aes(x = character, y = countTotal,
                                 order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   facet_grid(predicate ~ .) +
-  scale_fill_brewer(type = "div", palette = 7, 
+  scale_fill_brewer(type = "div", palette = 4, 
                     labels = c("much more this one", "slightly more this one",
                                "both the same", "slightly more the other one",
                                "much more the other one")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20)) +
+  theme(text = element_text(size = 20),
+        legend.position = "bottom") +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
@@ -911,56 +912,68 @@ ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20)) +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Adults: Hunger\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Adults: Hunger (Raw counts)\n")
 
 ggplot(data = temp4_adults %>% filter(predicate == "feelings"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20)) +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Adults: Feelings\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Adults: Feelings (Raw counts)\n")
 
 ggplot(data = temp4_adults %>% filter(predicate == "thinking"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20)) +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Adults: Thinking\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Adults: Thinking (Raw counts)\n")
 
 # plot children
 # ggplot(data = temp4_children, aes(x = responseFlip, y = countTotal,
 #                                   fill = responseFlip)) +
 #   geom_bar(position = "identity", stat = "identity") +
 #   facet_grid(predicate ~ character) +
-#   scale_fill_brewer(type = "div", palette = 7, 
+#   scale_fill_brewer(type = "div", palette = 4, 
 #                     labels = c("much more this one", "slightly more this one",
 #                                "both the same", "slightly more the other one",
 #                                "much more the other one")) +
@@ -977,7 +990,7 @@ ggplot(data = temp4_children, aes(x = character, y = countTotal,
                                   order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   facet_grid(predicate ~ .) +
-  scale_fill_brewer(type = "div", palette = 7, 
+  scale_fill_brewer(type = "div", palette = 4, 
                     labels = c("much more this one", "slightly more this one",
                                "both the same", "slightly more the other one",
                                "much more the other one")) +
@@ -993,46 +1006,58 @@ ggplot(data = temp4_children %>% filter(predicate == "hunger"),
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
-  theme_bw() +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
-  theme(text = element_text(size = 20)) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Children: Hunger\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Children: Hunger (Raw counts)\n")
 
 ggplot(data = temp4_children %>% filter(predicate == "feelings"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
-  theme_bw() +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
-  theme(text = element_text(size = 20)) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Children: Feelings\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Children: Feelings (Raw counts)\n")
 
 ggplot(data = temp4_children %>% filter(predicate == "thinking"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(type = "div", palette = 7, 
-                    labels = c("much more this one", "slightly more this one",
-                               "both the same", "slightly more the other one",
-                               "much more the other one")) +
-  theme_bw() +
+  scale_fill_brewer(type = "div", palette = 4, 
+                    labels = c(" much more this one ", " slightly more this one ",
+                               " both equally ", " slightly more the other one ",
+                               " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
-  theme(text = element_text(size = 20)) +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        # axis.title = element_blank(),
+        legend.position = "none",
+        panel.border = element_rect(size = 2)) +
+  # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
-       fill = "Response",
-       title = "Children: Thinking\nRaw counts of responses\n")
+       fill = "Response: ",
+       title = "Children: Thinking (Raw counts)\n")
