@@ -842,16 +842,24 @@ temp1 <- dd %>%
   # count(ageGroup, predicate, leftCharacter) %>% 
   count(ageGroup, predicate, leftCharacter, responseFlip) %>% 
   rename(character = leftCharacter,
-         countLeft = n)
+         countLeft = n) %>%
+  ungroup() %>%
+  complete(responseFlip, c(ageGroup, predicate, character),
+           fill = list(countLeft = 0))
+
 temp2 <- dd %>% 
   filter(phase == "test" & is.na(responseNum) == F) %>%
   mutate(responseCat = factor(responseNum, # don't need to flip for rightCharacter
                               levels = c("2", "1", "0", "-1", "-2")),
          responseFlip = responseCat) %>%
-  # count(ageGroup, predicate, leftCharacter) %>% 
+  # count(ageGroup, predicate, rightCharacter) %>% 
   count(ageGroup, predicate, rightCharacter, responseFlip) %>% 
   rename(character = rightCharacter,
-         countRight = n)
+         countRight = n) %>%
+  ungroup() %>%
+  complete(responseFlip, c(ageGroup, predicate, character),
+           fill = list(countRight = 0))
+
 temp3 <- full_join(temp1, temp2) %>%
   mutate(countLeft = ifelse(is.na(countLeft) == TRUE, 0, as.numeric(countLeft)),
          countRight = ifelse(is.na(countRight) == TRUE, 0, as.numeric(countRight)),
