@@ -572,7 +572,7 @@ plot_char <- ggplot(aes(x =
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "top",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
@@ -616,7 +616,7 @@ plot_cat <- ggplot(aes(x =
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "none",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
@@ -637,7 +637,7 @@ plot_cat.v2 <- ggplot(aes(x = interaction(predicate, pairCat),
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "none",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1))
@@ -686,7 +686,7 @@ gtemp <- ggplot(aes(x =
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "none",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
@@ -730,7 +730,7 @@ gtemp2 <- ggplot(aes(x =
   theme_bw() +
   scale_fill_brewer(type = "qual",
                     palette = 2) +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "top",
         axis.text.x = element_text(angle = 60,
                                    hjust = 1)) +
@@ -771,7 +771,7 @@ closeLook <- function(chosenCharacters) {
                                                 "children" = "Children (Study 2)"))) +
     geom_bar() +
     theme_bw() +
-    theme(text = element_text(size = 20),
+    theme(text = element_text(size = 40),
           axis.text.x = element_text(angle = 30, hjust = 1)) +
     scale_x_discrete() +
     scale_y_discrete() +
@@ -884,7 +884,7 @@ temp4_children <- temp3 %>% filter(ageGroup == "children")
 #                                "much more the other one")) +
 #   theme_bw() +
 #   scale_y_continuous(breaks = seq(0, 90, 15)) +
-#   theme(text = element_text(size = 20)) +
+#   theme(text = element_text(size = 40)) +
 #   labs(x = "\nResponse",
 #        y = "Count\n",
 #        fill = "Response",
@@ -901,14 +901,14 @@ ggplot(data = temp4_adults, aes(x = character, y = countTotal,
                                "much more the other one")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         legend.position = "bottom") +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
        title = "Adults: Raw counts of responses by character and capacity\n")
 
-ggplot(data = temp4_adults %>% filter(predicate == "hunger"), 
+p_adultsHunger <- ggplot(data = temp4_adults %>% filter(predicate == "hunger"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -918,17 +918,17 @@ ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response: ",
        title = "Adults: Hunger (Raw counts)\n")
 
-ggplot(data = temp4_adults %>% filter(predicate == "feelings"), 
+p_adultsFeelings <- ggplot(data = temp4_adults %>% filter(predicate == "feelings"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -938,17 +938,17 @@ ggplot(data = temp4_adults %>% filter(predicate == "feelings"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response: ",
        title = "Adults: Feelings (Raw counts)\n")
 
-ggplot(data = temp4_adults %>% filter(predicate == "thinking"), 
+p_adultsThinking <- ggplot(data = temp4_adults %>% filter(predicate == "thinking"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -958,10 +958,10 @@ ggplot(data = temp4_adults %>% filter(predicate == "thinking"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
@@ -979,7 +979,7 @@ ggplot(data = temp4_adults %>% filter(predicate == "thinking"),
 #                                "much more the other one")) +
 #   scale_y_continuous(breaks = seq(0, 90, 15)) +
 #   theme_bw() +
-#   theme(text = element_text(size = 20)) +
+#   theme(text = element_text(size = 40)) +
 #   labs(x = "\nResponse",
 #        y = "Count\n",
 #        fill = "Response",
@@ -996,13 +996,13 @@ ggplot(data = temp4_children, aes(x = character, y = countTotal,
                                "much more the other one")) +
   theme_bw() +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
-  theme(text = element_text(size = 20)) +
+  theme(text = element_text(size = 40)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response",
        title = "Children: Raw counts of responses by character and capacity\n")
 
-ggplot(data = temp4_children %>% filter(predicate == "hunger"), 
+p_childrenHunger <- ggplot(data = temp4_children %>% filter(predicate == "hunger"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -1012,17 +1012,17 @@ ggplot(data = temp4_children %>% filter(predicate == "hunger"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response: ",
        title = "Children: Hunger (Raw counts)\n")
 
-ggplot(data = temp4_children %>% filter(predicate == "feelings"), 
+p_childrenFeelings <- ggplot(data = temp4_children %>% filter(predicate == "feelings"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -1032,17 +1032,17 @@ ggplot(data = temp4_children %>% filter(predicate == "feelings"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response: ",
        title = "Children: Feelings (Raw counts)\n")
 
-ggplot(data = temp4_children %>% filter(predicate == "thinking"), 
+p_childrenThinking <- ggplot(data = temp4_children %>% filter(predicate == "thinking"), 
        aes(x = character, y = countTotal,
            fill = responseFlip, order = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
@@ -1052,12 +1052,24 @@ ggplot(data = temp4_children %>% filter(predicate == "thinking"),
                                " much more the other one ")) +
   scale_y_continuous(breaks = seq(0, 90, 15)) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
+        panel.border = element_rect(size = 4)) +
   # guides(fill = guide_legend(nrow = 5, reverse = TRUE)) +
   labs(x = "\nCharacter",
        y = "Count\n",
        fill = "Response: ",
        title = "Children: Thinking (Raw counts)\n")
+
+# export raw counts plots
+graphics.off()
+setwd("./plots/raw_counts")
+png(filename = "raw%03d.png", width = 1200, height = 1200)
+p_adultsHunger
+p_adultsFeelings
+p_adultsThinking
+p_childrenHunger
+p_childrenFeelings
+p_childrenThinking
+graphics.off()

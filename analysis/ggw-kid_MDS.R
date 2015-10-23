@@ -165,7 +165,7 @@ demo %>% group_by(ageGroup) %>% summarise(mean_age = mean(ageCalc, na.rm = T), s
 qplot(subset(demo, ageGroup == "children")$ageCalc, binwidth = 1/12,
       xlab = "\nAge (years)", ylab = "Count\n") +
   scale_x_continuous(breaks = seq(4,6,.25)) +
-  theme(text = element_text(size = 20))
+  theme(text = element_text(size = 40))
 # qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # demo %>% group_by(ageGroup) %>% filter(age < 100) %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
@@ -306,12 +306,12 @@ yRange_Aordinal <- range(conf_Aordinal$D2)
 ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Adults: All predicates (MDS)\n") +
   xlim(c(-1, 1)) +
@@ -375,24 +375,20 @@ conf_adults_thinking_Aordinal <- data.frame(mds_adults_thinking_Aordinal$conf) %
 xRange_thinking_Aordinal <- range(conf_adults_thinking_Aordinal$D1)
 yRange_thinking_Aordinal <- range(conf_adults_thinking_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_adultsThinking <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_adults_thinking_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Adults: Thinking (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
-#   xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
-#        xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
-#   ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
-#        yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
 
 # # Shepard plot
 # plot(mds_adults_thinking_Aordinal, plot.type = "Shepard",
@@ -435,24 +431,20 @@ conf_adults_feelings_Aordinal <- data.frame(mds_adults_feelings_Aordinal$conf) %
 xRange_feelings_Aordinal <- range(conf_adults_feelings_Aordinal$D1)
 yRange_feelings_Aordinal <- range(conf_adults_feelings_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_adultsFeelings <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_adults_feelings_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Adults: Feelings (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
-#   xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
-#        xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
-#   ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
-#        yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_adults_feelings_Aordinal, plot.type = "bubbleplot",
@@ -505,15 +497,15 @@ conf_adults_hunger_Aordinal <- data.frame(mds_adults_hunger_Aordinal$conf) %>%
 xRange_hunger_Aordinal <- range(conf_adults_hunger_Aordinal$D1)
 yRange_hunger_Aordinal <- range(conf_adults_hunger_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_adultsHunger <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_adults_hunger_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Adults: Hunger (MDS)\n") +
   xlim(c(-1, 1)) +
@@ -583,12 +575,12 @@ yRange_Aordinal <- range(conf_Aordinal$D2)
 ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Children: All predicates (MDS)\n") +
   xlim(c(-1, 1)) +
@@ -652,24 +644,20 @@ conf_children_thinking_Aordinal <- data.frame(mds_children_thinking_Aordinal$con
 xRange_thinking_Aordinal <- range(conf_children_thinking_Aordinal$D1)
 yRange_thinking_Aordinal <- range(conf_children_thinking_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_childrenThinking <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_children_thinking_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Children: Thinking (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
-#   xlim(c(xRange_thinking_Aordinal[1] - 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])),
-#        xRange_thinking_Aordinal[2] + 0.10*(xRange_thinking_Aordinal[2]-xRange_thinking_Aordinal[1])) +
-#   ylim(c(yRange_thinking_Aordinal[1] - 0.05*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1])),
-#        yRange_thinking_Aordinal[2] + 0.15*(yRange_thinking_Aordinal[2]-yRange_thinking_Aordinal[1]))
 
 # # Shepard plot
 # plot(mds_children_thinking_Aordinal, plot.type = "Shepard",
@@ -712,24 +700,20 @@ conf_children_feelings_Aordinal <- data.frame(mds_children_feelings_Aordinal$con
 xRange_feelings_Aordinal <- range(conf_children_feelings_Aordinal$D1)
 yRange_feelings_Aordinal <- range(conf_children_feelings_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_childrenFeelings <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_children_feelings_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Children: Feelings (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
-#   xlim(c(xRange_feelings_Aordinal[1] - 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])),
-#        xRange_feelings_Aordinal[2] + 0.10*(xRange_feelings_Aordinal[2]-xRange_feelings_Aordinal[1])) +
-#   ylim(c(yRange_feelings_Aordinal[1] - 0.05*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1])),
-#        yRange_feelings_Aordinal[2] + 0.15*(yRange_feelings_Aordinal[2]-yRange_feelings_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_children_feelings_Aordinal, plot.type = "bubbleplot",
@@ -782,24 +766,20 @@ conf_children_hunger_Aordinal <- data.frame(mds_children_hunger_Aordinal$conf) %
 xRange_hunger_Aordinal <- range(conf_children_hunger_Aordinal$D1)
 yRange_hunger_Aordinal <- range(conf_children_hunger_Aordinal$D2)
 
-ggplot(aes(x = D1, y = D2, colour = category, label = character), 
+p_childrenHunger <- ggplot(aes(x = D1, y = D2, colour = category, label = character), 
        data = conf_children_hunger_Aordinal) +
   theme_bw() +
-  theme(text = element_text(size = 20),
+  theme(text = element_text(size = 40),
         # axis.title = element_blank(),
         legend.position = "none",
-        panel.border = element_rect(size = 2)) +
-  geom_point(size = 5) +
-  geom_text(vjust = -1, size = 7) +
+        panel.border = element_rect(size = 4)) +
+  geom_point(size = 10) +
+  geom_text(vjust = -1, size = 14) +
   labs(x = "\nDimension 1", y = "Dimension 2\n",
        title = "Children: Hunger (MDS)\n") +
   xlim(c(-1, 1)) +
   ylim(c(-1, 1)) +
   scale_color_brewer(type = "qual", palette = 6)
-#   xlim(c(xRange_hunger_Aordinal[1] - 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])),
-#        xRange_hunger_Aordinal[2] + 0.10*(xRange_hunger_Aordinal[2]-xRange_hunger_Aordinal[1])) +
-#   ylim(c(yRange_hunger_Aordinal[1] - 0.05*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1])),
-#        yRange_hunger_Aordinal[2] + 0.15*(yRange_hunger_Aordinal[2]-yRange_hunger_Aordinal[1]))
 
 # # plot space and stress (bigger bubble = better fit)
 # plot(mds_children_hunger_Aordinal, plot.type = "bubbleplot",
@@ -818,3 +798,27 @@ ggplot(aes(x = D1, y = D2, colour = category, label = character),
 # # plot residuals
 # plot(mds_children_hunger_Aordinal, plot.type = "resplot",
 #      main = "MDS residuals: HUNGER")
+
+######################################################### exporting plots #####
+
+# make all plots for all predicates & ageGroups
+graphics.off()
+setwd("./plots/mds_large")
+png(filename = "mds%03d.png", width = 1200, height = 1200)
+p_adultsHunger
+p_adultsFeelings
+p_adultsThinking
+p_childrenHunger
+p_childrenFeelings
+p_childrenThinking
+graphics.off()
+
+setwd("./mds_small")
+png(filename = "mds%03d.png", width = 700, height = 700)
+p_adultsHunger
+p_adultsFeelings
+p_adultsThinking
+p_childrenHunger
+p_childrenFeelings
+p_childrenThinking
+graphics.off()
