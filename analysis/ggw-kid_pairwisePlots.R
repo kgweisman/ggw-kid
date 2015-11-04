@@ -37,13 +37,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -739,97 +739,96 @@ gtemp2 <- ggplot(aes(x =
        y = "mean_mean RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n",
        fill = "PAIR CATEGORY: ")
 
-# --- CLOSE LOOK PLOTTING ----------------------------------------------------
-
-closeLook <- function(chosenCharacters) {
-  
-  allPairs <- levels(d1$pair)
-  
-  chosenPair <- data.frame(allPairs) %>% 
-    filter(grepl(chosenCharacters[1], allPairs) & 
-             grepl(chosenCharacters[2], allPairs))
-  
-  chosenPair <- as.character(chosenPair$allPairs)
-  
-  df <- d1 %>%
-    filter(pair == chosenPair) %>%
-    mutate(responseSpec = factor(responseNumFlip,
-                                 levels = c(-2, -1, 0, 1, 2),
-                                 labels = c(paste("much more", chosenCharacters[1]),
-                                            paste("slightly more", chosenCharacters[1]),
-                                            "both equally",
-                                            paste("slightly more", chosenCharacters[2]),
-                                            paste("much more", chosenCharacters[2]))))
-  
-  g <- ggplot(aes(x = responseSpec),
-              data = df) +
-    facet_grid(predicate ~ ageGroup,
-               labeller = labeller(predicate = c("hunger" = "'...get hungry?'",
-                                                 "feelings" = "'...have feelings?'",
-                                                 "thinking" = "'...think?'"),
-                                   ageGroup = c("adults" = "Adults (Study 1)", 
-                                                "children" = "Children (Study 2)"))) +
-    geom_bar() +
-    theme_bw() +
-    theme(text = element_text(size = 40),
-          axis.text.x = element_text(angle = 30, hjust = 1)) +
-    scale_x_discrete() +
-    scale_y_discrete() +
-    labs(title = paste0(toupper(substring(chosenCharacters[1], 1, 1)), substring(chosenCharacters[1], 2), " vs. ", toupper(substring(chosenCharacters[2], 1, 1)), substring(chosenCharacters[2], 2), " comparisons:\n'Which one is more likely to...'\n"),
-         x = "\nResponse",
-         y = "Count\n")
-  
-  return(g)
-}
-
-# robot vs. bug only
-
-gtemp3 <- closeLook(c("robot", "bug")); gtemp3
-
-# make all plots for all comparisons
-plots = list(NULL)
-for(i in 1:length(levels(d1$pair))) {
-  chosenCharacters <- unlist(strsplit(levels(d1$pair)[i], "[.]"))
-  
-  df <- d1 %>%
-    filter(pair == levels(d1$pair)[i]) %>%
-    mutate(responseSpec = factor(responseNumFlip,
-                                 levels = c(-2, -1, 0, 1, 2),
-                                 labels = c(paste("much more", chosenCharacters[1]),
-                                            paste("slightly more", chosenCharacters[1]),
-                                            "both equally",
-                                            paste("slightly more", chosenCharacters[2]),
-                                            paste("much more", chosenCharacters[2]))))
-  
-  g <- ggplot(aes(x = responseSpec),
-              data = df) +
-    facet_grid(predicate ~ ageGroup,
-               labeller = labeller(predicate = c("hunger" = "'...get hungry?'",
-                                                 "feelings" = "'...have feelings?'",
-                                                 "thinking" = "'...think?'"),
-                                   ageGroup = c("adults" = "Adults (Study 1)", 
-                                                "children" = "Children (Study 2)"))) +
-    geom_bar() +
-    theme_bw() +
-    theme(text = element_text(size = 40),
-          axis.text.x = element_text(angle = 30, hjust = 1)) +
-    scale_x_discrete() +
-    scale_y_discrete() +
-    labs(title = paste0(toupper(substring(chosenCharacters[1], 1, 1)), substring(chosenCharacters[1], 2), " vs. ", toupper(substring(chosenCharacters[2], 1, 1)), substring(chosenCharacters[2], 2), " comparisons:\n'Which one is more likely to...'\n"),
-         x = "\nResponse",
-         y = "Count\n")
-  
-  plots[[i]] <- g
-
-  rm(chosenCharacters, df, g, i)
-}
-
-graphics.off()
-setwd("./plots")
-png(filename = "comparison%03d.png", width = 1400, height = 1300)
-plots
-graphics.off()
-
+# # --- CLOSE LOOK PLOTTING ----------------------------------------------------
+# 
+# closeLook <- function(chosenCharacters) {
+#   
+#   allPairs <- levels(d1$pair)
+#   
+#   chosenPair <- data.frame(allPairs) %>% 
+#     filter(grepl(chosenCharacters[1], allPairs) & 
+#              grepl(chosenCharacters[2], allPairs))
+#   
+#   chosenPair <- as.character(chosenPair$allPairs)
+#   
+#   df <- d1 %>%
+#     filter(pair == chosenPair) %>%
+#     mutate(responseSpec = factor(responseNumFlip,
+#                                  levels = c(-2, -1, 0, 1, 2),
+#                                  labels = c(paste("much more", chosenCharacters[1]),
+#                                             paste("slightly more", chosenCharacters[1]),
+#                                             "both equally",
+#                                             paste("slightly more", chosenCharacters[2]),
+#                                             paste("much more", chosenCharacters[2]))))
+#   
+#   g <- ggplot(aes(x = responseSpec),
+#               data = df) +
+#     facet_grid(predicate ~ ageGroup,
+#                labeller = labeller(predicate = c("hunger" = "'...get hungry?'",
+#                                                  "feelings" = "'...have feelings?'",
+#                                                  "thinking" = "'...think?'"),
+#                                    ageGroup = c("adults" = "Adults (Study 1)", 
+#                                                 "children" = "Children (Study 2)"))) +
+#     geom_bar() +
+#     theme_bw() +
+#     theme(text = element_text(size = 40),
+#           axis.text.x = element_text(angle = 30, hjust = 1)) +
+#     scale_x_discrete() +
+#     scale_y_discrete() +
+#     labs(title = paste0(toupper(substring(chosenCharacters[1], 1, 1)), substring(chosenCharacters[1], 2), " vs. ", toupper(substring(chosenCharacters[2], 1, 1)), substring(chosenCharacters[2], 2), " comparisons:\n'Which one is more likely to...'\n"),
+#          x = "\nResponse",
+#          y = "Count\n")
+#   
+#   return(g)
+# }
+# 
+# # robot vs. bug only
+# 
+# gtemp3 <- closeLook(c("robot", "bug")); gtemp3
+# 
+# # make all plots for all comparisons
+# plots = list(NULL)
+# for(i in 1:length(levels(d1$pair))) {
+#   chosenCharacters <- unlist(strsplit(levels(d1$pair)[i], "[.]"))
+#   
+#   df <- d1 %>%
+#     filter(pair == levels(d1$pair)[i]) %>%
+#     mutate(responseSpec = factor(responseNumFlip,
+#                                  levels = c(-2, -1, 0, 1, 2),
+#                                  labels = c(paste("much more", chosenCharacters[1]),
+#                                             paste("slightly more", chosenCharacters[1]),
+#                                             "both equally",
+#                                             paste("slightly more", chosenCharacters[2]),
+#                                             paste("much more", chosenCharacters[2]))))
+#   
+#   g <- ggplot(aes(x = responseSpec),
+#               data = df) +
+#     facet_grid(predicate ~ ageGroup,
+#                labeller = labeller(predicate = c("hunger" = "'...get hungry?'",
+#                                                  "feelings" = "'...have feelings?'",
+#                                                  "thinking" = "'...think?'"),
+#                                    ageGroup = c("adults" = "Adults (Study 1)", 
+#                                                 "children" = "Children (Study 2)"))) +
+#     geom_bar() +
+#     theme_bw() +
+#     theme(text = element_text(size = 40),
+#           axis.text.x = element_text(angle = 30, hjust = 1)) +
+#     scale_x_discrete() +
+#     scale_y_discrete() +
+#     labs(title = paste0(toupper(substring(chosenCharacters[1], 1, 1)), substring(chosenCharacters[1], 2), " vs. ", toupper(substring(chosenCharacters[2], 1, 1)), substring(chosenCharacters[2], 2), " comparisons:\n'Which one is more likely to...'\n"),
+#          x = "\nResponse",
+#          y = "Count\n")
+#   
+#   plots[[i]] <- g
+# 
+#   rm(chosenCharacters, df, g, i)
+# }
+# 
+# graphics.off()
+# setwd("./plots")
+# png(filename = "comparison%03d.png", width = 1400, height = 1300)
+# plots
+# graphics.off()
 
 # --- RAW COUNTS PLOTTING -----------------------------------------------------
 
@@ -1072,7 +1071,7 @@ p_childrenThinking <- ggplot(data = temp4_children %>% filter(predicate == "thin
 
 # export raw counts plots
 graphics.off()
-setwd("./plots/raw_counts")
+setwd("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/plots/raw_counts/")
 png(filename = "raw%03d.png", width = 1200, height = 1200)
 p_adultsHunger
 p_adultsFeelings
@@ -1081,3 +1080,4 @@ p_childrenHunger
 p_childrenFeelings
 p_childrenThinking
 graphics.off()
+

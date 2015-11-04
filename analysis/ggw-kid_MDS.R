@@ -39,13 +39,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -803,7 +803,7 @@ p_childrenHunger <- ggplot(aes(x = D1, y = D2, colour = category, label = charac
 
 # make all plots for all predicates & ageGroups
 graphics.off()
-setwd("./plots/mds_large")
+setwd("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/plots/mds_large")
 png(filename = "mds%03d.png", width = 1200, height = 1200)
 p_adultsHunger
 p_adultsFeelings
@@ -813,7 +813,7 @@ p_childrenFeelings
 p_childrenThinking
 graphics.off()
 
-setwd("./mds_small")
+setwd("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/plots/mds_small")
 png(filename = "mds%03d.png", width = 700, height = 700)
 p_adultsHunger
 p_adultsFeelings
