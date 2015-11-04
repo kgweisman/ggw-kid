@@ -40,13 +40,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-10-21_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2015-11-03_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
