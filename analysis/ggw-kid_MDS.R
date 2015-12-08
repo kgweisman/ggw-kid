@@ -91,16 +91,22 @@ dd_adults = dd_adults_us
 
 # --------------->-> by age ---------------------------------------------------
 
-# set lower limit
-lowerLim <- 4.4
-upperLim <- 5.6
+# set age limit
+lowerLim <- 4.5
+upperLim <- 5.5
 
 dd_children_exact = dd_children %>%
   filter(ageCalc >= lowerLim & ageCalc <= upperLim)
 
+dd_children_older = dd_children %>%
+  filter(ageCalc >= upperLim)
+
 # set group of interest
 # ... to exact:
 dd_children = dd_children_exact
+
+# # to older
+# dd_children = dd_children_older
 
 # --------> merge adults & children -------------------------------------------
 
