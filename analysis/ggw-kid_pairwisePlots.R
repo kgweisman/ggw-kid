@@ -37,13 +37,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-02-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-02-22_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-02-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-02-22_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -545,12 +545,21 @@ d1 = dd %>%
 
 # --- PLOT MEANS BY COMPARISON: character level --------------------------------
 
+mean_na <- function(x){mean(x, na.rm = T)}
+ci_lower_na <- function(x){quantile(x, 0.025,  na.rm = T)}
+ci_upper_na <- function(x){quantile(x, 0.975, na.rm = T)}
+
 # make table for plotting
 plotTable1 = d1 %>% 
-  group_by(predicate, pairCat, pair) %>% 
-  summarise(mean = mean(responseNumFlip, na.rm = T),
-            sd = sd(responseNumFlip, na.rm = T),
-            n = length(responseNumFlip))
+  multi_boot(column = "responseNumFlip", summary_function = "mean_na",
+             summary_groups = c("predicate", "pairCat", "pair"), 
+             statistics_functions = c("ci_lower_na", "mean_na", "ci_upper_na"))
+
+# plotTable1 = d1 %>% 
+#   group_by(predicate, pairCat, pair) %>% 
+#   summarise(mean = mean(responseNumFlip, na.rm = T),
+#             sd = sd(responseNumFlip, na.rm = T),
+#             n = length(responseNumFlip))
 
 plot_char <- ggplot(aes(x = 
                           reorder(pair,
@@ -563,7 +572,7 @@ plot_char <- ggplot(aes(x =
                                                       "human.tech",
                                                       "animal.tech",
                                                       "control")))),
-                        y = mean,
+                        y = mean_na,
                         fill = pairCat),
                     data = plotTable1) +
   facet_grid(predicate ~ .,
@@ -571,8 +580,8 @@ plot_char <- ggplot(aes(x =
                                                "feelings" = "...have feelings",
                                                "thinking" = "...think"))) +
   geom_bar(stat = "identity", position = "identity") +
-  geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
-                    ymax = mean + 2*sd/sqrt(n),
+  geom_errorbar(aes(ymin = ci_lower_na,
+                    ymax = ci_upper_na,
                     width = 0.1)) +
   geom_hline(aes(yintercept = 0), lty = 2) +
   theme_bw() +
@@ -591,10 +600,15 @@ plot_char <- ggplot(aes(x =
 
 # make table for plotting
 plotTable2 = d1 %>% 
-  group_by(predicate, pairCat) %>% 
-  summarise(mean = mean(responseNumFlip, na.rm = T),
-            sd = sd(responseNumFlip, na.rm = T),
-            n = length(responseNumFlip))
+  multi_boot(column = "responseNumFlip", summary_function = "mean_na",
+             summary_groups = c("predicate", "pairCat"), 
+             statistics_functions = c("ci_lower_na", "mean_na", "ci_upper_na"))
+
+# plotTable2 = d1 %>% 
+#   group_by(predicate, pairCat) %>% 
+#   summarise(mean = mean(responseNumFlip, na.rm = T),
+#             sd = sd(responseNumFlip, na.rm = T),
+#             n = length(responseNumFlip))
 
 plot_cat <- ggplot(aes(x = 
                          reorder(pairCat,
@@ -607,7 +621,7 @@ plot_cat <- ggplot(aes(x =
                                                      "human.tech",
                                                      "animal.tech",
                                                      "control")))),
-                       y = mean,
+                       y = mean_na,
                        fill = pairCat),
                    data = plotTable2) +
   facet_grid(predicate ~ .,
@@ -615,8 +629,8 @@ plot_cat <- ggplot(aes(x =
                                                "feelings" = "...have feelings",
                                                "thinking" = "...think"))) +
   geom_bar(stat = "identity", position = "identity") +
-  geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
-                    ymax = mean + 2*sd/sqrt(n),
+  geom_errorbar(aes(ymin = ci_lower_na,
+                    ymax = ci_upper_na,
                     width = 0.1)) +
   geom_hline(aes(yintercept = 0), lty = 2) +
   theme_bw() +
@@ -631,13 +645,13 @@ plot_cat <- ggplot(aes(x =
        y = "MEAN RESPONSE\n-2 (-1): 1st character is much (slightly) more likely to...,\n0: characters are both equally likely to...,\n+2 (+1): 2nd character is much (slightly) more likely to...\n")
 
 plot_cat.v2 <- ggplot(aes(x = interaction(predicate, pairCat),
-                          y = mean,
+                          y = mean_na,
                           group = predicate,
                           fill = predicate),
                       data = plotTable2) +
   geom_bar(stat = "identity", position = "identity") + 
-  geom_errorbar(aes(ymin = mean - 2*sd/sqrt(n),
-                    ymax = mean + 2*sd/sqrt(n),
+  geom_errorbar(aes(ymin = ci_lower_na,
+                    ymax = ci_upper_na,
                     width = 0.1)) +
   geom_hline(aes(yintercept = 0), lty = 2) +
   theme_bw() +

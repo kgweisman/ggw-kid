@@ -40,13 +40,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-02-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-02-22_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-02-02_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-02-22_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -294,6 +294,18 @@ aspects13b <- list(baby = c(1, 11),
                   robot = c(9, 13),
                   stapler = c(10))
 
+# ... option 2.5: living, human
+aspects12 <- list(baby = c(1, 11, 12),
+                  bear = c(2, 11),
+                  bug = c(3, 11),
+                  car = c(4),
+                  computer = c(5),
+                  dog = c(6, 11),
+                  grownup = c(7, 11, 12),
+                  kid = c(8, 11, 12),
+                  robot = c(9),
+                  stapler = c(10))
+
 # ... option 3: living, individuals
 aspects11 <- list(baby = c(1, 11),
                   bear = c(2, 11),
@@ -321,6 +333,7 @@ aspects10 <- list(baby = c(1),
 # set option
 # aspects <- aspects13a
 # aspects <- aspects13b
+# aspects <- aspects12
 # aspects <- aspects11
 aspects <- aspects10
 
