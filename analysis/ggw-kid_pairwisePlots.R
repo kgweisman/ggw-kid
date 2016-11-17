@@ -13,6 +13,7 @@ library(psych)
 library(scales)
 library(smacof)
 library(eba)
+library(langcog)
 
 # clear environment
 rm(list=ls())
@@ -37,13 +38,13 @@ glimpse(dd_adults)
 
 # read in data: individual scores
 # # ... FULL DATASET
-# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-03-07_data_anonymized.csv")[-1] # get rid of column of obs numbers
+# dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01&02_2016-03-11_data_anonymized.csv")[-1] # get rid of column of obs numbers
 # 
 # # ... RUN01
 # dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-01_2015-06-13_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # ... RUN02
-dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-03-07_data_anonymized.csv")[-1] # get rid of column of obs numbers
+dd_children = read.csv("/Users/kweisman/Documents/Research (Stanford)/Projects/GGW-kid/ggw-kid/data/children/kid-run-02_2016-03-11_data_anonymized.csv")[-1] # get rid of column of obs numbers
 
 # add in ageGroup
 dd_children <- dd_children %>%
@@ -96,14 +97,17 @@ upperLim <- 5.55
 dd_children_exact = dd_children %>%
   filter(ageCalc >= lowerLim & ageCalc <= upperLim)
 
+# dd_children_older = dd_children %>%
+#   filter(ageCalc >= 6.5 & ageCalc <= 7.5)
+
 dd_children_older = dd_children %>%
-  filter(ageCalc >= upperLim)
+  filter(ageCalc >= upperLim & ageCalc <= 8.5)
 
 # set group of interest
 # ... to exact:
 dd_children = dd_children_exact
 
-# # to older
+# to older
 # dd_children = dd_children_older
 
 # --------> merge adults & children -------------------------------------------
@@ -122,7 +126,7 @@ glimpse(dd)
 # ... to adults:
 # dd = dd_adults
 # ... to children:
-# dd = dd_children
+dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -166,8 +170,17 @@ demo %>% group_by(ageGroup) %>% count(ethnicity)
 
 # age
 demo %>% group_by(ageGroup) %>% summarise(mean_age = mean(ageCalc, na.rm = T), sd_age = sd(ageCalc, na.rm = T))
-qplot(subset(demo, ageGroup == "children")$ageCalc)
-qplot(subset(demo, ageGroup == "adults")$ageCalc)
+
+ggplot(data = subset(demo, ageGroup == "children"), aes(x = ageCalc)) +
+  geom_histogram(binwidth = 1/12) +
+  theme_bw() +
+  theme(text = element_text(size = 20)) +
+  labs(x = "\nAge (years)",
+       y = "Count\n")
+
+
+# qplot(subset(demo, ageGroup == "children")$ageCalc)
+# qplot(subset(demo, ageGroup == "adults")$ageCalc)
 
 # demo %>% group_by(ageGroup) %>% filter(age < 100) %>% summarise(mean_age = mean(age, na.rm = T), sd_age = sd(age, na.rm = T))
 # qplot(subset(demo, ageGroup == "children")$age[demo$age < 100])
@@ -887,18 +900,27 @@ temp3 <- full_join(temp1, temp2) %>%
                               levels = c("2", "1", "0", "-1", "-2"))) %>%
   select(-countLeft, -countRight) %>%
   ungroup() %>%
-  mutate(character = factor(character, levels = c("grownup", "kid", "baby",
-                                                  "dog", "bear", "bug",
-                                                  "robot", "computer", "car",
-                                                  "stapler")),
-         predicate = factor(predicate, levels = c("hunger", "feelings", "thinking")))
+  mutate(character = factor(character, 
+                            levels = c("grownup", "kid", "baby",
+                                       "dog", "bear", "bug",
+                                       "robot", "computer", "car",
+                                       "stapler")),
+         predicate = factor(predicate, 
+                            levels = c("hunger", "feelings", "thinking")))
 
 # check <- temp3 %>%
 #   group_by(ageGroup, predicate, character) %>%
 #   summarise(sum = sum(countTotal, na.rm = T))
 
-temp4_adults <- temp3 %>% filter(ageGroup == "adults")
-temp4_children <- temp3 %>% filter(ageGroup == "children")
+moreCount <- temp3 %>%
+  filter(responseFlip %in% c("2", "1")) %>%
+  group_by(ageGroup, predicate, character) %>%
+  summarise(countMore = sum(countTotal))
+
+temp4 <- full_join(temp3, moreCount)
+
+temp4_adults <- temp4 %>% filter(ageGroup == "adults")
+temp4_children <- temp4 %>% filter(ageGroup == "children")
 
 # plot adults
 # ggplot(data = temp4_adults, aes(x = responseFlip, y = countTotal,
@@ -935,9 +957,10 @@ ggplot(data = temp4_adults, aes(x = character, y = countTotal,
        fill = "Response",
        title = "Adults: Raw counts of responses by character and capacity\n")
 
-p_adultsHunger <- ggplot(data = temp4_adults %>% filter(predicate == "hunger"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_adultsHunger <- ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
+                         aes(x = reorder(character, desc(countMore)), 
+                             y = countTotal,
+                             fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
@@ -955,9 +978,10 @@ p_adultsHunger <- ggplot(data = temp4_adults %>% filter(predicate == "hunger"),
        fill = "Response: ",
        title = "Adults: Hunger (Raw counts)\n")
 
-p_adultsFeelings <- ggplot(data = temp4_adults %>% filter(predicate == "feelings"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_adultsFeelings <- ggplot(data = temp4_adults %>% filter(predicate == "feelings"),
+                           aes(x = reorder(character, desc(countMore)), 
+                               y = countTotal,
+                               fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
@@ -975,9 +999,10 @@ p_adultsFeelings <- ggplot(data = temp4_adults %>% filter(predicate == "feelings
        fill = "Response: ",
        title = "Adults: Feelings (Raw counts)\n")
 
-p_adultsThinking <- ggplot(data = temp4_adults %>% filter(predicate == "thinking"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_adultsThinking <- ggplot(data = temp4_adults %>% filter(predicate == "thinking"),
+                           aes(x = reorder(character, desc(countMore)), 
+                               y = countTotal,
+                               fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
@@ -1029,9 +1054,10 @@ ggplot(data = temp4_children, aes(x = character, y = countTotal,
        fill = "Response",
        title = "Children: Raw counts of responses by character and capacity\n")
 
-p_childrenHunger <- ggplot(data = temp4_children %>% filter(predicate == "hunger"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_childrenHunger <- ggplot(data = temp4_children %>% filter(predicate == "hunger"),
+                           aes(x = reorder(character, desc(countMore)), 
+                               y = countTotal,
+                               fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
@@ -1049,9 +1075,11 @@ p_childrenHunger <- ggplot(data = temp4_children %>% filter(predicate == "hunger
        fill = "Response: ",
        title = "Children: Hunger (Raw counts)\n")
 
-p_childrenFeelings <- ggplot(data = temp4_children %>% filter(predicate == "feelings"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_childrenFeelings <- ggplot(data = temp4_children %>% 
+                               filter(predicate == "feelings"),
+                             aes(x = reorder(character, desc(countMore)), 
+                                 y = countTotal,
+                                 fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
@@ -1069,9 +1097,11 @@ p_childrenFeelings <- ggplot(data = temp4_children %>% filter(predicate == "feel
        fill = "Response: ",
        title = "Children: Feelings (Raw counts)\n")
 
-p_childrenThinking <- ggplot(data = temp4_children %>% filter(predicate == "thinking"), 
-       aes(x = character, y = countTotal,
-           fill = responseFlip, order = responseFlip)) +
+p_childrenThinking <- ggplot(data = temp4_children %>% 
+                               filter(predicate == "thinking"),
+                             aes(x = reorder(character, desc(countMore)), 
+                                 y = countTotal,
+                                 fill = responseFlip)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_brewer(type = "div", palette = 4, 
                     labels = c(" much more this one ", " slightly more this one ",
