@@ -64,7 +64,7 @@ dd_adults_india = dd_adults %>%
 
 # set group of interest
 # ... to us:
-# dd_adults = dd_adults_us
+dd_adults = dd_adults_us
 
 # ... to india:
 # dd_adults = dd_adults_india
@@ -124,9 +124,9 @@ glimpse(dd)
 
 # set group of interest
 # ... to adults:
-# dd = dd_adults
+dd = dd_adults
 # ... to children:
-dd = dd_children
+# dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -154,7 +154,7 @@ dd_nobaby <- dd %>%
 
 # --- DEMOGRAPHICS ------------------------------------------------------------
 
-demo = dd %>% distinct(subid)
+demo = dd %>% distinct(subid, .keep_all = T)
 
 # total n
 demo %>% group_by(ageGroup) %>% summarise(n = length(subid))
@@ -178,6 +178,7 @@ ggplot(data = subset(demo, ageGroup == "children"), aes(x = ageCalc)) +
   labs(x = "\nAge (years)",
        y = "Count\n")
 
+demo %>% summarise(min = min(age), max = max(age), median = median(age))
 
 # qplot(subset(demo, ageGroup == "children")$ageCalc)
 # qplot(subset(demo, ageGroup == "adults")$ageCalc)
@@ -188,6 +189,13 @@ ggplot(data = subset(demo, ageGroup == "children"), aes(x = ageCalc)) +
 
 # age by condition
 demo %>% group_by(ageGroup, sequence) %>% summarise(mean_age = round(mean(ageCalc, na.rm = T), 2), sd_age = round(sd(ageCalc, na.rm = T), 2))
+
+# duration
+dd %>% 
+  group_by(subid) %>% 
+  summarise(duration = (sum(rt)/1000)/60) %>% 
+  ungroup() %>% 
+  summarise(min = min(duration), max = max(duration), median = median(duration))
 
 ######################################################## analysis & plots #####
 
