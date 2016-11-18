@@ -124,9 +124,9 @@ glimpse(dd)
 
 # set group of interest
 # ... to adults:
-dd = dd_adults
+# dd = dd_adults
 # ... to children:
-# dd = dd_children
+dd = dd_children
 
 # --------------->-> exclude stapler trials -----------------------------------
 
@@ -178,6 +178,7 @@ ggplot(data = subset(demo, ageGroup == "children"), aes(x = ageCalc)) +
   labs(x = "\nAge (years)",
        y = "Count\n")
 
+demo %>% summarise(min = min(ageCalc), max = max(ageCalc), median = median(ageCalc))
 demo %>% summarise(min = min(age), max = max(age), median = median(age))
 
 # qplot(subset(demo, ageGroup == "children")$ageCalc)
